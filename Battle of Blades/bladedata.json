@@ -1,0 +1,42 @@
+{
+	"Player":
+	{
+		"name": "Hero",
+		"level": 1,
+		"time bonus": 0,
+		"experience": 0,
+		"kills": 0
+	},
+	"Enemies": [
+		{
+			"name": "Flame Knight",
+			"level": 1,
+			"health": 5,
+			"time limit": 20
+		},
+		{
+			"name": "Burn Lancer",
+			"level": 1,
+			"health": 10,
+			"time limit": 50
+		},
+		{
+			"name": "Flame Knight Lv2",
+			"level": 2,
+			"health": 10,
+			"time limit": 20
+		},
+		{
+			"name": "Flame Knight Lv3",
+			"level": 3,
+			"health": 15,
+			"time limit": 20
+		},
+		{
+			"name": "Burn Lancer Lv5",
+			"level": 5,
+			"health": 35,
+			"time limit": 30
+		}
+	]
+}

@@ -8,6 +8,8 @@
 
 #import "KLBAppDelegate.h"
 #import "KLBHomeViewController.h"
+#import "KLBJSONController.h"
+#import "KLBPlayerStore.h"
 
 @implementation KLBAppDelegate
 
@@ -18,6 +20,9 @@
     
     KLBHomeViewController *homeViewController = [[KLBHomeViewController alloc] init];
     [self.window setRootViewController:homeViewController];
+    
+    //Load Player Data
+    [self loadPlayerData];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -49,6 +54,16 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - Data Loading from JSON
+- (void)loadPlayerData {
+    NSDictionary *jsonDictionary = [KLBJSONController loadJSONfromFile:KLB_JSON_FILENAME];
+    NSDictionary *playerData = [jsonDictionary objectForKey:KLB_JSON_PLAYER_DATA];
+    
+    for (NSString *key in playerData) {
+        [[KLBPlayerStore sharedStore] addPlayerValue:playerData[key] forKey:key];
+    }
 }
 
 @end

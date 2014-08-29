@@ -41,4 +41,13 @@ NSUInteger const KLB_DEFAULT_ENEMY_TIME_LIMIT_SECONDS = 30;
     return self;
 }
 
+#pragma mark - Description Override
+- (NSString *) description {
+    return [NSString stringWithFormat:@"Name: %@ Level: %lu Health: %lu Time Limit: %lu",
+            self.name,
+            (unsigned long)self.level,
+            (unsigned long)self.healthMaximum,
+            (unsigned long)self.timeLimitSeconds];
+}
+
 @end

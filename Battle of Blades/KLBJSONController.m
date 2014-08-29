@@ -8,6 +8,28 @@
 
 #import "KLBJSONController.h"
 
+// Files
+NSString *const KLB_JSON_FILENAME = @"bladedata.json";
+
+// JSON Format Keywords
+NSString *const KLB_JSON_PLAYER_DATA = @"Player";
+NSString *const KLB_JSON_ENEMIES_LIST = @"Enemies";
+
+// JSON Format Keywords - Player Stats
+NSString *const KLB_JSON_PLAYER_ENERGY_CURRENT= @"energy current";
+NSString *const KLB_JSON_PLAYER_ENERGY_MAXIMUM= @"energy maximum";
+NSString *const KLB_JSON_PLAYER_EXPERIENCE = @"experience";
+NSString *const KLB_JSON_PLAYER_KILLS= @"kills";
+NSString *const KLB_JSON_PLAYER_LEVEL= @"level";
+NSString *const KLB_JSON_PLAYER_NAME= @"name";
+NSString *const KLB_JSON_PLAYER_TIME_BONUS= @"time bonus";
+
+// JSON Format Keywords - Enemy Stats
+NSString *const KLB_JSON_ENEMY_HEALTH= @"health";
+NSString *const KLB_JSON_ENEMY_LEVEL= @"level";
+NSString *const KLB_JSON_ENEMY_NAME= @"name";
+NSString *const KLB_JSON_ENEMY_TIME_LIMIT= @"time limit";
+
 @implementation KLBJSONController
 
 + (NSDictionary *) loadJSONfromFile:(NSString *)file {

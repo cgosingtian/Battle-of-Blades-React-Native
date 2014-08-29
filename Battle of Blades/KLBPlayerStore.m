@@ -42,4 +42,19 @@
     return self.playerDictionary;
 }
 
+- (void)addPlayerValue:(id)object forKey:(NSString *)key {
+    [self.playerDictionary setObject:object forKey:key];
+}
+
+- (id)playerValueforKey:(NSString *)key {
+    return [self.playerDictionary objectForKey:key];
+}
+
+- (void)setAllItems:(NSMutableDictionary *)dictionary {
+    if (self.playerDictionary.count != 0) {
+        [self.playerDictionary removeAllObjects];
+    }
+    self.playerDictionary = [dictionary copy];
+}
+
 @end

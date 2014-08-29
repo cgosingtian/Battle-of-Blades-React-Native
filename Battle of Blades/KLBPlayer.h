@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const KLB_DEFAULT_PLAYER_NAME;
-extern NSUInteger const KLB_DEFAULT_LEVEL;
-extern CGFloat const KLB_DEFAULT_TIME_BONUS;
-extern NSUInteger const KLB_DEFAULT_EXPERIENCE;
-extern NSUInteger const KLB_DEFAULT_KILLS;
+extern NSUInteger const KLB_DEFAULT_PLAYER_LEVEL;
+extern CGFloat const KLB_DEFAULT_PLAYER_TIME_BONUS;
+extern NSUInteger const KLB_DEFAULT_PLAYER_EXPERIENCE;
+extern NSUInteger const KLB_DEFAULT_PLAYER_KILLS;
+extern NSUInteger const KLB_DEFAULT_PLAYER_ENERGY_MAXIMUM;
+extern NSUInteger const KLB_DEFAULT_PLAYER_ENERGY_CURRENT;
 
 @interface KLBPlayer : NSObject
 
@@ -21,5 +23,15 @@ extern NSUInteger const KLB_DEFAULT_KILLS;
 @property (nonatomic) CGFloat timeBonus;
 @property (nonatomic) NSUInteger experience;
 @property (nonatomic) NSUInteger kills;
+@property (nonatomic) NSUInteger energyMaximum;
+@property (nonatomic) NSUInteger energyCurrent;
+
+- (instancetype)initWithName:(NSString *)name
+                       level:(NSUInteger)level
+                   timeBonus:(CGFloat)timeBonus
+                  experience:(NSUInteger)experience
+                       kills:(NSUInteger)kills
+               energyMaximum:(NSUInteger)energyMaximum
+               energyCurrent:(NSUInteger)energyCurrent;
 
 @end

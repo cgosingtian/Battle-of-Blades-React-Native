@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface KLBHomeFooterView : UIView
+@property (retain, nonatomic) IBOutlet UIButton *battleButton;
 
 @end

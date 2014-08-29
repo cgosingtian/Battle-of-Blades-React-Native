@@ -7,18 +7,21 @@
 //
 
 #import "KLBHomeFooterView.h"
+#import "KLBNotifications.h"
 
 @implementation KLBHomeFooterView
 
+#pragma mark - Dealloc
+- (void)dealloc {
+    [_battleButton release];
+    [super dealloc];
+}
+
+#pragma mark - Initializers
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        KLBHomeFooterView *actualView = [[[UINib nibWithNibName:NSStringFromClass([self class])
-                                                         bundle:nil]
-                                          instantiateWithOwner:self
-                                          options:nil]
-                                         objectAtIndex:0];
-        [self addSubview:actualView];
+        [self replacePlaceholderViewsWithActual];
     }
     return self;
 }
@@ -27,23 +30,30 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        KLBHomeFooterView *actualView = [[[UINib nibWithNibName:NSStringFromClass([self class])
-                                                         bundle:nil]
-                                          instantiateWithOwner:self
-                                          options:nil]
-                                         objectAtIndex:0];
-        [self addSubview:actualView];
+        [self replacePlaceholderViewsWithActual];
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+#pragma mark - Other Initializing Methods
+- (void) replacePlaceholderViewsWithActual {
+    //Replace placeholders of this class in other XIBs with our defined XIB
+    KLBHomeFooterView *actualView = [[[UINib nibWithNibName:NSStringFromClass([self class])
+                                                     bundle:nil]
+                                      instantiateWithOwner:self
+                                      options:nil]
+                                     objectAtIndex:0];
+    [self addSubview:actualView];
 }
-*/
 
+#pragma mark - IBActions
+- (IBAction)battleButtonTapped:(id)sender {
+    [self startBattle];
+}
+
+#pragma mark - Battle Start
+- (void)startBattle {
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_START_BATTLE
+                                                        object:self];
+}
 @end

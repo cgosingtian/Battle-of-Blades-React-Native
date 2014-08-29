@@ -7,8 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KLBEnemy.h"
 
 @interface KLBEnemyStore : NSObject
 +(instancetype)sharedStore;
 - (NSDictionary *)allItems;
+- (void)addEnemy:(KLBEnemy *)enemy forKey:(NSString *)key;
+- (KLBEnemy *)enemyForKey:(NSString *)key;
+- (void)setAllItems:(NSMutableDictionary *)dictionary;
 @end

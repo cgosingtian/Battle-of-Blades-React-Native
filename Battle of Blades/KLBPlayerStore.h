@@ -11,4 +11,7 @@
 @interface KLBPlayerStore : NSObject
 +(instancetype)sharedStore;
 - (NSDictionary *)allItems;
+- (void)addPlayerValue:(id)object forKey:(NSString *)key;
+- (id)playerValueforKey:(NSString *)key;
+- (void)setAllItems:(NSMutableDictionary *)dictionary;
 @end

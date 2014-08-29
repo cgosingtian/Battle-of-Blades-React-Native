@@ -7,9 +7,14 @@
 //
 
 #import "KLBEnemyStore.h"
+#import "KLBEnemy.h"
 
 @interface KLBEnemyStore ()
 
+// Each enemy has a dictionary [A] of stats.
+// The enemies list has a dictionary [B] of enemies.
+// We add each enemy's dictionary [A] to the dictionary below
+// to form dictionary [B].
 @property (retain,nonatomic) NSMutableDictionary *enemyDictionary;
 
 @end
@@ -40,6 +45,21 @@
 
 - (NSDictionary *)allItems {
     return self.enemyDictionary;
+}
+
+- (void)addEnemy:(KLBEnemy *)enemy forKey:(NSString *)key {
+    [self.enemyDictionary setObject:enemy forKey:key];
+}
+
+- (KLBEnemy *)enemyForKey:(NSString *)key {
+    return [self.enemyDictionary objectForKey:key];
+}
+
+- (void)setAllItems:(NSMutableDictionary *)dictionary {
+    if (self.enemyDictionary.count != 0) {
+        [self.enemyDictionary removeAllObjects];
+    }
+    self.enemyDictionary = [dictionary copy];
 }
 
 @end

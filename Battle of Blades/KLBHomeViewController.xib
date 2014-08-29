@@ -25,7 +25,7 @@
                         <constraint firstAttribute="height" constant="30" id="30V-1M-oPx"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UxG-gs-FQC" userLabel="Main View Placeholder" customClass="KLBBattleView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UxG-gs-FQC" userLabel="Main View Placeholder" customClass="KLBBattleViewController">
                     <rect key="frame" x="0.0" y="50" width="320" height="400"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>

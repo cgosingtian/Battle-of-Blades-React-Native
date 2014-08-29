@@ -13,6 +13,8 @@ NSUInteger const KLB_DEFAULT_PLAYER_LEVEL = 1;
 CGFloat const KLB_DEFAULT_PLAYER_TIME_BONUS = 0;
 NSUInteger const KLB_DEFAULT_PLAYER_EXPERIENCE = 0;
 NSUInteger const KLB_DEFAULT_PLAYER_KILLS = 0;
+NSUInteger const KLB_DEFAULT_PLAYER_ENERGY_MAXIMUM = 10;
+NSUInteger const KLB_DEFAULT_PLAYER_ENERGY_CURRENT = 10;
 
 @implementation KLBPlayer
 
@@ -22,14 +24,18 @@ NSUInteger const KLB_DEFAULT_PLAYER_KILLS = 0;
                        level:(NSUInteger)level
                    timeBonus:(CGFloat)timeBonus
                   experience:(NSUInteger)experience
-                       kills:(NSUInteger)kills {
+                       kills:(NSUInteger)kills
+               energyMaximum:(NSUInteger)energyMaximum
+               energyCurrent:(NSUInteger)energyCurrent {
     self = [super init];
     if (self) {
-        _name = name;
-        _level = level;
-        _timeBonus = timeBonus;
-        _experience = experience;
-        _kills = kills;
+        self.name = name;
+        self.level = level;
+        self.timeBonus = timeBonus;
+        self.experience = experience;
+        self.kills = kills;
+        self.energyMaximum = energyMaximum;
+        self.energyCurrent = energyCurrent;
     }
     return self;
 }
@@ -39,7 +45,9 @@ NSUInteger const KLB_DEFAULT_PLAYER_KILLS = 0;
                         level:KLB_DEFAULT_PLAYER_LEVEL
                     timeBonus:KLB_DEFAULT_PLAYER_TIME_BONUS
                    experience:KLB_DEFAULT_PLAYER_EXPERIENCE
-                        kills:KLB_DEFAULT_PLAYER_KILLS];
+                        kills:KLB_DEFAULT_PLAYER_KILLS
+                energyMaximum:KLB_DEFAULT_PLAYER_ENERGY_MAXIMUM
+                energyCurrent:KLB_DEFAULT_PLAYER_ENERGY_CURRENT];
     
     return self;
 }

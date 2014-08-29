@@ -25,6 +25,7 @@ extern NSString *const KLB_JSON_PLAYER_NAME;
 extern NSString *const KLB_JSON_PLAYER_TIME_BONUS;
 
 // JSON Format Keywords - Enemy Stats
+extern NSString *const KLB_JSON_ENEMY_KEY;
 extern NSString *const KLB_JSON_ENEMY_HEALTH;
 extern NSString *const KLB_JSON_ENEMY_LEVEL;
 extern NSString *const KLB_JSON_ENEMY_NAME;

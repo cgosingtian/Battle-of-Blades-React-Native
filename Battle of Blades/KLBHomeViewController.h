@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "KLBHomeHeaderView.h"
+#import "KLBPlayerController.h"
 
 @interface KLBHomeViewController : UIViewController
 
 @property (retain, nonatomic) IBOutlet UIView *headerViewPlaceholder;
 @property (retain, nonatomic) IBOutlet UIView *footerViewPlaceholder;
 @property (retain, nonatomic) IBOutlet UIView *mainViewPlaceholder;
+
+@property (retain, nonatomic) KLBPlayerController *playerController;
 
 @end

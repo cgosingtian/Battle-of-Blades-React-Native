@@ -8,7 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const KLB_NOTIFICATION_START_BATTLE;
+extern NSString *const KLB_NOTIFICATION_BATTLE_START_ATTEMPT;
+extern NSString *const KLB_NOTIFICATION_BATTLE_START;
+extern NSString *const KLB_NOTIFICATION_BATTLE_END;
+extern NSString *const KLB_NOTIFICATION_PLAYER_NAME_CHANGED;
+extern NSString *const KLB_NOTIFICATION_PLAYER_LEVEL_CHANGED;
+extern NSString *const KLB_NOTIFICATION_PLAYER_EXPERIENCE_CHANGED;
+extern NSString *const KLB_NOTIFICATION_PLAYER_ENERGY_CHANGED;
 
 @interface KLBNotifications : NSObject
 

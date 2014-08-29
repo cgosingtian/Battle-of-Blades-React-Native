@@ -10,5 +10,10 @@
 
 @interface KLBHomeHeaderView : UIView
 @property (retain, nonatomic) IBOutlet UIView *headerView;
+@property (retain, nonatomic) IBOutlet UILabel *levelLabel;
+@property (retain, nonatomic) IBOutlet UILabel *experienceNeededLabel;
+@property (retain, nonatomic) IBOutlet UILabel *playerNameLabel;
+@property (retain, nonatomic) IBOutlet UILabel *energyLabel;
+@property (retain, nonatomic) IBOutlet UILabel *energyTimeToGainLabel;
 
 @end

@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KLBPlayer.h"
 
 @interface KLBPlayerStore : NSObject
 +(instancetype)sharedStore;
-- (NSDictionary *)allItems;
-- (void)addPlayerValue:(id)object forKey:(NSString *)key;
-- (id)playerValueforKey:(NSString *)key;
-- (void)setAllItems:(NSMutableDictionary *)dictionary;
+- (KLBPlayer *)player;
+- (void)setPlayer:(KLBPlayer *)player;
 @end

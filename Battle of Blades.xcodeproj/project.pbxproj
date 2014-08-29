@@ -21,6 +21,7 @@
 		4F5C325219AF2AC00020AA13 /* screenfooterbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C325019AF2AC00020AA13 /* screenfooterbg.png */; };
 		4F5C325519AF2BDC0020AA13 /* KLBBattleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C325419AF2BDC0020AA13 /* KLBBattleViewController.m */; };
 		4F5C325719AF2BEB0020AA13 /* KLBBattleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C325619AF2BEB0020AA13 /* KLBBattleViewController.xib */; };
+		4FA261E319B04BFA00E81CE2 /* KLBPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA261E219B04BFA00E81CE2 /* KLBPlayerController.m */; };
 		4FA46D9A19B00E7E0078E23B /* KLBPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA46D9919B00E7E0078E23B /* KLBPlayerView.m */; };
 		4FA46D9C19B00E9C0078E23B /* KLBPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA46D9B19B00E9C0078E23B /* KLBPlayerView.xib */; };
 		4FA46D9F19B0106E0078E23B /* KLBAttack.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA46D9E19B0106E0078E23B /* KLBAttack.m */; };
@@ -79,6 +80,8 @@
 		4F5C325319AF2BDC0020AA13 /* KLBBattleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBBattleViewController.h; sourceTree = "<group>"; };
 		4F5C325419AF2BDC0020AA13 /* KLBBattleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBBattleViewController.m; sourceTree = "<group>"; };
 		4F5C325619AF2BEB0020AA13 /* KLBBattleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBBattleViewController.xib; sourceTree = "<group>"; };
+		4FA261E119B04BFA00E81CE2 /* KLBPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBPlayerController.h; sourceTree = "<group>"; };
+		4FA261E219B04BFA00E81CE2 /* KLBPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBPlayerController.m; sourceTree = "<group>"; };
 		4FA46D9819B00E7E0078E23B /* KLBPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBPlayerView.h; sourceTree = "<group>"; };
 		4FA46D9919B00E7E0078E23B /* KLBPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBPlayerView.m; sourceTree = "<group>"; };
 		4FA46D9B19B00E9C0078E23B /* KLBPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBPlayerView.xib; sourceTree = "<group>"; };
@@ -297,6 +300,8 @@
 				4F5C323619AF22470020AA13 /* KLBHomeViewController.h */,
 				4F5C323719AF22470020AA13 /* KLBHomeViewController.m */,
 				4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */,
+				4FA261E119B04BFA00E81CE2 /* KLBPlayerController.h */,
+				4FA261E219B04BFA00E81CE2 /* KLBPlayerController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -444,6 +449,7 @@
 				4FA46DB619B014DF0078E23B /* KLBJSONController.m in Sources */,
 				4FA46DAC19B0138A0078E23B /* KLBPlayerStore.m in Sources */,
 				4FA46D9F19B0106E0078E23B /* KLBAttack.m in Sources */,
+				4FA261E319B04BFA00E81CE2 /* KLBPlayerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

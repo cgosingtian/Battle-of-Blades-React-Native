@@ -22,6 +22,19 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
 
 @implementation KLBBattleViewController
 
+#pragma mark - Dealloc
+- (void)dealloc {
+    [_enemyImage release];
+    [_battleInfoBackground release];
+    [_healthLabel release];
+    [_timeLeftLabel release];
+    [_coverView release];
+    [_enemyNameLabel release];
+    [_enemyLevelLabel release];
+    [super dealloc];
+}
+
+#pragma mark - Initializers
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
@@ -55,7 +68,7 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
 }
 
 - (void)registerForNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startBattle) name:KLB_NOTIFICATION_START_BATTLE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startBattle) name:KLB_NOTIFICATION_BATTLE_START object:nil];
 }
 
 - (void)showCover {
@@ -85,6 +98,22 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
     self.enemyLevelLabel.text = [NSString stringWithFormat:@"%@%lu",
                                  KLB_LABEL_LEVEL_TEXT_FORMAT,
                                  (unsigned long)enemyLevel];
+    
+    //TEST
+    [self endBattle];
+}
+
+- (void)endBattle {
+    // FIX THE CONDITIONS
+    if (true) { //win
+        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
+                                                            object:nil
+                                                          userInfo:@{KLB_JSON_ENEMY_KEY:self.activeEnemy.key}];
+    } else { //lose
+        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
+                                                            object:nil
+                                                          userInfo:nil];
+    }
 }
 
 - (NSString *)loadRandomEnemyData {
@@ -100,7 +129,8 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
     NSUInteger enemyHealthMaximum = [[enemiesList[key] objectForKey:KLB_JSON_ENEMY_HEALTH] integerValue];
     NSUInteger timeLimitSeconds = [[enemiesList[key] objectForKey:KLB_JSON_ENEMY_TIME_LIMIT] integerValue];
     
-    KLBEnemy *enemy = [[KLBEnemy alloc] initWithName:enemyName
+    KLBEnemy *enemy = [[KLBEnemy alloc] initWithKey:key
+                                               name:enemyName
                                                level:enemyLevel
                                        healthMaximum:enemyHealthMaximum
                                     timeLimitSeconds:timeLimitSeconds];
@@ -112,14 +142,4 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
     return key;
 }
 
-- (void)dealloc {
-    [_enemyImage release];
-    [_battleInfoBackground release];
-    [_healthLabel release];
-    [_timeLeftLabel release];
-    [_coverView release];
-    [_enemyNameLabel release];
-    [_enemyLevelLabel release];
-    [super dealloc];
-}
 @end

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const KLB_DEFAULT_ENEMY_KEY;
 extern NSString *const KLB_DEFAULT_ENEMY_NAME;
 extern CGFloat const KLB_DEFAULT_ENEMY_LEVEL;
 extern NSUInteger const KLB_DEFAULT_ENEMY_HEALTH;
@@ -15,16 +16,18 @@ extern NSUInteger const KLB_DEFAULT_ENEMY_TIME_LIMIT_SECONDS;
 
 @interface KLBEnemy : NSObject
 
+@property (retain, nonatomic) NSString *key; // primary key;
 @property (retain, nonatomic) NSString *name;
 @property (nonatomic) NSUInteger level;
 @property (nonatomic) NSUInteger healthMaximum;
 @property (nonatomic) NSUInteger healthRemaining;
 @property (nonatomic) NSUInteger timeLimitSeconds;
 
-- (instancetype)initWithName:(NSString *)name
-                       level:(NSUInteger)level
-               healthMaximum:(NSUInteger)healthMaximum
-            timeLimitSeconds:(NSUInteger)timeLimitSeconds;
+- (instancetype)initWithKey:(NSString *)key
+                       name:(NSString *)name
+                      level:(NSUInteger)level
+              healthMaximum:(NSUInteger)healthMaximum
+           timeLimitSeconds:(NSUInteger)timeLimitSeconds;
 
 - (NSString *)description;
 

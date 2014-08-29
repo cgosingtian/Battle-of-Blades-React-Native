@@ -10,6 +10,7 @@
 #import "KLBHomeHeaderView.h"
 #import "KLBHomeFooterView.h"
 #import "KLBBattleViewController.h"
+#import "KLBPlayerController.h"
 
 @interface KLBHomeViewController ()
 
@@ -17,6 +18,16 @@
 
 @implementation KLBHomeViewController
 
+#pragma mark - Dealloc
+- (void)dealloc {
+    [_headerViewPlaceholder release];
+    
+    [_footerViewPlaceholder release];
+    [_mainViewPlaceholder release];
+    [super dealloc];
+}
+
+#pragma mark - Initializers
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -26,25 +37,17 @@
     return self;
 }
 
-- (void)awakeFromNib {
-}
-
+#pragma mark - View States
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.playerController = [[KLBPlayerController alloc] init];
 }
 
+#pragma mark - Memory Management
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc {
-    [_headerViewPlaceholder release];
-
-    [_footerViewPlaceholder release];
-    [_mainViewPlaceholder release];
-    [super dealloc];
 }
 @end

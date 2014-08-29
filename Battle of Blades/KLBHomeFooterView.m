@@ -53,7 +53,7 @@
 
 #pragma mark - Battle Start
 - (void)startBattle {
-    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_START_BATTLE
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
                                                         object:self];
 }
 @end

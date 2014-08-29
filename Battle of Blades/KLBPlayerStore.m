@@ -7,14 +7,17 @@
 //
 
 #import "KLBPlayerStore.h"
+#import "KLBPlayer.h"
 
 @interface KLBPlayerStore ()
 
-@property (retain,nonatomic) NSMutableDictionary *playerDictionary;
+@property (retain,nonatomic) KLBPlayer *player;
 
 @end
 
 @implementation KLBPlayerStore
+
+@synthesize player = _player; // custom getter/setter below
 
 + (instancetype) sharedStore {
     static KLBPlayerStore *sharedStore;
@@ -33,28 +36,17 @@
 {
     self = [super init];
     if (self) {
-        self.playerDictionary = [[NSMutableDictionary alloc] init];
+        self.player = [[KLBPlayer alloc] init];
     }
     return self;
 }
 
-- (NSDictionary *)allItems {
-    return self.playerDictionary;
+- (KLBPlayer *)player {
+    return _player;
 }
 
-- (void)addPlayerValue:(id)object forKey:(NSString *)key {
-    [self.playerDictionary setObject:object forKey:key];
-}
-
-- (id)playerValueforKey:(NSString *)key {
-    return [self.playerDictionary objectForKey:key];
-}
-
-- (void)setAllItems:(NSMutableDictionary *)dictionary {
-    if (self.playerDictionary.count != 0) {
-        [self.playerDictionary removeAllObjects];
-    }
-    self.playerDictionary = [dictionary copy];
+- (void)setPlayer:(KLBPlayer *)player {
+    _player = player;
 }
 
 @end

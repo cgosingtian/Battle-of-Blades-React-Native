@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const KLB_DEFAULT_NAME;
+extern NSString *const KLB_DEFAULT_PLAYER_NAME;
 extern NSUInteger const KLB_DEFAULT_LEVEL;
 extern CGFloat const KLB_DEFAULT_TIME_BONUS;
 extern NSUInteger const KLB_DEFAULT_EXPERIENCE;

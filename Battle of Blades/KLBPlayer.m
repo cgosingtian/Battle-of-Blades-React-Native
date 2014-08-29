@@ -8,11 +8,11 @@
 
 #import "KLBPlayer.h"
 
-NSString *const KLB_DEFAULT_NAME = @"Player";
-NSUInteger const KLB_DEFAULT_LEVEL = 1;
-CGFloat const KLB_DEFAULT_TIME_BONUS = 0;
-NSUInteger const KLB_DEFAULT_EXPERIENCE = 0;
-NSUInteger const KLB_DEFAULT_KILLS = 0;
+NSString *const KLB_DEFAULT_PLAYER_NAME = @"Player";
+NSUInteger const KLB_DEFAULT_PLAYER_LEVEL = 1;
+CGFloat const KLB_DEFAULT_PLAYER_TIME_BONUS = 0;
+NSUInteger const KLB_DEFAULT_PLAYER_EXPERIENCE = 0;
+NSUInteger const KLB_DEFAULT_PLAYER_KILLS = 0;
 
 @implementation KLBPlayer
 
@@ -35,11 +35,11 @@ NSUInteger const KLB_DEFAULT_KILLS = 0;
 }
 
 - (instancetype)init {
-    self = [self initWithName:KLB_DEFAULT_NAME
-                        level:KLB_DEFAULT_LEVEL
-                    timeBonus:KLB_DEFAULT_TIME_BONUS
-                   experience:KLB_DEFAULT_EXPERIENCE
-                        kills:KLB_DEFAULT_KILLS];
+    self = [self initWithName:KLB_DEFAULT_PLAYER_NAME
+                        level:KLB_DEFAULT_PLAYER_LEVEL
+                    timeBonus:KLB_DEFAULT_PLAYER_TIME_BONUS
+                   experience:KLB_DEFAULT_PLAYER_EXPERIENCE
+                        kills:KLB_DEFAULT_PLAYER_KILLS];
     
     return self;
 }

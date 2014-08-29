@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const KLB_DEFAULT_NAME;
-extern CGFloat const KLB_DEFAULT_LEVEL;
-extern NSUInteger const KLB_DEFAULT_HEALTH;
-extern NSUInteger const KLB_DEFAULT_TIME_LIMIT_SECONDS;
+extern NSString *const KLB_DEFAULT_ENEMY_NAME;
+extern CGFloat const KLB_DEFAULT_ENEMY_LEVEL;
+extern NSUInteger const KLB_DEFAULT_ENEMY_HEALTH;
+extern NSUInteger const KLB_DEFAULT_ENEMY_TIME_LIMIT_SECONDS;
 
 @interface KLBEnemy : NSObject
 

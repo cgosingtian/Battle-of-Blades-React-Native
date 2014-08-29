@@ -7,6 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F5C323919AF22470020AA13 /* KLBHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C323719AF22470020AA13 /* KLBHomeViewController.m */; };
+		4F5C323A19AF22470020AA13 /* KLBHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */; };
+		4F5C323D19AF22C90020AA13 /* KLBHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C323C19AF22C90020AA13 /* KLBHomeHeaderView.m */; };
+		4F5C323F19AF22F50020AA13 /* KLBHomeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C323E19AF22F50020AA13 /* KLBHomeHeaderView.xib */; };
+		4F5C324319AF24240020AA13 /* bladedata.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C324219AF24240020AA13 /* bladedata.json */; };
+		4F5C324519AF242C0020AA13 /* headerbgleft.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C324419AF242C0020AA13 /* headerbgleft.png */; };
+		4F5C324719AF24700020AA13 /* headerbgright.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C324619AF24700020AA13 /* headerbgright.png */; };
+		4F5C324919AF24B20020AA13 /* playerbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C324819AF24B20020AA13 /* playerbutton.png */; };
+		4F5C324C19AF29B20020AA13 /* KLBHomeFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C324B19AF29B20020AA13 /* KLBHomeFooterView.m */; };
+		4F5C324E19AF29C40020AA13 /* KLBHomeFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C324D19AF29C40020AA13 /* KLBHomeFooterView.xib */; };
+		4F5C325119AF2AC00020AA13 /* battlebutton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C324F19AF2AC00020AA13 /* battlebutton.png */; };
+		4F5C325219AF2AC00020AA13 /* screenfooterbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C325019AF2AC00020AA13 /* screenfooterbg.png */; };
+		4F5C325519AF2BDC0020AA13 /* KLBBattleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C325419AF2BDC0020AA13 /* KLBBattleView.m */; };
+		4F5C325719AF2BEB0020AA13 /* KLBBattleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C325619AF2BEB0020AA13 /* KLBBattleView.xib */; };
+		4FA46D9A19B00E7E0078E23B /* KLBPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA46D9919B00E7E0078E23B /* KLBPlayerView.m */; };
+		4FA46D9C19B00E9C0078E23B /* KLBPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA46D9B19B00E9C0078E23B /* KLBPlayerView.xib */; };
 		4FEC6DB319AF1A7600C9DAA8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEC6DB219AF1A7600C9DAA8 /* Foundation.framework */; };
 		4FEC6DB519AF1A7600C9DAA8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEC6DB419AF1A7600C9DAA8 /* CoreGraphics.framework */; };
 		4FEC6DB719AF1A7600C9DAA8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEC6DB619AF1A7600C9DAA8 /* UIKit.framework */; };
@@ -19,7 +35,6 @@
 		4FEC6DCE19AF1A7600C9DAA8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEC6DB619AF1A7600C9DAA8 /* UIKit.framework */; };
 		4FEC6DD619AF1A7600C9DAA8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4FEC6DD419AF1A7600C9DAA8 /* InfoPlist.strings */; };
 		4FEC6DD819AF1A7600C9DAA8 /* Battle_of_BladesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEC6DD719AF1A7600C9DAA8 /* Battle_of_BladesTests.m */; };
-		4FEC6DE619AF1B9B00C9DAA8 /* bladedata.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FEC6DE519AF1B9B00C9DAA8 /* bladedata.json */; };
 		4FEC6DE919AF1BD600C9DAA8 /* KLBPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEC6DE819AF1BD600C9DAA8 /* KLBPlayer.m */; };
 		4FEC6DEC19AF1BE200C9DAA8 /* KLBEnemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEC6DEB19AF1BE200C9DAA8 /* KLBEnemy.m */; };
 /* End PBXBuildFile section */
@@ -35,6 +50,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4F5C323619AF22470020AA13 /* KLBHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBHomeViewController.h; sourceTree = "<group>"; };
+		4F5C323719AF22470020AA13 /* KLBHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBHomeViewController.m; sourceTree = "<group>"; };
+		4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBHomeViewController.xib; sourceTree = "<group>"; };
+		4F5C323B19AF22C90020AA13 /* KLBHomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBHomeHeaderView.h; sourceTree = "<group>"; };
+		4F5C323C19AF22C90020AA13 /* KLBHomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBHomeHeaderView.m; sourceTree = "<group>"; };
+		4F5C323E19AF22F50020AA13 /* KLBHomeHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBHomeHeaderView.xib; sourceTree = "<group>"; };
+		4F5C324219AF24240020AA13 /* bladedata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = bladedata.json; path = Resources/bladedata.json; sourceTree = "<group>"; };
+		4F5C324419AF242C0020AA13 /* headerbgleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = headerbgleft.png; path = Resources/headerbgleft.png; sourceTree = "<group>"; };
+		4F5C324619AF24700020AA13 /* headerbgright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = headerbgright.png; path = Resources/headerbgright.png; sourceTree = "<group>"; };
+		4F5C324819AF24B20020AA13 /* playerbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = playerbutton.png; path = Resources/playerbutton.png; sourceTree = "<group>"; };
+		4F5C324A19AF29B20020AA13 /* KLBHomeFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBHomeFooterView.h; sourceTree = "<group>"; };
+		4F5C324B19AF29B20020AA13 /* KLBHomeFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBHomeFooterView.m; sourceTree = "<group>"; };
+		4F5C324D19AF29C40020AA13 /* KLBHomeFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBHomeFooterView.xib; sourceTree = "<group>"; };
+		4F5C324F19AF2AC00020AA13 /* battlebutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battlebutton.png; path = Resources/battlebutton.png; sourceTree = "<group>"; };
+		4F5C325019AF2AC00020AA13 /* screenfooterbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = screenfooterbg.png; path = Resources/screenfooterbg.png; sourceTree = "<group>"; };
+		4F5C325319AF2BDC0020AA13 /* KLBBattleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBBattleView.h; sourceTree = "<group>"; };
+		4F5C325419AF2BDC0020AA13 /* KLBBattleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBBattleView.m; sourceTree = "<group>"; };
+		4F5C325619AF2BEB0020AA13 /* KLBBattleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBBattleView.xib; sourceTree = "<group>"; };
+		4FA46D9819B00E7E0078E23B /* KLBPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBPlayerView.h; sourceTree = "<group>"; };
+		4FA46D9919B00E7E0078E23B /* KLBPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBPlayerView.m; sourceTree = "<group>"; };
+		4FA46D9B19B00E9C0078E23B /* KLBPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBPlayerView.xib; sourceTree = "<group>"; };
 		4FEC6DAF19AF1A7600C9DAA8 /* Battle of Blades.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Battle of Blades.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FEC6DB219AF1A7600C9DAA8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4FEC6DB419AF1A7600C9DAA8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -51,7 +87,6 @@
 		4FEC6DD319AF1A7600C9DAA8 /* Battle of BladesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Battle of BladesTests-Info.plist"; sourceTree = "<group>"; };
 		4FEC6DD519AF1A7600C9DAA8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4FEC6DD719AF1A7600C9DAA8 /* Battle_of_BladesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Battle_of_BladesTests.m; sourceTree = "<group>"; };
-		4FEC6DE519AF1B9B00C9DAA8 /* bladedata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bladedata.json; sourceTree = "<group>"; };
 		4FEC6DE719AF1BD600C9DAA8 /* KLBPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBPlayer.h; sourceTree = "<group>"; };
 		4FEC6DE819AF1BD600C9DAA8 /* KLBPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBPlayer.m; sourceTree = "<group>"; };
 		4FEC6DEA19AF1BE200C9DAA8 /* KLBEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBEnemy.h; sourceTree = "<group>"; };
@@ -170,6 +205,18 @@
 		4FEC6DE219AF1B3300C9DAA8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4F5C323B19AF22C90020AA13 /* KLBHomeHeaderView.h */,
+				4F5C323C19AF22C90020AA13 /* KLBHomeHeaderView.m */,
+				4F5C323E19AF22F50020AA13 /* KLBHomeHeaderView.xib */,
+				4F5C324A19AF29B20020AA13 /* KLBHomeFooterView.h */,
+				4F5C324B19AF29B20020AA13 /* KLBHomeFooterView.m */,
+				4F5C324D19AF29C40020AA13 /* KLBHomeFooterView.xib */,
+				4F5C325319AF2BDC0020AA13 /* KLBBattleView.h */,
+				4F5C325419AF2BDC0020AA13 /* KLBBattleView.m */,
+				4F5C325619AF2BEB0020AA13 /* KLBBattleView.xib */,
+				4FA46D9819B00E7E0078E23B /* KLBPlayerView.h */,
+				4FA46D9919B00E7E0078E23B /* KLBPlayerView.m */,
+				4FA46D9B19B00E9C0078E23B /* KLBPlayerView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -177,6 +224,9 @@
 		4FEC6DE319AF1B3700C9DAA8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4F5C323619AF22470020AA13 /* KLBHomeViewController.h */,
+				4F5C323719AF22470020AA13 /* KLBHomeViewController.m */,
+				4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -184,7 +234,12 @@
 		4FEC6DE419AF1B3D00C9DAA8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FEC6DE519AF1B9B00C9DAA8 /* bladedata.json */,
+				4F5C324F19AF2AC00020AA13 /* battlebutton.png */,
+				4F5C325019AF2AC00020AA13 /* screenfooterbg.png */,
+				4F5C324419AF242C0020AA13 /* headerbgleft.png */,
+				4F5C324619AF24700020AA13 /* headerbgright.png */,
+				4F5C324219AF24240020AA13 /* bladedata.json */,
+				4F5C324819AF24B20020AA13 /* playerbutton.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -265,9 +320,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FEC6DE619AF1B9B00C9DAA8 /* bladedata.json in Resources */,
+				4F5C325219AF2AC00020AA13 /* screenfooterbg.png in Resources */,
+				4F5C324519AF242C0020AA13 /* headerbgleft.png in Resources */,
+				4F5C324719AF24700020AA13 /* headerbgright.png in Resources */,
+				4F5C324E19AF29C40020AA13 /* KLBHomeFooterView.xib in Resources */,
+				4FA46D9C19B00E9C0078E23B /* KLBPlayerView.xib in Resources */,
+				4F5C323F19AF22F50020AA13 /* KLBHomeHeaderView.xib in Resources */,
 				4FEC6DBD19AF1A7600C9DAA8 /* InfoPlist.strings in Resources */,
+				4F5C325719AF2BEB0020AA13 /* KLBBattleView.xib in Resources */,
+				4F5C325119AF2AC00020AA13 /* battlebutton.png in Resources */,
+				4F5C324919AF24B20020AA13 /* playerbutton.png in Resources */,
+				4F5C324319AF24240020AA13 /* bladedata.json in Resources */,
 				4FEC6DC519AF1A7600C9DAA8 /* Images.xcassets in Resources */,
+				4F5C323A19AF22470020AA13 /* KLBHomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,9 +351,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F5C323D19AF22C90020AA13 /* KLBHomeHeaderView.m in Sources */,
 				4FEC6DEC19AF1BE200C9DAA8 /* KLBEnemy.m in Sources */,
+				4F5C325519AF2BDC0020AA13 /* KLBBattleView.m in Sources */,
+				4FA46D9A19B00E7E0078E23B /* KLBPlayerView.m in Sources */,
+				4F5C324C19AF29B20020AA13 /* KLBHomeFooterView.m in Sources */,
 				4FEC6DC319AF1A7600C9DAA8 /* KLBAppDelegate.m in Sources */,
 				4FEC6DE919AF1BD600C9DAA8 /* KLBPlayer.m in Sources */,
+				4F5C323919AF22470020AA13 /* KLBHomeViewController.m in Sources */,
 				4FEC6DBF19AF1A7600C9DAA8 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -486,6 +556,7 @@
 				4FEC6DDD19AF1A7600C9DAA8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4FEC6DDE19AF1A7600C9DAA8 /* Build configuration list for PBXNativeTarget "Battle of BladesTests" */ = {
 			isa = XCConfigurationList;
@@ -494,6 +565,7 @@
 				4FEC6DE019AF1A7600C9DAA8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

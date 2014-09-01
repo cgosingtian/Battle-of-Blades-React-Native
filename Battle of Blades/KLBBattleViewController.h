@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "KLBEnemy.h"
+#import "KLBEnemyController.h"
 
 @interface KLBBattleViewController : UIView
 @property (retain, nonatomic) IBOutlet UIImageView *enemyImage;
@@ -18,11 +18,9 @@
 @property (retain, nonatomic) IBOutlet UILabel *enemyNameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *enemyLevelLabel;
 
-@property (unsafe_unretained, nonatomic) KLBEnemy *activeEnemy;
+@property (retain, nonatomic) KLBEnemyController *enemyController;
 
 //test - we're using this as a "cover" for the battle screen - place an image or something
 @property (retain,nonatomic) UIView *blackView;
-
-- (NSString *)loadRandomEnemyData;
 
 @end

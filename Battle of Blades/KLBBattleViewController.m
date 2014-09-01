@@ -41,6 +41,7 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
         [self replacePlaceholderViewsWithActual];
         [self registerForNotifications];
         [self showCover];
+        [self instantiateVariables];
     }
     return self;
 }
@@ -52,6 +53,7 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
         [self replacePlaceholderViewsWithActual];
         [self registerForNotifications];
         [self showCover];
+        [self instantiateVariables];
     }
     return self;
 }
@@ -68,78 +70,119 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
 }
 
 - (void)registerForNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startBattle) name:KLB_NOTIFICATION_BATTLE_START object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(startBattle)
+                                                 name:KLB_NOTIFICATION_BATTLE_START
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(battleTimeOver)
+                                                 name:KLB_NOTIFICATION_ENEMY_TIME_OVER
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(battleWin)
+                                                 name:KLB_NOTIFICATION_ENEMY_HEALTH_ZERO
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(respondToEnemyNameChange:)
+                                                 name:KLB_NOTIFICATION_ENEMY_NAME_CHANGED
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(respondToEnemyLevelModification:)
+                                                 name:KLB_NOTIFICATION_ENEMY_LEVEL_CHANGED
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(respondToEnemyHealthModification:)
+                                                 name:KLB_NOTIFICATION_ENEMY_HEALTH_CHANGED
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(respondToEnemyTimeModification:)
+                                                 name:KLB_NOTIFICATION_ENEMY_TIME_CHANGED
+                                               object:nil];
+}
+
+#pragma mark - Update Labels Upon Notice
+- (void)respondToEnemyNameChange: (NSNotification *)notification {
+    NSString *newName = @"";
+    if (notification.userInfo) {
+        newName = [notification.userInfo objectForKey:KLB_JSON_ENEMY_NAME];
+    }
+    if (!newName || !notification.userInfo) {
+        newName = self.enemyController.enemy.name;
+    }
+    self.enemyNameLabel.text = [NSString stringWithFormat:@"%@%@",
+                                KLB_LABEL_NAME_TEXT_FORMAT,
+                                newName];
+}
+- (void)respondToEnemyLevelModification: (NSNotification *)notification {
+    NSUInteger enemyLevel = 0;
+    if (notification.userInfo) {
+        enemyLevel = [[notification.userInfo objectForKey:KLB_JSON_ENEMY_LEVEL] integerValue];
+    }
+    if (!enemyLevel || !notification.userInfo) {
+        enemyLevel = self.enemyController.enemy.level;
+    }
+    self.enemyLevelLabel.text = [NSString stringWithFormat:@"%@%lu",
+                                 KLB_LABEL_LEVEL_TEXT_FORMAT,
+                                 (unsigned long)enemyLevel];
+}
+- (void)respondToEnemyHealthModification: (NSNotification *)notification {
+    NSUInteger enemyHealthRemaining = 0;
+    if (notification.userInfo) {
+        enemyHealthRemaining = [[notification.userInfo objectForKey:KLB_JSON_ENEMY_HEALTH_REMAINING] integerValue];
+    }
+    if (!enemyHealthRemaining || !notification.userInfo) {
+        enemyHealthRemaining = self.enemyController.enemy.healthRemaining;
+    }
+    self.healthLabel.text = [NSString stringWithFormat:@"%@%lu",
+                             KLB_LABEL_HEALTH_TEXT_FORMAT,
+                             (unsigned long)enemyHealthRemaining];
+}
+- (void)respondToEnemyTimeModification: (NSNotification *)notification {
+    NSUInteger enemyTimeLimit = 0;
+    if (!notification.userInfo) {
+        enemyTimeLimit = [[notification.userInfo objectForKey:KLB_JSON_ENEMY_TIME_LIMIT] integerValue];
+    }
+    if (!enemyTimeLimit || !notification.userInfo) {
+        enemyTimeLimit = self.enemyController.enemy.timeLimitSeconds;
+    }
+    self.timeLeftLabel.text = [NSString stringWithFormat:@"%@%lu",
+                               KLB_LABEL_TIME_LEFT_TEXT_FORMAT,
+                               (unsigned long)enemyTimeLimit];
 }
 
 - (void)showCover {
     self.coverView.alpha = KLB_MAX_ALPHA;
 }
 
+- (void)instantiateVariables {
+    self.enemyController = [[KLBEnemyController alloc] init];
+}
+
 #pragma mark - Battle Control
 - (void)startBattle {
     //apply a fade out animation to the coverView, and apply the changes
     [KLBAnimator fadeOutCALayer:self.coverView.layer applyChanges:YES];
+
     //load an enemy
-    NSString *enemyKey = [self loadRandomEnemyData];
-    self.activeEnemy = [[KLBEnemyStore sharedStore] enemyForKey:enemyKey];
-    //configure the screen labels
-    NSUInteger enemyHealth = self.activeEnemy.healthRemaining;
-    self.healthLabel.text = [NSString stringWithFormat:@"%@%lu",
-                             KLB_LABEL_HEALTH_TEXT_FORMAT,
-                             (unsigned long)enemyHealth];
-    NSUInteger enemyTimeLimit = self.activeEnemy.timeLimitSeconds;
-    self.timeLeftLabel.text = [NSString stringWithFormat:@"%@%lu",
-                             KLB_LABEL_TIME_LEFT_TEXT_FORMAT,
-                             (unsigned long)enemyTimeLimit];
-    self.enemyNameLabel.text = [NSString stringWithFormat:@"%@%@",
-                                KLB_LABEL_NAME_TEXT_FORMAT,
-                                self.activeEnemy.name];
-    NSUInteger enemyLevel = self.activeEnemy.level;
-    self.enemyLevelLabel.text = [NSString stringWithFormat:@"%@%lu",
-                                 KLB_LABEL_LEVEL_TEXT_FORMAT,
-                                 (unsigned long)enemyLevel];
+    [self.enemyController loadNewEnemyRandom];
     
-    //TEST
-    [self endBattle];
+    //configure the screen labels - USE A DELEGATE FOR THIS LATER (low priority)
+    [self respondToEnemyHealthModification:nil];
+    [self respondToEnemyLevelModification:nil];
+    [self respondToEnemyNameChange:nil];
+    [self respondToEnemyTimeModification:nil];
 }
 
-- (void)endBattle {
-    // FIX THE CONDITIONS
-    if (true) { //win
-        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
-                                                            object:nil
-                                                          userInfo:@{KLB_JSON_ENEMY_KEY:self.activeEnemy.key}];
-    } else { //lose
-        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
-                                                            object:nil
-                                                          userInfo:nil];
-    }
+- (void)battleWin {
+    // win due to enemy losing health before time runs out
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
+                                                        object:nil
+                                                      userInfo:@{KLB_JSON_ENEMY_KEY:self.enemyController.enemyKey}];
 }
-
-- (NSString *)loadRandomEnemyData {
-    NSDictionary *jsonDictionary = [KLBJSONController loadJSONfromFile:KLB_JSON_FILENAME];
-    NSDictionary *enemiesList = [jsonDictionary objectForKey:KLB_JSON_ENEMIES_LIST];
-    
-    NSArray *keys = [enemiesList allKeys];
-    NSUInteger randomIndex = arc4random_uniform([keys count]);
-    NSString *key = [keys objectAtIndex:randomIndex];
-    
-    NSString *enemyName = [enemiesList[key] objectForKey:KLB_JSON_ENEMY_NAME];
-    NSUInteger enemyLevel = [[enemiesList[key] objectForKey:KLB_JSON_ENEMY_LEVEL] integerValue];
-    NSUInteger enemyHealthMaximum = [[enemiesList[key] objectForKey:KLB_JSON_ENEMY_HEALTH] integerValue];
-    NSUInteger timeLimitSeconds = [[enemiesList[key] objectForKey:KLB_JSON_ENEMY_TIME_LIMIT] integerValue];
-    
-    KLBEnemy *enemy = [[KLBEnemy alloc] initWithKey:key
-                                               name:enemyName
-                                               level:enemyLevel
-                                       healthMaximum:enemyHealthMaximum
-                                    timeLimitSeconds:timeLimitSeconds];
-    
-    [[KLBEnemyStore sharedStore] addEnemy:enemy forKey:key];
-    
-    // We return the key (not the retrieved dictionary) because we
-    // want to restrict access to the EnemyStore only.
-    return key;
+- (void)battleTimeOver {
+    // lose due to time running out
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
+                                                        object:nil
+                                                      userInfo:nil];
 }
-
 @end

@@ -10,6 +10,6 @@
 
 @protocol KLBAttackDelegate <NSObject>
 - (void) attackWillSucceed;
+@optional
 - (void) attackDidSucceed;
-
 @end

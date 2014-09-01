@@ -26,7 +26,8 @@ NSString *const KLB_JSON_PLAYER_TIME_BONUS = @"time bonus";
 
 // JSON Format Keywords - Enemy Stats
 NSString *const KLB_JSON_ENEMY_KEY = @"KLB_JSON_ENEMY_KEY"; // NOT a value in a dictionary
-NSString *const KLB_JSON_ENEMY_HEALTH = @"health";
+NSString *const KLB_JSON_ENEMY_HEALTH_MAXIMUM = @"health";
+NSString *const KLB_JSON_ENEMY_HEALTH_REMAINING = @"health";
 NSString *const KLB_JSON_ENEMY_LEVEL = @"level";
 NSString *const KLB_JSON_ENEMY_NAME = @"name";
 NSString *const KLB_JSON_ENEMY_TIME_LIMIT = @"time limit";

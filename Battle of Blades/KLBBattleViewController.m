@@ -12,6 +12,8 @@
 #import "KLBEnemy.h"
 #import "KLBNotifications.h"
 #import "KLBAnimator.h"
+#import "KLBAttackButtonStore.h"
+#import "KLBAttackButton.h"
 
 NSString *const KLB_LABEL_HEALTH_TEXT_FORMAT = @"Health: ";
 NSString *const KLB_LABEL_TIME_LEFT_TEXT_FORMAT = @"Time Left: ";
@@ -19,6 +21,8 @@ NSString *const KLB_LABEL_NAME_TEXT_FORMAT = @"";
 NSString *const KLB_LABEL_LEVEL_TEXT_FORMAT = @"Level ";
 
 CGFloat const KLB_MAX_ALPHA = 1.0;
+CGFloat const KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH = 0.5;
+NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN = 6;
 
 @implementation KLBBattleViewController
 
@@ -147,6 +151,7 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
                              (unsigned long)enemyHealthRemaining];
 }
 - (void)respondToEnemyTimeModification: (NSNotification *)notification {
+    // Update the time label:
     NSUInteger enemyTimeLimit = 0;
     if (!notification.userInfo) {
         enemyTimeLimit = [[notification.userInfo objectForKey:KLB_JSON_ENEMY_TIME_LIMIT] integerValue];
@@ -157,6 +162,9 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
     self.timeLeftLabel.text = [NSString stringWithFormat:@"%@%lu",
                                KLB_LABEL_TIME_LEFT_TEXT_FORMAT,
                                (unsigned long)enemyTimeLimit];
+    
+    // Perform other time-related actions:
+    [self timePassed];
 }
 
 #pragma mark - Battle Control
@@ -172,6 +180,52 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
     [self respondToEnemyLevelModification:nil];
     [self respondToEnemyNameChange:nil];
     [self respondToEnemyTimeModification:nil];
+}
+
+- (void)timePassed {
+    if ([[[KLBAttackButtonStore sharedStore] allItems] count] < KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN) {
+        NSUInteger enemyHealth = self.enemyController.enemy.healthMaximum;
+        NSUInteger enemyTime = self.enemyController.enemy.timeLimitSeconds;
+        NSUInteger minimumButtonSpawns = enemyHealth / enemyTime;
+        NSUInteger maximumButtonSpawns = enemyHealth * KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH;
+        NSUInteger numberOfButtons = arc4random_uniform(maximumButtonSpawns);
+        if (numberOfButtons < minimumButtonSpawns) {
+            numberOfButtons = minimumButtonSpawns;
+        } else if (numberOfButtons > KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN) {
+            numberOfButtons = KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN;
+        }
+        for (int i = 0; i < numberOfButtons; i++) {
+            [self spawnAttackButton];
+        }
+    }
+}
+
+- (void)spawnAttackButton {
+    CGRect frame = [self generateRandomAttackButtonFrame];
+    KLBAttackButton *attackButton = [[KLBAttackButton alloc] initWithFrame:frame];
+    attackButton.delegate = self;
+    [[KLBAttackButtonStore sharedStore] addItem:attackButton];
+    [attackButton setAlpha:KLB_FADE_IN_OPACITY_START];
+    [self addSubview:attackButton];
+    [KLBAnimator fadeInCALayer:attackButton.layer applyChanges:YES];
+    
+//    //move button - make this a toggle option later
+//    CGPoint randomPoint = [self generateRandomAttackButtonFrame].origin;
+//    [KLBAnimator moveCALayer:attackButton.layer startPoint:attackButton.frame.origin endPoint:randomPoint applyChanges:YES];
+}
+
+- (CGRect)generateRandomAttackButtonFrame {
+    CGFloat attackButtonWidth = KLB_ATTACK_BUTTON_WIDTH;
+    CGFloat attackButtonHeight = KLB_ATTACK_BUTTON_HEIGHT;
+    CGFloat topYBuffer = self.battleInfoBackground.frame.size.height;
+    
+    CGFloat randomX = arc4random_uniform(self.frame.size.width - attackButtonWidth);
+    CGFloat randomY = arc4random_uniform(self.frame.size.height - attackButtonHeight - topYBuffer);
+    
+    randomY += topYBuffer;
+    
+    CGRect frame = CGRectMake(randomX, randomY, attackButtonWidth, attackButtonHeight);
+    return frame;
 }
 
 - (void)battleWin {
@@ -196,9 +250,5 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ATTACK_SUCCESS
                                                         object:nil
                                                       userInfo:nil];
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [self attackDidSucceed];
 }
 @end

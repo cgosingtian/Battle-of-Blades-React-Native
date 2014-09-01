@@ -12,4 +12,6 @@
 - (void) attackDidSucceed;
 @optional
 - (void) attackWillSucceed;
+- (void) attackWillFail;
+- (void) attackDidFail;
 @end

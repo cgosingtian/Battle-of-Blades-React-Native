@@ -15,5 +15,8 @@ extern NSUInteger const KLB_DEFAULT_ATTACK_LIFETIME_SECONDS;
 
 @property (nonatomic) NSUInteger damageOnSuccessfulAttack;
 @property (nonatomic) NSUInteger lifetimeInSeconds;
+@property (nonatomic) NSUInteger timeRemainingSeconds;
+
+- (void)resetValues;
 
 @end

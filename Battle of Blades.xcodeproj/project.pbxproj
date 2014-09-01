@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F2B0DD219B3F8BC00D99433 /* KLBEnemyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B0DD119B3F8BC00D99433 /* KLBEnemyController.m */; };
 		4F5C323919AF22470020AA13 /* KLBHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C323719AF22470020AA13 /* KLBHomeViewController.m */; };
 		4F5C323A19AF22470020AA13 /* KLBHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */; };
 		4F5C323D19AF22C90020AA13 /* KLBHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C323C19AF22C90020AA13 /* KLBHomeHeaderView.m */; };
@@ -62,6 +63,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4F2B0DD019B3F8BC00D99433 /* KLBEnemyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBEnemyController.h; sourceTree = "<group>"; };
+		4F2B0DD119B3F8BC00D99433 /* KLBEnemyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBEnemyController.m; sourceTree = "<group>"; };
 		4F5C323619AF22470020AA13 /* KLBHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBHomeViewController.h; sourceTree = "<group>"; };
 		4F5C323719AF22470020AA13 /* KLBHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBHomeViewController.m; sourceTree = "<group>"; };
 		4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBHomeViewController.xib; sourceTree = "<group>"; };
@@ -302,6 +305,8 @@
 				4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */,
 				4FA261E119B04BFA00E81CE2 /* KLBPlayerController.h */,
 				4FA261E219B04BFA00E81CE2 /* KLBPlayerController.m */,
+				4F2B0DD019B3F8BC00D99433 /* KLBEnemyController.h */,
+				4F2B0DD119B3F8BC00D99433 /* KLBEnemyController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -437,6 +442,7 @@
 				4F5C323D19AF22C90020AA13 /* KLBHomeHeaderView.m in Sources */,
 				4FA46DA219B0117F0078E23B /* KLBAttackButton.m in Sources */,
 				4FEC6DEC19AF1BE200C9DAA8 /* KLBEnemy.m in Sources */,
+				4F2B0DD219B3F8BC00D99433 /* KLBEnemyController.m in Sources */,
 				4F5C325519AF2BDC0020AA13 /* KLBBattleViewController.m in Sources */,
 				4FA46D9A19B00E7E0078E23B /* KLBPlayerView.m in Sources */,
 				4F5C324C19AF29B20020AA13 /* KLBHomeFooterView.m in Sources */,

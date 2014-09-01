@@ -22,6 +22,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self replacePlaceholderViewsWithActual];
+        [self registerForNotifications];
     }
     return self;
 }
@@ -31,12 +32,13 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self replacePlaceholderViewsWithActual];
+        [self registerForNotifications];
     }
     return self;
 }
 
 #pragma mark - Other Initializing Methods
-- (void) replacePlaceholderViewsWithActual {
+- (void)replacePlaceholderViewsWithActual {
     //Replace placeholders of this class in other XIBs with our defined XIB
     KLBHomeFooterView *actualView = [[[UINib nibWithNibName:NSStringFromClass([self class])
                                                      bundle:nil]
@@ -46,14 +48,33 @@
     [self addSubview:actualView];
 }
 
-#pragma mark - IBActions
-- (IBAction)battleButtonTapped:(id)sender {
-    [self startBattle];
+- (void)registerForNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(battleDidStart)
+                                                 name:KLB_NOTIFICATION_BATTLE_START
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(battleWillEnd)
+                                                 name:KLB_NOTIFICATION_BATTLE_END
+                                               object:nil];
 }
 
-#pragma mark - Battle Start
-- (void)startBattle {
+#pragma mark - IBActions
+- (IBAction)battleButtonTapped:(id)sender {
+    [self battleWillStart];
+}
+
+#pragma mark - Battle Lifecycle
+- (void)battleWillStart {
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
                                                         object:self];
+}
+- (void)battleDidStart {
+    NSLog(@"battle did start");
+    [_battleButton setEnabled:NO];
+}
+- (void)battleWillEnd {
+    NSLog(@"battle will end");
+    [_battleButton setEnabled:YES];
 }
 @end

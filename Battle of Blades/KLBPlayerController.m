@@ -29,6 +29,13 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
 
 @implementation KLBPlayerController
 
+#pragma mark - Dealloc
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [super dealloc];
+}
+
 #pragma mark - Initializers
 - (instancetype) init {
     self = [super init];
@@ -62,8 +69,6 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
 - (void)loadPlayerData {
     NSDictionary *jsonDictionary = [KLBJSONController loadJSONfromFile:KLB_JSON_FILENAME];
     NSDictionary *playerData = [jsonDictionary objectForKey:KLB_JSON_PLAYER_DATA];
-    
-    NSLog(@"%@",playerData);
     
     NSString *playerName = [playerData objectForKey:KLB_JSON_PLAYER_NAME];
     NSUInteger playerLevel = [[playerData objectForKey:KLB_JSON_PLAYER_LEVEL] integerValue];
@@ -107,14 +112,14 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
 - (void)battleEnded: (NSNotification *)notification {
     //do stuff for battle end here
     // Victory assumes that a defeated enemy exists
-    NSLog(@"BATTLE END");
     if (notification.userInfo != nil) {
         NSString *enemyKey = [notification.userInfo objectForKey:KLB_JSON_ENEMY_KEY];
         KLBEnemy *defeatedEnemy = [[KLBEnemyStore sharedStore] enemyForKey:enemyKey];
         [self gainExperience:defeatedEnemy.level];
         [self postExperienceUpdateNotice];
     } else {
-        NSLog(@"DEFEAT");
+        //If you want to do something when defeat occurs, do it here
+        //NSLog(@"DEFEAT");
     }
 }
 
@@ -164,10 +169,10 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
         levelsGained++;
     }
     
-    NSLog(@"Player XP: %lu, XPTOLEVEL: %lu, LEVELS GAINED: %lu",
-          (unsigned long)self.player.experience,
-          (unsigned long)[self experienceToLevel],
-          (unsigned long)levelsGained);
+//    NSLog(@"Player XP: %lu, XPTOLEVEL: %lu, LEVELS GAINED: %lu",
+//          (unsigned long)self.player.experience,
+//          (unsigned long)[self experienceToLevel],
+//          (unsigned long)levelsGained);
     NSUInteger energyGained = KLB_ZERO_INITIALIZER;
     CGFloat timeBonusGained = KLB_ZERO_F_INITIALIZER;
     if (levelsGained > 0) {
@@ -178,10 +183,10 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
         [self increasePlayerTimeBonus:timeBonusGained];
         [self increasePlayerLevel:levelsGained];
         
-        NSLog(@"LEVEL UP by %lu! Energy Gained: %lu; Time Gained: %f",
-              (unsigned long)levelsGained,
-              (unsigned long)energyGained,
-              timeBonusGained);
+//        NSLog(@"LEVEL UP by %lu! Energy Gained: %lu; Time Gained: %f",
+//              (unsigned long)levelsGained,
+//              (unsigned long)energyGained,
+//              timeBonusGained);
         [self postLevelUpdateNotice];
     }
     
@@ -200,7 +205,6 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
 }
 
 - (NSUInteger)experienceNeededToLevelUp {
-    NSLog(@"player xp: %lu",(unsigned long)self.player.experience);
     NSUInteger experienceNeeded = [self experienceToLevel] - self.player.experience;
     return experienceNeeded;
 }

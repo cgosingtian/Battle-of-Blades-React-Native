@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "KLBEnemyController.h"
+#import "KLBAttackDelegate.h"
 
-@interface KLBBattleViewController : UIView
+@interface KLBBattleViewController : UIView <KLBAttackDelegate>
 @property (retain, nonatomic) IBOutlet UIImageView *enemyImage;
 @property (retain, nonatomic) IBOutlet UIImageView *battleInfoBackground;
 @property (retain, nonatomic) IBOutlet UILabel *healthLabel;

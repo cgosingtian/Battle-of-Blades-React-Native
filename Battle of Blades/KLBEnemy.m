@@ -19,18 +19,18 @@ NSUInteger const KLB_DEFAULT_ENEMY_TIME_LIMIT_SECONDS = 30;
 #pragma mark - Initializers
 // Designated Initializer
 - (instancetype)initWithKey:(NSString *)key
-                       name:(NSString *)name
+                       name:(NSString *)enemyName
                       level:(NSUInteger)level
               healthMaximum:(NSUInteger)healthMaximum
            timeLimitSeconds:(NSUInteger)timeLimitSeconds {
     self = [super init];
     if (self) {
-        _key = key;
-        _name = name;
-        _level = level;
-        _healthMaximum = healthMaximum;
-        _healthRemaining = healthMaximum;
-        _timeLimitSeconds = timeLimitSeconds;
+        self.key = key;
+        self.enemyName = enemyName;
+        self.level = level;
+        self.healthMaximum = healthMaximum;
+        self.healthRemaining = healthMaximum;
+        self.timeLimitSeconds = timeLimitSeconds;
     }
     return self;
 }
@@ -49,7 +49,7 @@ NSUInteger const KLB_DEFAULT_ENEMY_TIME_LIMIT_SECONDS = 30;
 - (NSString *) description {
     return [NSString stringWithFormat:@"Key: %@, Name: %@, Level: %lu, Health: %lu, Time Limit: %lu",
             self.key,
-            self.name,
+            self.enemyName,
             (unsigned long)self.level,
             (unsigned long)self.healthMaximum,
             (unsigned long)self.timeLimitSeconds];

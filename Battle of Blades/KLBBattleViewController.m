@@ -100,6 +100,15 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
                                                object:nil];
 }
 
+
+- (void)showCover {
+    self.coverView.alpha = KLB_MAX_ALPHA;
+}
+
+- (void)instantiateVariables {
+    self.enemyController = [[KLBEnemyController alloc] init];
+}
+
 #pragma mark - Update Labels Upon Notice
 - (void)respondToEnemyNameChange: (NSNotification *)notification {
     NSString *newName = @"";
@@ -107,7 +116,7 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
         newName = [notification.userInfo objectForKey:KLB_JSON_ENEMY_NAME];
     }
     if (!newName || !notification.userInfo) {
-        newName = self.enemyController.enemy.name;
+        newName = self.enemyController.enemy.enemyName;
     }
     self.enemyNameLabel.text = [NSString stringWithFormat:@"%@%@",
                                 KLB_LABEL_NAME_TEXT_FORMAT,
@@ -150,14 +159,6 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
                                (unsigned long)enemyTimeLimit];
 }
 
-- (void)showCover {
-    self.coverView.alpha = KLB_MAX_ALPHA;
-}
-
-- (void)instantiateVariables {
-    self.enemyController = [[KLBEnemyController alloc] init];
-}
-
 #pragma mark - Battle Control
 - (void)startBattle {
     //apply a fade out animation to the coverView, and apply the changes
@@ -174,6 +175,7 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
 }
 
 - (void)battleWin {
+    NSLog(@"WIN key: %@",self.enemyController.enemyKey);
     // win due to enemy losing health before time runs out
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
                                                         object:nil
@@ -184,5 +186,19 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
                                                         object:nil
                                                       userInfo:nil];
+}
+
+#pragma mark - AttackDelegate Protocol
+- (void)attackWillSucceed { //optional
+    
+}
+- (void)attackDidSucceed { //required
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ATTACK_SUCCESS
+                                                        object:nil
+                                                      userInfo:nil];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self attackDidSucceed];
 }
 @end

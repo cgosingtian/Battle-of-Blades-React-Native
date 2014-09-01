@@ -57,7 +57,6 @@ CGFloat const KLB_ATTACK_BUTTON_HEIGHT = 60;
         [self.attack resetValues];
     }
     self.enabled = YES;
-    self.buttonIsDone = NO;
     self.alpha = 1.0;
 }
 
@@ -84,32 +83,41 @@ CGFloat const KLB_ATTACK_BUTTON_HEIGHT = 60;
 
 #pragma mark - IBActions
 - (IBAction)buttonTapped:(id)sender {
-    if (!self.buttonIsDone) {
-        if ([self.delegate respondsToSelector:@selector(attackWillSucceed)]) {
-            [self.delegate attackWillSucceed];
-        }
-        if ([self.delegate respondsToSelector:@selector(attackDidSucceed)]) {
-            [self.delegate attackDidSucceed];
-        }
-        [self handleBattleEnd];
+    self.enabled = NO;
+    self.alpha = 0.0;
+    self.frame = CGRectMake(0, 0, 0, 0);
+    if ([self.delegate respondsToSelector:@selector(attackWillSucceed)]) {
+        [self.delegate attackWillSucceed];
     }
+    if ([self.delegate respondsToSelector:@selector(attackDidSucceed)]) {
+        [self.delegate attackDidSucceed];
+    }
+    
+    // We do cleanup of tapped buttons either during the timer tick (see handleTime below)
+    // or when the battle view controller tells us that the battle is done.
+    // We do this to prevent calling [self handleBattleEnd] twice: when the battle ends
+    // (from the KLB_NOTIFICATION_BATTLE_END notification) and from the buttonTapped IBAction,
+    // the latter of which causes a crash.
+    //[self handleBattleEnd]; // don't do this
 }
 
 #pragma mark - Battle Methods
 - (void)handleBattleEnd {
     self.enabled = NO;
-    self.buttonIsDone = YES;
-    [KLBAnimator fadeOutCALayer:self.layer applyChanges:YES];
     [self removeFromSuperview];
     [[KLBAttackButtonStore sharedStore] removeItem:self];
 }
 
 - (void)handleTime {
-    if (self.attack.timeRemainingSeconds > KLB_ANIMATION_ZERO_F) {
-        self.attack.timeRemainingSeconds--;
-        self.alpha = (CGFloat)self.attack.timeRemainingSeconds / (CGFloat)self.attack.lifetimeInSeconds;
+    if (self.enabled) {
+        if (self.attack.timeRemainingSeconds > KLB_ANIMATION_ZERO_F) {
+            self.attack.timeRemainingSeconds--;
+            self.alpha = (CGFloat)self.attack.timeRemainingSeconds / (CGFloat)self.attack.lifetimeInSeconds;
+        } else {
+            [self timeUp];
+        }
     } else {
-        [self timeUp];
+        [self handleBattleEnd];
     }
 }
 

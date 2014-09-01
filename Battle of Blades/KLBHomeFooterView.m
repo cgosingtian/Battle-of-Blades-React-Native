@@ -70,11 +70,9 @@
                                                         object:self];
 }
 - (void)battleDidStart {
-    NSLog(@"battle did start");
     [_battleButton setEnabled:NO];
 }
 - (void)battleWillEnd {
-    NSLog(@"battle will end");
     [_battleButton setEnabled:YES];
 }
 @end

@@ -27,4 +27,5 @@ extern CGFloat const KLB_MOVE_ANIMATION_DURATION;
 + (void)fadeOutCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges;
 + (void)fadeInCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges;
 + (void)moveCALayer:(CALayer *)layer startPoint:(CGPoint)start endPoint:(CGPoint)end applyChanges:(BOOL)applyChanges;
++ (void)flashWhiteCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges;
 @end

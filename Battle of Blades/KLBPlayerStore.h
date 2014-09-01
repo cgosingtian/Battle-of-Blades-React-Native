@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "KLBPlayer.h"
 
+extern NSString *const KLB_PLAYER_STORE_SINGLETON_EXCEPTION;
+
 @interface KLBPlayerStore : NSObject
 +(instancetype)sharedStore;
 - (KLBPlayer *)player;

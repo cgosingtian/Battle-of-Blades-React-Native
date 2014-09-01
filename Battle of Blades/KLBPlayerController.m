@@ -114,10 +114,7 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
     // Victory assumes that a defeated enemy exists
     if (notification.userInfo != nil) {
         NSString *enemyKey = [notification.userInfo objectForKey:KLB_JSON_ENEMY_KEY];
-        NSLog(@"Retrieved notification enemy key: %@",enemyKey); //TEST THIS
         KLBEnemy *defeatedEnemy = [[KLBEnemyStore sharedStore] enemyForKey:enemyKey];
-        if (defeatedEnemy)
-            NSLog(@"Awarding experience from %@",defeatedEnemy);
         [self gainExperience:defeatedEnemy.level];
         [self postExperienceUpdateNotice];
     } else {

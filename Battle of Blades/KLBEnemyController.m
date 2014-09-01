@@ -90,6 +90,14 @@ NSUInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
         [self checkAlive];
     }
 }
+- (void)attackFail {
+    if (self.timer.isValid) {
+        self.enemy.healthRemaining += KLB_ENEMY_HEALTH_LOSS_ON_ATTACK;
+        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_HEALTH_CHANGED
+                                                            object:nil
+                                                          userInfo:nil];
+    }
+}
 - (void)checkAlive {
     if (self.enemy.healthRemaining <= KLB_ENEMY_HEALTH_TO_DIE) {
         [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_HEALTH_ZERO

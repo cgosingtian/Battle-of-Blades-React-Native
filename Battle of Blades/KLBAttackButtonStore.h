@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "KLBAttackButton.h"
 
+extern NSString *const KLB_ATTACK_BUTTON_STORE_SINGLETON_EXCEPTION;
+
 @interface KLBAttackButtonStore : NSObject
 +(instancetype)sharedStore;
 - (NSMutableArray *)allItems;

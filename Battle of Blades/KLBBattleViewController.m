@@ -115,7 +115,7 @@ NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN = 6;
 
 #pragma mark - Update Labels Upon Notice
 - (void)respondToEnemyNameChange: (NSNotification *)notification {
-    NSString *newName = @"";
+    NSString *newName = [NSString string];
     if (notification.userInfo) {
         newName = [notification.userInfo objectForKey:KLB_JSON_ENEMY_NAME];
     }
@@ -182,10 +182,15 @@ NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN = 6;
     [self respondToEnemyTimeModification:nil];
 }
 
+- (void)battleCleanUp {
+    [KLBAnimator fadeInCALayer:self.coverView.layer applyChanges:YES];
+}
+
 - (void)timePassed {
-    if ([[[KLBAttackButtonStore sharedStore] allItems] count] < KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN) {
+    NSUInteger enemyTime = self.enemyController.enemy.timeLimitSeconds;
+    if ([[[KLBAttackButtonStore sharedStore] allItems] count] < KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN &&
+        enemyTime > 0) {
         NSUInteger enemyHealth = self.enemyController.enemy.healthMaximum;
-        NSUInteger enemyTime = self.enemyController.enemy.timeLimitSeconds;
         NSUInteger minimumButtonSpawns = enemyHealth / enemyTime;
         NSUInteger maximumButtonSpawns = enemyHealth * KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH;
         NSUInteger numberOfButtons = arc4random_uniform(maximumButtonSpawns);
@@ -229,26 +234,31 @@ NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN = 6;
 }
 
 - (void)battleWin {
-    NSLog(@"WIN key: %@",self.enemyController.enemyKey);
     // win due to enemy losing health before time runs out
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
                                                         object:nil
                                                       userInfo:@{KLB_JSON_ENEMY_KEY:self.enemyController.enemyKey}];
+    [self battleCleanUp];
 }
 - (void)battleTimeOver {
     // lose due to time running out
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
                                                         object:nil
                                                       userInfo:nil];
+    [self battleCleanUp];
 }
 
 #pragma mark - AttackDelegate Protocol
 - (void)attackWillSucceed { //optional
-    
+    [KLBAnimator flashWhiteCALayer:self.enemyImage.layer applyChanges:NO];
 }
 - (void)attackDidSucceed { //required
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ATTACK_SUCCESS
                                                         object:nil
                                                       userInfo:nil];
+}
+- (void)attackDidFail { //optional
+    // Enemy regains HP for each failed attack
+    [self.enemyController attackFail];
 }
 @end

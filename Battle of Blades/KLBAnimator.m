@@ -119,6 +119,47 @@ CGFloat const KLB_MOVE_ANIMATION_DURATION = 1.5;
 }
 
 + (void)flashWhiteCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges {
+    CALayer *tintLayer = [[CALayer alloc] init];
+    [tintLayer setBackgroundColor:[[UIColor whiteColor] CGColor]];
+    [tintLayer setOpacity:KLB_FADE_IN_OPACITY_START];
+    [tintLayer setBounds:[layer bounds]];
+    [tintLayer setPosition:CGPointMake([layer bounds].size.width/2.0,
+                                       [layer bounds].size.height/2.0)];
     
+    [layer addSublayer:tintLayer];
+    
+    [CATransaction begin];
+    
+    NSString *keyPathTransparency = @"opacity";
+    
+    CAKeyframeAnimation *transparency = [[CAKeyframeAnimation alloc] init];
+    
+    [transparency setKeyPath:keyPathTransparency];
+    transparency.duration = 0.1;
+    
+    NSMutableArray *transparencyValues = [[NSMutableArray alloc] init];
+    [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_START]];
+    [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_END]];
+    [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_START]];
+    //[transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_END]];
+    transparency.values = transparencyValues;
+    
+    
+    // This block repeats the animation but also randomizes the location and size of the cloud
+    [CATransaction setCompletionBlock:^()
+     {
+         [transparencyValues release];
+         [transparency release];
+         
+//         if (applyChanges) {
+//             [tintLayer setOpacity:KLB_FADE_IN_OPACITY_END];
+//         } else {
+//             [tintLayer removeFromSuperlayer];
+//         }
+     }];
+    
+    [tintLayer addAnimation:transparency forKey:keyPathTransparency];
+    
+    [CATransaction commit];
 }
 @end

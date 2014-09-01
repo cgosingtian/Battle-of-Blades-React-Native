@@ -289,15 +289,9 @@
 				4F5C324A19AF29B20020AA13 /* KLBHomeFooterView.h */,
 				4F5C324B19AF29B20020AA13 /* KLBHomeFooterView.m */,
 				4F5C324D19AF29C40020AA13 /* KLBHomeFooterView.xib */,
-				4F5C325319AF2BDC0020AA13 /* KLBBattleViewController.h */,
-				4F5C325419AF2BDC0020AA13 /* KLBBattleViewController.m */,
-				4F5C325619AF2BEB0020AA13 /* KLBBattleViewController.xib */,
 				4FA46D9819B00E7E0078E23B /* KLBPlayerView.h */,
 				4FA46D9919B00E7E0078E23B /* KLBPlayerView.m */,
 				4FA46D9B19B00E9C0078E23B /* KLBPlayerView.xib */,
-				4FA46DA019B0117F0078E23B /* KLBAttackButton.h */,
-				4FA46DA119B0117F0078E23B /* KLBAttackButton.m */,
-				4FA46DA319B011A00078E23B /* KLBAttackButton.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -305,6 +299,12 @@
 		4FEC6DE319AF1B3700C9DAA8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4FA46DA019B0117F0078E23B /* KLBAttackButton.h */,
+				4FA46DA119B0117F0078E23B /* KLBAttackButton.m */,
+				4FA46DA319B011A00078E23B /* KLBAttackButton.xib */,
+				4F5C325319AF2BDC0020AA13 /* KLBBattleViewController.h */,
+				4F5C325419AF2BDC0020AA13 /* KLBBattleViewController.m */,
+				4F5C325619AF2BEB0020AA13 /* KLBBattleViewController.xib */,
 				4F5C323619AF22470020AA13 /* KLBHomeViewController.h */,
 				4F5C323719AF22470020AA13 /* KLBHomeViewController.m */,
 				4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */,

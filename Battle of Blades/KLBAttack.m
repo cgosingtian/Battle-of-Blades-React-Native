@@ -13,13 +13,18 @@ NSUInteger const KLB_DEFAULT_ATTACK_LIFETIME_SECONDS = 5;
 
 @implementation KLBAttack
 
-- (instancetype) init {
+- (instancetype)init {
     self = [super init];
     if (self) {
-        self.damageOnSuccessfulAttack = KLB_DEFAULT_ATTACK_DAMAGE;
-        self.lifetimeInSeconds = KLB_DEFAULT_ATTACK_LIFETIME_SECONDS;
+        [self resetValues];
     }
     return self;
+}
+
+- (void)resetValues {
+    self.damageOnSuccessfulAttack = KLB_DEFAULT_ATTACK_DAMAGE;
+    self.lifetimeInSeconds = KLB_DEFAULT_ATTACK_LIFETIME_SECONDS;
+    self.timeRemainingSeconds = self.lifetimeInSeconds;
 }
 
 @end

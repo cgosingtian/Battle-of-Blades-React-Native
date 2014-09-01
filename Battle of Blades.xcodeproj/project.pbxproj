@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F2B0DD219B3F8BC00D99433 /* KLBEnemyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B0DD119B3F8BC00D99433 /* KLBEnemyController.m */; };
+		4F2B0DD519B42A8300D99433 /* KLBAttackButtonStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B0DD419B42A8300D99433 /* KLBAttackButtonStore.m */; };
 		4F5C323919AF22470020AA13 /* KLBHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C323719AF22470020AA13 /* KLBHomeViewController.m */; };
 		4F5C323A19AF22470020AA13 /* KLBHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */; };
 		4F5C323D19AF22C90020AA13 /* KLBHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C323C19AF22C90020AA13 /* KLBHomeHeaderView.m */; };
@@ -65,6 +66,8 @@
 /* Begin PBXFileReference section */
 		4F2B0DD019B3F8BC00D99433 /* KLBEnemyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBEnemyController.h; sourceTree = "<group>"; };
 		4F2B0DD119B3F8BC00D99433 /* KLBEnemyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBEnemyController.m; sourceTree = "<group>"; };
+		4F2B0DD319B42A8300D99433 /* KLBAttackButtonStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBAttackButtonStore.h; sourceTree = "<group>"; };
+		4F2B0DD419B42A8300D99433 /* KLBAttackButtonStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBAttackButtonStore.m; sourceTree = "<group>"; };
 		4F5C323619AF22470020AA13 /* KLBHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBHomeViewController.h; sourceTree = "<group>"; };
 		4F5C323719AF22470020AA13 /* KLBHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBHomeViewController.m; sourceTree = "<group>"; };
 		4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBHomeViewController.xib; sourceTree = "<group>"; };
@@ -168,6 +171,8 @@
 				4FA46DAB19B0138A0078E23B /* KLBPlayerStore.m */,
 				4FA46DAD19B013940078E23B /* KLBEnemyStore.h */,
 				4FA46DAE19B013940078E23B /* KLBEnemyStore.m */,
+				4F2B0DD319B42A8300D99433 /* KLBAttackButtonStore.h */,
+				4F2B0DD419B42A8300D99433 /* KLBAttackButtonStore.m */,
 			);
 			name = Stores;
 			sourceTree = "<group>";
@@ -438,6 +443,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F2B0DD519B42A8300D99433 /* KLBAttackButtonStore.m in Sources */,
 				4FA46DBF19B029AB0078E23B /* KLBNotifications.m in Sources */,
 				4F5C323D19AF22C90020AA13 /* KLBHomeHeaderView.m in Sources */,
 				4FA46DA219B0117F0078E23B /* KLBAttackButton.m in Sources */,

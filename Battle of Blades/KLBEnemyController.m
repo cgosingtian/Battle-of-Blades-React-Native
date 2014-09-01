@@ -46,6 +46,8 @@ NSUInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
 #pragma mark - Other Initialization Methods
 - (void)registerForNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startBattleCountdown) name:KLB_NOTIFICATION_BATTLE_START object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(attackSuccess) name:KLB_NOTIFICATION_ATTACK_SUCCESS object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(battleEnd) name:KLB_NOTIFICATION_BATTLE_END object:nil];
 }
 
 #pragma mark - Battle Methods
@@ -74,13 +76,19 @@ NSUInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
     }
 }
 
+- (void)battleEnd {
+    [self.timer invalidate];
+}
+
 #pragma mark - Enemy Stats Management
 - (void)attackSuccess {
-    self.enemy.healthRemaining -= KLB_ENEMY_HEALTH_LOSS_ON_ATTACK;
-    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_HEALTH_CHANGED
-                                                        object:nil
-                                                      userInfo:nil];
-    [self checkAlive];
+    if (self.timer.isValid) {
+        self.enemy.healthRemaining -= KLB_ENEMY_HEALTH_LOSS_ON_ATTACK;
+        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_HEALTH_CHANGED
+                                                            object:nil
+                                                          userInfo:nil];
+        [self checkAlive];
+    }
 }
 - (void)checkAlive {
     if (self.enemy.healthRemaining <= KLB_ENEMY_HEALTH_TO_DIE) {
@@ -92,8 +100,8 @@ NSUInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
 
 #pragma mark - Enemy Loading
 - (void)loadNewEnemyRandom {
-    NSString *key = [self loadRandomEnemyData];
-    self.enemy = [[KLBEnemyStore sharedStore] enemyForKey:key];
+    self.enemyKey = [self loadRandomEnemyData];
+    self.enemy = [[KLBEnemyStore sharedStore] enemyForKey:self.enemyKey];
 }
 
 - (NSString *)loadRandomEnemyData {

@@ -11,11 +11,14 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="65X-Zv-yAY">
-            <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <state key="normal" image="attackbutton.png">
                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
             </state>
+            <connections>
+                <action selector="buttonTapped:" destination="-1" eventType="touchUpInside" id="uo2-fU-h0U"/>
+            </connections>
         </button>
     </objects>
     <resources>

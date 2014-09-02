@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "KLBEnemy.h"
 
+extern NSUInteger const KLB_ENEMY_TIME_REDUCTION_SPEED_SECONDS;
+extern NSUInteger const KLB_ENEMY_HEALTH_LOSS_ON_ATTACK;
+extern NSUInteger const KLB_ENEMY_HEALTH_TO_DIE;
+extern NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK;
+
 @interface KLBEnemyController : NSObject
 
 @property (retain, nonatomic) NSString *enemyKey;

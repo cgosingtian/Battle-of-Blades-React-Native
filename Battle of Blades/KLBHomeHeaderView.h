@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const KLB_LABEL_PLAYER_NAME_FORMAT;
+extern NSString *const KLB_LABEL_PLAYER_LEVEL_FORMAT;
+extern NSString *const KLB_LABEL_PLAYER_EXPERIENCE_NEEDED_FORMAT;
+extern NSString *const KLB_LABEL_PLAYER_ENERGY_FORMAT;
+extern NSString *const KLB_LABEL_PLAYER_ENERGY_CURRENT_FORMAT;
+extern NSString *const KLB_LABEL_SLASH;
+extern NSString *const KLB_LABEL_PLAYER_ENERGY_MAXIMUM_FORMAT;
+
+NSString *const KLB_LABEL_PLAYER_ENERGY_TIME_GAIN_FORMAT;
+
 @interface KLBHomeHeaderView : UIView
 @property (retain, nonatomic) IBOutlet UIView *headerView;
 @property (retain, nonatomic) IBOutlet UILabel *levelLabel;

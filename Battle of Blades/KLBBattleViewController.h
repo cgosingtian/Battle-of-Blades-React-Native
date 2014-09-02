@@ -66,7 +66,6 @@ extern NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME;
 @property (nonatomic) BOOL enemyDefenseAllowed;
 @property (nonatomic) BOOL enemyMovementAllowed;
 
-//test - we're using this as a "cover" for the battle screen - place an image or something
-@property (retain,nonatomic) UIView *blackView;
+//@property (retain,nonatomic) UIView *blackView;
 
 @end

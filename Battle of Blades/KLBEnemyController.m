@@ -46,10 +46,22 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
 
 #pragma mark - Other Initialization Methods
 - (void)registerForNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startBattleCountdown) name:KLB_NOTIFICATION_BATTLE_START object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(attackSuccess) name:KLB_NOTIFICATION_ATTACK_SUCCESS object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blockSuccess) name:KLB_NOTIFICATION_BLOCK_SUCCESS object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(battleEnd) name:KLB_NOTIFICATION_BATTLE_END object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(startBattleCountdown)
+                                                 name:KLB_NOTIFICATION_BATTLE_START
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(attackSuccess)
+                                                 name:KLB_NOTIFICATION_ATTACK_SUCCESS
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(blockSuccess)
+                                                 name:KLB_NOTIFICATION_BLOCK_SUCCESS
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(battleEnd)
+                                                 name:KLB_NOTIFICATION_BATTLE_END
+                                               object:nil];
 }
 
 #pragma mark - Battle Methods
@@ -64,6 +76,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
                                                      repeats:YES];
 }
 
+// Every time the enemy's time counts down, post a notification
 - (void)performTimerTickActions {
     if ((self.enemy.timeLimitSeconds-KLB_ENEMY_TIME_REDUCTION_SPEED_SECONDS) > 0) {
         self.enemy.timeLimitSeconds -= KLB_ENEMY_TIME_REDUCTION_SPEED_SECONDS;

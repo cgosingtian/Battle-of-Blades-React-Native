@@ -116,7 +116,6 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
 }
 
 - (void)battleEnded: (NSNotification *)notification {
-    //do stuff for battle end here
     // Victory assumes that a defeated enemy exists
     if (notification.userInfo != nil) {
         NSString *enemyKey = [notification.userInfo objectForKey:KLB_JSON_ENEMY_KEY];
@@ -124,8 +123,7 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
         [self gainExperience:defeatedEnemy.level];
         [self postExperienceUpdateNotice];
     } else {
-        //If you want to do something when defeat occurs, do it here - PLAYER-RELATED ONLY
-        //NSLog(@"DEFEAT");
+        // optional: handle any other player-related penalties here for losing
     }
 }
 
@@ -174,11 +172,7 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
     for (int i = experienceNeededToLevel; i <= 0; i+=experienceToLevel) {
         levelsGained++;
     }
-    
-//    NSLog(@"Player XP: %lu, XPTOLEVEL: %lu, LEVELS GAINED: %lu",
-//          (unsigned long)self.player.experience,
-//          (unsigned long)[self experienceToLevel],
-//          (unsigned long)levelsGained);
+
     NSUInteger energyGained = KLB_ZERO_INITIALIZER;
     CGFloat timeBonusGained = KLB_ZERO_F_INITIALIZER;
     if (levelsGained > 0) {
@@ -189,10 +183,6 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
         [self increasePlayerTimeBonus:timeBonusGained];
         [self increasePlayerLevel:levelsGained];
         
-//        NSLog(@"LEVEL UP by %lu! Energy Gained: %lu; Time Gained: %f",
-//              (unsigned long)levelsGained,
-//              (unsigned long)energyGained,
-//              timeBonusGained);
         [self postLevelUpdateNotice];
     }
     

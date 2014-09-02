@@ -203,9 +203,6 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     self.timeLeftLabel.text = [NSString stringWithFormat:@"%@%ld",
                                KLB_LABEL_TIME_LEFT_TEXT_FORMAT,
                                (long)enemyTimeLimit];
-    
-    // Perform other time-related actions:
-//    [self timePassed];
 }
 
 #pragma mark - Battle Control
@@ -330,6 +327,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     [self.battleTimer invalidate];
     [KLBAnimator fadeInCALayer:self.coverView.layer applyChanges:YES];
     if (didWin) {
+        // load the proper gradient for the gradient image view, then apply the flash effect on it
         UIImage *gradientImage = [UIImage imageNamed:KLB_VICTORY_GRADIENT_FILENAME];
         self.battleGradientBackground.image = gradientImage;
         [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer
@@ -338,6 +336,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
                     applyChangesFadeIn:NO
                    applyChangesFadeOut:YES];
         
+        // set and fade in the victory image and experience text
         self.experienceLabel.text = [NSString stringWithFormat:@"%@%lu",
                                      KLB_LABEL_EXPERIENCE_TEXT_FORMAT,
                                      (unsigned long)self.enemyController.enemy.level];
@@ -349,6 +348,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
         
         
     } else {
+        // load the proper gradient for the gradient image view, then apply the flash effect on it
         UIImage *gradientImage = [UIImage imageNamed:KLB_DEFEAT_GRADIENT_FILENAME];
         self.battleGradientBackground.image = gradientImage;
         [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer
@@ -364,6 +364,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
         (self.defeatHintLabel.text = KLB_DEFEAT_HINT_1) :
         (self.defeatHintLabel.text = KLB_DEFEAT_HINT_2);
         
+        // show the hint via fade in
         [KLBAnimator fadeInCALayer:self.defeatHintLabel.layer
                       applyChanges:YES];
     }

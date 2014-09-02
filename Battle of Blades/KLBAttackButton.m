@@ -21,7 +21,7 @@ CGFloat const KLB_ATTACK_BUTTON_MOVEMENT_INTERVAL = 0.03;
 CGFloat const KLB_ATTACK_BUTTON_WAIT_INTERVAL = 1.5;
 
 NSString *const KLB_SHIELD_BUTTON_IMAGE_FILENAME = @"shieldbutton.png";
-CGFloat const KLB_SHIELD_LAYER_Z_POSITION = 10.0;
+CGFloat const KLB_SHIELD_BUTTON_LAYER_Z_POSITION = 10.0;
 
 CGFloat const KLB_ATTACK_BUTTON_MAX_ALPHA = 1.0;
 CGFloat const KLB_ATTACK_BUTTON_MIN_ALPHA = 0.0;
@@ -87,15 +87,13 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 2.0;
     UIImage *shieldImage = [UIImage imageNamed:KLB_SHIELD_BUTTON_IMAGE_FILENAME];
     [actualButton setImage:shieldImage forState:UIControlStateNormal];
     
-    self.layer.zPosition = KLB_SHIELD_LAYER_Z_POSITION;
+    self.layer.zPosition = KLB_SHIELD_BUTTON_LAYER_Z_POSITION;
     CGRect buttonFrame = actualButton.frame;
     CGPoint buttonOrigin = buttonFrame.origin;
     CGSize buttonSize = buttonFrame.size;
     buttonSize = CGSizeMake(buttonSize.width*2.0, buttonSize.height*2.0);
     actualButton.frame = CGRectMake(buttonOrigin.x, buttonOrigin.y, buttonSize.width, buttonSize.height);
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, actualButton.frame.size.width, actualButton.frame.size.width);
-//    [actualButton setNeedsDisplay];
-//    [actualButton setNeedsLayout];
 }
 
 - (void)allowMovement {
@@ -147,20 +145,24 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 2.0;
     [self.moveTimer invalidate];
     if (self.waitTimer)
         [self.waitTimer invalidate];
-    _moveTimer = nil;
+//    _moveTimer = nil;
     self.enabled = NO;
     [self removeFromSuperview];
     [[KLBAttackButtonStore sharedStore] removeItem:self];
 }
 
 - (void)handleTime {
+    // If this attack button is enabled, proceed normally.
+    // Otherwise, we end the button's existence.
     if (self.enabled) {
+        // Activate movement when the timer starts (so we're sure that everything's set up)
+        // We only do this once (so we set canMove to NO)
         if (self.canMove) {
             self.moveDestination = [self generateRandomPoint];
             [self activateMovement];
             self.canMove = NO;
         }
-        
+        // Timer counts down here
         if (self.attack.timeRemainingSeconds > KLB_ANIMATION_ZERO_F) {
             self.attack.timeRemainingSeconds--;
             self.alpha = (CGFloat)self.attack.timeRemainingSeconds / (CGFloat)self.attack.lifetimeInSeconds;
@@ -172,6 +174,8 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 2.0;
     }
 }
 
+// When the time of the attack expires, we tell the delegate that the attack failed.
+// Then we end the button's existence.
 - (void)timeUp {
     if ([self.delegate respondsToSelector:@selector(attackWillFail:)]) {
         [self.delegate attackWillFail:self];
@@ -183,6 +187,11 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 2.0;
 }
 
 #pragma mark - Movement Methods
+// Movement logic:
+// 1. wait for X time
+// 2. generate coordinates
+// 3. move to coordinates
+// 4. upon reaching coordinates, return to #1
 - (void)activateMovement {
     self.moveTimer = [NSTimer scheduledTimerWithTimeInterval:KLB_ATTACK_BUTTON_MOVEMENT_INTERVAL
                                                   target:self
@@ -247,7 +256,8 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 2.0;
             // then generate random coordinates (in the doneWaiting method)
         }
         else {
-            //move towards moveDestination
+            // we add together all of the needed movement adjustments to a single CGPoint
+            // then update the frame in one go
             CGPoint destinationResult = self.frame.origin;
             if (destinationResult.x > self.moveDestination.x) {
                 CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;

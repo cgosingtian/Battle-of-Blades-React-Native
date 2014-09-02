@@ -51,7 +51,7 @@ extern NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME;
 @property (retain, nonatomic) IBOutlet UIImageView *battleInfoBackground;
 @property (retain, nonatomic) IBOutlet UILabel *healthLabel;
 @property (retain, nonatomic) IBOutlet UILabel *timeLeftLabel;
-@property (retain, nonatomic) IBOutlet UIView *coverView;
+@property (retain, nonatomic) IBOutlet UIImageView *coverView;
 @property (retain, nonatomic) IBOutlet UILabel *enemyNameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *enemyLevelLabel;
 @property (retain, nonatomic) IBOutlet UIImageView *battleGradientBackground;

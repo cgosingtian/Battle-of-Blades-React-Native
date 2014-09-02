@@ -47,6 +47,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     
     CAKeyframeAnimation *transparency = [[CAKeyframeAnimation alloc] init];
     
+    transparency.fillMode = kCAFillModeForwards;
+    
     [transparency setKeyPath:keyPathTransparency];
     transparency.duration = KLB_FADE_OUT_DURATION;
     
@@ -55,16 +57,19 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_OUT_OPACITY_END]];
     transparency.values = transparencyValues;
     
+    if (applyChanges) {
+        [layer setOpacity:KLB_FADE_OUT_OPACITY_END];
+    }
     
     // This block repeats the animation but also randomizes the location and size of the cloud
     [CATransaction setCompletionBlock:^()
      {
+         [transparencyValues release];
+         [transparency release];
+         
          if (applyChanges) {
              [layer setOpacity:KLB_FADE_OUT_OPACITY_END];
          }
-         
-         [transparencyValues release];
-         [transparency release];
      }];
     
     [layer addAnimation:transparency forKey:keyPathTransparency];
@@ -79,6 +84,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     
     CAKeyframeAnimation *transparency = [[CAKeyframeAnimation alloc] init];
     
+    transparency.fillMode = kCAFillModeForwards;
+    
     [transparency setKeyPath:keyPathTransparency];
     transparency.duration = KLB_FADE_IN_DURATION;
     
@@ -87,6 +94,9 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_END]];
     transparency.values = transparencyValues;
     
+    if (applyChanges) {
+        [layer setOpacity:KLB_FADE_IN_OPACITY_END];
+    }
     
     // This block repeats the animation but also randomizes the location and size of the cloud
     [CATransaction setCompletionBlock:^()
@@ -111,6 +121,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     
     CAKeyframeAnimation *transparency = [[CAKeyframeAnimation alloc] init];
     
+    transparency.fillMode = kCAFillModeForwards;
+    
     [transparency setKeyPath:keyPathTransparency];
     transparency.duration = duration;
     
@@ -119,6 +131,9 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_END]];
     transparency.values = transparencyValues;
     
+    if (applyChanges) {
+        [layer setOpacity:KLB_FADE_IN_OPACITY_END];
+    }
     
     // This block repeats the animation but also randomizes the location and size of the cloud
     [CATransaction setCompletionBlock:^()
@@ -143,6 +158,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     
     CAKeyframeAnimation *positionAnimation = [[CAKeyframeAnimation alloc] init];
     
+    positionAnimation.fillMode = kCAFillModeForwards;
+    
     [positionAnimation setKeyPath:keyPathPosition];
     positionAnimation.duration = KLB_MOVE_ANIMATION_DURATION;
     
@@ -150,6 +167,10 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     [positionValues addObject:[NSValue valueWithCGPoint:start]];
     [positionValues addObject:[NSValue valueWithCGPoint:end]];
     positionAnimation.values = positionValues;
+    
+    if (applyChanges) {
+        [layer setPosition:end];
+    }
     
     [CATransaction setCompletionBlock:^()
      {
@@ -182,14 +203,15 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     
     CAKeyframeAnimation *transparency = [[CAKeyframeAnimation alloc] init];
     
+    transparency.fillMode = kCAFillModeForwards;
+    
     [transparency setKeyPath:keyPathTransparency];
     transparency.duration = KLB_FLASH_WHITE_DURATION;
     
     NSMutableArray *transparencyValues = [[NSMutableArray alloc] init];
     [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_START]];
     [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_END]];
-    [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_START]];
-    [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_END]];
+
     transparency.values = transparencyValues;
     
     
@@ -210,6 +232,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     // FADE IN
     CAKeyframeAnimation *fadeIn = [[CAKeyframeAnimation alloc] init];
     
+    fadeIn.fillMode = kCAFillModeForwards;
+    
     [fadeIn setKeyPath:keyPathTransparency];
     fadeIn.duration = KLB_FLASH_ALPHA_FADE_IN_DURATION;
     
@@ -228,6 +252,10 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     [fadeOutValues addObject:[NSNumber numberWithFloat:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_START]];
     [fadeOutValues addObject:[NSNumber numberWithFloat:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END]];
     fadeOut.values = fadeOutValues;
+    
+    if (applyChanges) {
+        [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
+    }
     
     // This block repeats the animation but also randomizes the location and size of the cloud
     [CATransaction setCompletionBlock:^()
@@ -253,6 +281,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     // FADE IN
     CAKeyframeAnimation *fadeIn = [[CAKeyframeAnimation alloc] init];
     
+    fadeIn.fillMode = kCAFillModeForwards;
+    
     [fadeIn setKeyPath:keyPathTransparency];
     fadeIn.duration = fadeInDuration;
     
@@ -271,6 +301,13 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     [fadeOutValues addObject:[NSNumber numberWithFloat:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_START]];
     [fadeOutValues addObject:[NSNumber numberWithFloat:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END]];
     fadeOut.values = fadeOutValues;
+    
+    if (applyChangesFadeIn) {
+        [layer setOpacity:KLB_FLASH_ALPHA_FADE_IN_OPACITY_END];
+    }
+    if (applyChangesFadeOut) {
+        [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
+    }
     
     // This block repeats the animation but also randomizes the location and size of the cloud
     [CATransaction setCompletionBlock:^()

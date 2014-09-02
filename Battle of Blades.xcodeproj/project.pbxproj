@@ -9,6 +9,17 @@
 /* Begin PBXBuildFile section */
 		4F2B0DD219B3F8BC00D99433 /* KLBEnemyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B0DD119B3F8BC00D99433 /* KLBEnemyController.m */; };
 		4F2B0DD519B42A8300D99433 /* KLBAttackButtonStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B0DD419B42A8300D99433 /* KLBAttackButtonStore.m */; };
+		4F5613A819B54ADC000DA489 /* bluegradientbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613A419B54ADC000DA489 /* bluegradientbg.png */; };
+		4F5613A919B54ADC000DA489 /* greengradientbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613A519B54ADC000DA489 /* greengradientbg.png */; };
+		4F5613AA19B54ADC000DA489 /* redgradientbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613A619B54ADC000DA489 /* redgradientbg.png */; };
+		4F5613AB19B54ADC000DA489 /* victory.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613A719B54ADC000DA489 /* victory.png */; };
+		4F5613AD19B5642F000DA489 /* shieldbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613AC19B5642F000DA489 /* shieldbutton.png */; };
+		4F5613B119B56F0F000DA489 /* battlebuttonaverage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613AE19B56F0F000DA489 /* battlebuttonaverage.png */; };
+		4F5613B219B56F0F000DA489 /* battlebuttoneasy.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613AF19B56F0F000DA489 /* battlebuttoneasy.png */; };
+		4F5613B319B56F0F000DA489 /* battlebuttonhard.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613B019B56F0F000DA489 /* battlebuttonhard.png */; };
+		4F5613B719B571CD000DA489 /* enemyaverage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613B419B571CD000DA489 /* enemyaverage.png */; };
+		4F5613B819B571CD000DA489 /* enemyeasy.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613B519B571CD000DA489 /* enemyeasy.png */; };
+		4F5613B919B571CD000DA489 /* enemyhard.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F5613B619B571CD000DA489 /* enemyhard.png */; };
 		4F5C323919AF22470020AA13 /* KLBHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C323719AF22470020AA13 /* KLBHomeViewController.m */; };
 		4F5C323A19AF22470020AA13 /* KLBHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */; };
 		4F5C323D19AF22C90020AA13 /* KLBHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C323C19AF22C90020AA13 /* KLBHomeHeaderView.m */; };
@@ -68,6 +79,17 @@
 		4F2B0DD119B3F8BC00D99433 /* KLBEnemyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBEnemyController.m; sourceTree = "<group>"; };
 		4F2B0DD319B42A8300D99433 /* KLBAttackButtonStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBAttackButtonStore.h; sourceTree = "<group>"; };
 		4F2B0DD419B42A8300D99433 /* KLBAttackButtonStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBAttackButtonStore.m; sourceTree = "<group>"; };
+		4F5613A419B54ADC000DA489 /* bluegradientbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bluegradientbg.png; path = Resources/bluegradientbg.png; sourceTree = "<group>"; };
+		4F5613A519B54ADC000DA489 /* greengradientbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = greengradientbg.png; path = Resources/greengradientbg.png; sourceTree = "<group>"; };
+		4F5613A619B54ADC000DA489 /* redgradientbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redgradientbg.png; path = Resources/redgradientbg.png; sourceTree = "<group>"; };
+		4F5613A719B54ADC000DA489 /* victory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = victory.png; path = Resources/victory.png; sourceTree = "<group>"; };
+		4F5613AC19B5642F000DA489 /* shieldbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shieldbutton.png; path = Resources/shieldbutton.png; sourceTree = "<group>"; };
+		4F5613AE19B56F0F000DA489 /* battlebuttonaverage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battlebuttonaverage.png; path = Resources/battlebuttonaverage.png; sourceTree = "<group>"; };
+		4F5613AF19B56F0F000DA489 /* battlebuttoneasy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battlebuttoneasy.png; path = Resources/battlebuttoneasy.png; sourceTree = "<group>"; };
+		4F5613B019B56F0F000DA489 /* battlebuttonhard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battlebuttonhard.png; path = Resources/battlebuttonhard.png; sourceTree = "<group>"; };
+		4F5613B419B571CD000DA489 /* enemyaverage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = enemyaverage.png; path = Resources/enemyaverage.png; sourceTree = "<group>"; };
+		4F5613B519B571CD000DA489 /* enemyeasy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = enemyeasy.png; path = Resources/enemyeasy.png; sourceTree = "<group>"; };
+		4F5613B619B571CD000DA489 /* enemyhard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = enemyhard.png; path = Resources/enemyhard.png; sourceTree = "<group>"; };
 		4F5C323619AF22470020AA13 /* KLBHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBHomeViewController.h; sourceTree = "<group>"; };
 		4F5C323719AF22470020AA13 /* KLBHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBHomeViewController.m; sourceTree = "<group>"; };
 		4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBHomeViewController.xib; sourceTree = "<group>"; };
@@ -289,15 +311,9 @@
 				4F5C324A19AF29B20020AA13 /* KLBHomeFooterView.h */,
 				4F5C324B19AF29B20020AA13 /* KLBHomeFooterView.m */,
 				4F5C324D19AF29C40020AA13 /* KLBHomeFooterView.xib */,
-				4F5C325319AF2BDC0020AA13 /* KLBBattleViewController.h */,
-				4F5C325419AF2BDC0020AA13 /* KLBBattleViewController.m */,
-				4F5C325619AF2BEB0020AA13 /* KLBBattleViewController.xib */,
 				4FA46D9819B00E7E0078E23B /* KLBPlayerView.h */,
 				4FA46D9919B00E7E0078E23B /* KLBPlayerView.m */,
 				4FA46D9B19B00E9C0078E23B /* KLBPlayerView.xib */,
-				4FA46DA019B0117F0078E23B /* KLBAttackButton.h */,
-				4FA46DA119B0117F0078E23B /* KLBAttackButton.m */,
-				4FA46DA319B011A00078E23B /* KLBAttackButton.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -305,6 +321,12 @@
 		4FEC6DE319AF1B3700C9DAA8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4FA46DA019B0117F0078E23B /* KLBAttackButton.h */,
+				4FA46DA119B0117F0078E23B /* KLBAttackButton.m */,
+				4FA46DA319B011A00078E23B /* KLBAttackButton.xib */,
+				4F5C325319AF2BDC0020AA13 /* KLBBattleViewController.h */,
+				4F5C325419AF2BDC0020AA13 /* KLBBattleViewController.m */,
+				4F5C325619AF2BEB0020AA13 /* KLBBattleViewController.xib */,
 				4F5C323619AF22470020AA13 /* KLBHomeViewController.h */,
 				4F5C323719AF22470020AA13 /* KLBHomeViewController.m */,
 				4F5C323819AF22470020AA13 /* KLBHomeViewController.xib */,
@@ -319,6 +341,17 @@
 		4FEC6DE419AF1B3D00C9DAA8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F5613B419B571CD000DA489 /* enemyaverage.png */,
+				4F5613B519B571CD000DA489 /* enemyeasy.png */,
+				4F5613B619B571CD000DA489 /* enemyhard.png */,
+				4F5613AE19B56F0F000DA489 /* battlebuttonaverage.png */,
+				4F5613AF19B56F0F000DA489 /* battlebuttoneasy.png */,
+				4F5613B019B56F0F000DA489 /* battlebuttonhard.png */,
+				4F5613AC19B5642F000DA489 /* shieldbutton.png */,
+				4F5613A419B54ADC000DA489 /* bluegradientbg.png */,
+				4F5613A519B54ADC000DA489 /* greengradientbg.png */,
+				4F5613A619B54ADC000DA489 /* redgradientbg.png */,
+				4F5613A719B54ADC000DA489 /* victory.png */,
 				4FA46DC019B02D8F0078E23B /* battleinfobg.png */,
 				4FA46DC119B02D8F0078E23B /* enemy.png */,
 				4FA46DA519B011CD0078E23B /* attackbutton.png */,
@@ -408,23 +441,34 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F5613AD19B5642F000DA489 /* shieldbutton.png in Resources */,
 				4F5C325219AF2AC00020AA13 /* screenfooterbg.png in Resources */,
 				4F5C324519AF242C0020AA13 /* headerbgleft.png in Resources */,
 				4F5C324719AF24700020AA13 /* headerbgright.png in Resources */,
 				4F5C324E19AF29C40020AA13 /* KLBHomeFooterView.xib in Resources */,
 				4FA46DC219B02D8F0078E23B /* battleinfobg.png in Resources */,
 				4FA46D9C19B00E9C0078E23B /* KLBPlayerView.xib in Resources */,
+				4F5613AA19B54ADC000DA489 /* redgradientbg.png in Resources */,
+				4F5613A819B54ADC000DA489 /* bluegradientbg.png in Resources */,
+				4F5613B119B56F0F000DA489 /* battlebuttonaverage.png in Resources */,
+				4F5613B319B56F0F000DA489 /* battlebuttonhard.png in Resources */,
 				4F5C323F19AF22F50020AA13 /* KLBHomeHeaderView.xib in Resources */,
 				4FEC6DBD19AF1A7600C9DAA8 /* InfoPlist.strings in Resources */,
 				4F5C325719AF2BEB0020AA13 /* KLBBattleViewController.xib in Resources */,
+				4F5613B719B571CD000DA489 /* enemyaverage.png in Resources */,
 				4F5C325119AF2AC00020AA13 /* battlebutton.png in Resources */,
 				4F5C324919AF24B20020AA13 /* playerbutton.png in Resources */,
 				4FA46DA619B011CD0078E23B /* attackbutton.png in Resources */,
+				4F5613AB19B54ADC000DA489 /* victory.png in Resources */,
+				4F5613B219B56F0F000DA489 /* battlebuttoneasy.png in Resources */,
 				4F5C324319AF24240020AA13 /* bladedata.json in Resources */,
+				4F5613B919B571CD000DA489 /* enemyhard.png in Resources */,
 				4FA46DA419B011A00078E23B /* KLBAttackButton.xib in Resources */,
+				4F5613B819B571CD000DA489 /* enemyeasy.png in Resources */,
 				4FA46DC319B02D8F0078E23B /* enemy.png in Resources */,
 				4FEC6DC519AF1A7600C9DAA8 /* Images.xcassets in Resources */,
 				4F5C323A19AF22470020AA13 /* KLBHomeViewController.xib in Resources */,
+				4F5613A919B54ADC000DA489 /* greengradientbg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

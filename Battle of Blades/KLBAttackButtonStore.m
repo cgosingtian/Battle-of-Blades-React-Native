@@ -9,6 +9,8 @@
 #import "KLBAttackButtonStore.h"
 #import "KLBAttackButton.h"
 
+NSString *const KLB_ATTACK_BUTTON_STORE_SINGLETON_EXCEPTION = @"Singleton";
+
 @interface KLBAttackButtonStore ()
 
 @property (retain,nonatomic) NSMutableArray *attackButtons;
@@ -26,7 +28,8 @@
 }
 
 - (instancetype) init {
-    [NSException raise:@"Singleton" format:@"Use +[KLBAttackButtonStore sharedStore]"];
+    [NSException raise:KLB_ATTACK_BUTTON_STORE_SINGLETON_EXCEPTION
+                format:@"Use +[KLBAttackButtonStore sharedStore]"];
     return nil;
 }
 
@@ -54,8 +57,9 @@
 }
 
 - (void)removeItem:(KLBAttackButton *)button {
-    [self.attackButtons removeObjectIdenticalTo:button];
+    [self.attackButtons removeObject:button];
     [button release];
+    button = nil;
 }
 
 - (void)setAllItems:(NSMutableArray *)array {

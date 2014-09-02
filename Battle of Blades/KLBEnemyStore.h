@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "KLBEnemy.h"
 
+extern NSString *const KLB_ENEMY_STORE_SINGLETON_EXCEPTION;
+
 @interface KLBEnemyStore : NSObject
 +(instancetype)sharedStore;
 - (NSDictionary *)allItems;

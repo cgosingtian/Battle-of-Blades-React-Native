@@ -14,6 +14,8 @@
 #pragma mark - Dealloc
 - (void)dealloc {
     [_battleButton release];
+    [_battleButtonAverage release];
+    [_battleButtonHard release];
     [super dealloc];
 }
 
@@ -61,20 +63,36 @@
 
 #pragma mark - IBActions
 - (IBAction)battleButtonTapped:(id)sender {
-    [self battleWillStart];
+    NSDictionary *difficulty = @{@"difficulty":@0};
+    NSLog(@"%@",[difficulty objectForKey:@"difficulty"]);
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
+                                                        object:self
+                                                      userInfo:difficulty];
+}
+- (IBAction)averageButtonTapped:(id)sender {
+    NSDictionary *difficulty = @{@"difficulty":@1};
+    NSLog(@"%@",[difficulty objectForKey:@"difficulty"]);
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
+                                                        object:self
+                                                      userInfo:difficulty];
+}
+- (IBAction)hardButtonTapped:(id)sender {
+    NSDictionary *difficulty = @{@"difficulty":@2};
+    NSLog(@"%@",[difficulty objectForKey:@"difficulty"]);
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
+                                                        object:self
+                                                      userInfo:difficulty];
 }
 
 #pragma mark - Battle Lifecycle
-- (void)battleWillStart {
-    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
-                                                        object:self];
-}
 - (void)battleDidStart {
-    NSLog(@"battle did start");
     [_battleButton setEnabled:NO];
+    [_battleButtonAverage setEnabled:NO];
+    [_battleButtonHard setEnabled:NO];
 }
 - (void)battleWillEnd {
-    NSLog(@"battle will end");
     [_battleButton setEnabled:YES];
+    [_battleButtonAverage setEnabled:YES];
+    [_battleButtonHard setEnabled:YES];
 }
 @end

@@ -9,6 +9,8 @@
 #import "KLBEnemyStore.h"
 #import "KLBEnemy.h"
 
+NSString *const KLB_ENEMY_STORE_SINGLETON_EXCEPTION = @"Singleton";
+
 @interface KLBEnemyStore ()
 
 // Each enemy has a dictionary [A] of stats.
@@ -30,7 +32,7 @@
 }
 
 - (instancetype) init {
-    [NSException raise:@"Singleton" format:@"Use +[KLBEnemyStore sharedStore]"];
+    [NSException raise:KLB_ENEMY_STORE_SINGLETON_EXCEPTION format:@"Use +[KLBEnemyStore sharedStore]"];
     return nil;
 }
 

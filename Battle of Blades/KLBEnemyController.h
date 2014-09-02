@@ -17,5 +17,6 @@
 - (instancetype)initWithEnemyKey: (NSString *)key;
 - (void)loadNewEnemyRandom;
 - (NSString *)loadRandomEnemyData;
+- (void)attackFail;
 
 @end

@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @protocol KLBAttackDelegate <NSObject>
-- (void) attackDidSucceed;
+- (void) attackDidSucceed:(id)sender;
 @optional
-- (void) attackWillSucceed;
-- (void) attackWillFail;
-- (void) attackDidFail;
+- (void) attackWillSucceed:(id)sender;
+- (void) attackWillFail:(id)sender;
+- (void) attackDidFail:(id)sender;
 @end

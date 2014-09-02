@@ -97,10 +97,16 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
 #pragma mark - Player Actions Performed
 - (void)battleStartAttempt: (NSNotification *)notification {
     if (((NSInteger)self.player.energyCurrent - (NSInteger)KLB_BATTLE_ENERGY_COST) >= 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START
+                                                            object:nil
+                                                          userInfo:notification.userInfo];
     }
     else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Out of Energy!" message:@"Energy replenishes over time. You may also pay $1000 for 1 energy." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Pay $1000",nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Out of Energy!"
+                                                        message:@"Energy replenishes over time. You may also pay $1000 for 1 energy."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:@"Pay $1000",nil];
         [alert show];
     }
 }
@@ -118,7 +124,7 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
         [self gainExperience:defeatedEnemy.level];
         [self postExperienceUpdateNotice];
     } else {
-        //If you want to do something when defeat occurs, do it here
+        //If you want to do something when defeat occurs, do it here - PLAYER-RELATED ONLY
         //NSLog(@"DEFEAT");
     }
 }

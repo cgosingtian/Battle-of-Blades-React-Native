@@ -15,6 +15,19 @@
 CGFloat const KLB_ATTACK_BUTTON_WIDTH = 60;
 CGFloat const KLB_ATTACK_BUTTON_HEIGHT = 60;
 
+CGFloat const KLB_ATTACK_BUTTON_MOVEMENT_RANGE = 30.0;
+CGFloat const KLB_ATTACK_BUTTON_MOVEMENT_SPEED = 1;
+CGFloat const KLB_ATTACK_BUTTON_MOVEMENT_INTERVAL = 0.03;
+CGFloat const KLB_ATTACK_BUTTON_WAIT_INTERVAL = 1.5;
+
+NSString *const KLB_SHIELD_BUTTON_IMAGE_FILENAME = @"shieldbutton.png";
+CGFloat const KLB_SHIELD_LAYER_Z_POSITION = 10.0;
+
+CGFloat const KLB_ATTACK_BUTTON_MAX_ALPHA = 1.0;
+CGFloat const KLB_ATTACK_BUTTON_MIN_ALPHA = 0.0;
+
+CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 2.0;
+
 @implementation KLBAttackButton
 
 #pragma mark - Dealloc
@@ -57,7 +70,36 @@ CGFloat const KLB_ATTACK_BUTTON_HEIGHT = 60;
         [self.attack resetValues];
     }
     self.enabled = YES;
-    self.alpha = 1.0;
+    self.alpha = KLB_ATTACK_BUTTON_MAX_ALPHA;
+    self.isShield = NO;
+    self.canMove = NO;
+}
+
+- (void)convertToShield {
+    self.isShield = YES;
+    self.canMove = YES;
+    
+    self.attack.lifetimeInSeconds *= KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER;
+    self.attack.timeRemainingSeconds = self.attack.lifetimeInSeconds;
+    
+    UIButton *actualButton = [[self subviews] objectAtIndex:0];
+    
+    UIImage *shieldImage = [UIImage imageNamed:KLB_SHIELD_BUTTON_IMAGE_FILENAME];
+    [actualButton setImage:shieldImage forState:UIControlStateNormal];
+    
+    self.layer.zPosition = KLB_SHIELD_LAYER_Z_POSITION;
+    CGRect buttonFrame = actualButton.frame;
+    CGPoint buttonOrigin = buttonFrame.origin;
+    CGSize buttonSize = buttonFrame.size;
+    buttonSize = CGSizeMake(buttonSize.width*2.0, buttonSize.height*2.0);
+    actualButton.frame = CGRectMake(buttonOrigin.x, buttonOrigin.y, buttonSize.width, buttonSize.height);
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, actualButton.frame.size.width, actualButton.frame.size.width);
+//    [actualButton setNeedsDisplay];
+//    [actualButton setNeedsLayout];
+}
+
+- (void)allowMovement {
+    self.canMove = YES;
 }
 
 - (void)replacePlaceholderViewsWithActual {
@@ -84,13 +126,12 @@ CGFloat const KLB_ATTACK_BUTTON_HEIGHT = 60;
 #pragma mark - IBActions
 - (IBAction)buttonTapped:(id)sender {
     self.enabled = NO;
-    self.alpha = 0.0;
-    self.frame = CGRectMake(0, 0, 0, 0);
-    if ([self.delegate respondsToSelector:@selector(attackWillSucceed)]) {
-        [self.delegate attackWillSucceed];
+    self.alpha = KLB_ATTACK_BUTTON_MIN_ALPHA;
+    if ([self.delegate respondsToSelector:@selector(attackWillSucceed:)]) {
+        [self.delegate attackWillSucceed:self];
     }
-    if ([self.delegate respondsToSelector:@selector(attackDidSucceed)]) {
-        [self.delegate attackDidSucceed];
+    if ([self.delegate respondsToSelector:@selector(attackDidSucceed:)]) {
+        [self.delegate attackDidSucceed:self];
     }
     
     // We do cleanup of tapped buttons either during the timer tick (see handleTime below)
@@ -103,6 +144,10 @@ CGFloat const KLB_ATTACK_BUTTON_HEIGHT = 60;
 
 #pragma mark - Battle Methods
 - (void)handleBattleEnd {
+    [self.moveTimer invalidate];
+    if (self.waitTimer)
+        [self.waitTimer invalidate];
+    _moveTimer = nil;
     self.enabled = NO;
     [self removeFromSuperview];
     [[KLBAttackButtonStore sharedStore] removeItem:self];
@@ -110,6 +155,12 @@ CGFloat const KLB_ATTACK_BUTTON_HEIGHT = 60;
 
 - (void)handleTime {
     if (self.enabled) {
+        if (self.canMove) {
+            self.moveDestination = [self generateRandomPoint];
+            [self activateMovement];
+            self.canMove = NO;
+        }
+        
         if (self.attack.timeRemainingSeconds > KLB_ANIMATION_ZERO_F) {
             self.attack.timeRemainingSeconds--;
             self.alpha = (CGFloat)self.attack.timeRemainingSeconds / (CGFloat)self.attack.lifetimeInSeconds;
@@ -122,12 +173,124 @@ CGFloat const KLB_ATTACK_BUTTON_HEIGHT = 60;
 }
 
 - (void)timeUp {
-    if ([self.delegate respondsToSelector:@selector(attackWillFail)]) {
-        [self.delegate attackWillFail];
+    if ([self.delegate respondsToSelector:@selector(attackWillFail:)]) {
+        [self.delegate attackWillFail:self];
     }
-    if ([self.delegate respondsToSelector:@selector(attackDidFail)]) {
-        [self.delegate attackDidFail];
+    if ([self.delegate respondsToSelector:@selector(attackDidFail:)]) {
+        [self.delegate attackDidFail:self];
     }
     [self handleBattleEnd];
+}
+
+#pragma mark - Movement Methods
+- (void)activateMovement {
+    self.moveTimer = [NSTimer scheduledTimerWithTimeInterval:KLB_ATTACK_BUTTON_MOVEMENT_INTERVAL
+                                                  target:self
+                                                selector:@selector(randomMove)
+                                                userInfo:nil
+                                                 repeats:YES];
+}
+
+- (void) doneWaiting {
+    self.moveDestination = [self generateRandomPoint];
+    self.isWaiting = NO;
+}
+
+- (CGPoint)generateRandomPoint {
+    CGRect superviewFrame = [self superview].frame;
+    
+    CGFloat maxX = superviewFrame.size.width - self.frame.size.width;
+    CGFloat maxY = superviewFrame.size.height - self.frame.size.height;
+    
+    float randomX = arc4random_uniform(maxX);
+    float randomY = arc4random_uniform(maxY);
+    
+    // Limit X and Y to movement range
+    if (randomX > self.frame.origin.x) {
+        if (randomX - self.frame.origin.x > KLB_ATTACK_BUTTON_MOVEMENT_RANGE) {
+            randomX = self.frame.origin.x + KLB_ATTACK_BUTTON_MOVEMENT_RANGE;
+        }
+    } else {
+        if (randomX + self.frame.origin.x > KLB_ATTACK_BUTTON_MOVEMENT_RANGE) {
+            randomX = self.frame.origin.x - KLB_ATTACK_BUTTON_MOVEMENT_RANGE;
+        }
+    }
+    if (randomY > self.frame.origin.y) {
+        if (randomY - self.frame.origin.y > KLB_ATTACK_BUTTON_MOVEMENT_RANGE) {
+            randomY = self.frame.origin.y + KLB_ATTACK_BUTTON_MOVEMENT_RANGE;
+        }
+    } else {
+        if (randomY + self.frame.origin.y > KLB_ATTACK_BUTTON_MOVEMENT_RANGE) {
+            randomY = self.frame.origin.y - KLB_ATTACK_BUTTON_MOVEMENT_RANGE;
+        }
+    }
+    
+    NSLog(@"Generating random point x: %f y: %f",randomX,randomY);
+    
+    return CGPointMake(randomX, randomY);
+}
+
+- (void) randomMove {
+    if (self.isEnabled) {
+        if (CGPointEqualToPoint(self.moveDestination, self.frame.origin)) {
+            // wait for waitSeconds time
+            if (!self.isWaiting) {
+                if (!self.waitTimer) {
+                    self.waitTimer = [NSTimer scheduledTimerWithTimeInterval:KLB_ATTACK_BUTTON_WAIT_INTERVAL
+                                                                      target:self
+                                                                    selector:@selector(doneWaiting)
+                                                                    userInfo:nil
+                                                                     repeats:NO];
+                }
+                self.isWaiting = YES;
+            }
+            // then generate random coordinates (in the doneWaiting method)
+        }
+        else {
+            //move towards moveDestination
+            CGPoint destinationResult = self.frame.origin;
+            if (destinationResult.x > self.moveDestination.x) {
+                CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
+                CGFloat x = destinationResult.x - velocity;
+                CGFloat y = destinationResult.y;
+                
+                if (x < self.moveDestination.x) //don't overshoot coordinates
+                    x = self.moveDestination.x;
+                
+                destinationResult = CGPointMake(x, y);
+            } else if (destinationResult.x < self.moveDestination.x) {
+                CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
+                CGFloat x = destinationResult.x + velocity;
+                CGFloat y = destinationResult.y;
+                
+                if (x > self.moveDestination.x) //don't overshoot coordinates
+                    x = self.moveDestination.x;
+                
+                destinationResult = CGPointMake(x, y);
+            }
+            
+            if (destinationResult.y > self.moveDestination.y) {
+                CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
+                CGFloat x = destinationResult.x;
+                CGFloat y = destinationResult.y - velocity;
+                
+                if (y < self.moveDestination.y) //don't overshoot coordinates
+                    y = self.moveDestination.y;
+                
+                destinationResult = CGPointMake(x, y);
+            } else if (destinationResult.y < self.moveDestination.y) {
+                CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
+                CGFloat x = destinationResult.x;
+                CGFloat y = destinationResult.y + velocity;
+                
+                if (y > self.moveDestination.y) //don't overshoot coordinates
+                    y = self.moveDestination.y;
+                
+                destinationResult = CGPointMake(x, y);
+            }
+            
+            self.frame = CGRectMake(destinationResult.x, destinationResult.y, self.frame.size.width, self.frame.size.height);
+        }
+    }
 }
 @end

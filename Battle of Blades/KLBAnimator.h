@@ -26,6 +26,9 @@ extern CGFloat const KLB_MOVE_ANIMATION_DURATION;
 @interface KLBAnimator : NSObject
 + (void)fadeOutCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges;
 + (void)fadeInCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges;
++ (void)fadeInCALayer:(CALayer *)layer duration:(CGFloat)duration applyChanges:(BOOL)applyChanges;
 + (void)moveCALayer:(CALayer *)layer startPoint:(CGPoint)start endPoint:(CGPoint)end applyChanges:(BOOL)applyChanges;
 + (void)flashWhiteCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges;
++ (void)flashAlphaCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges;
++ (void)flashAlphaCALayer:(CALayer *)layer fadeInDuration:(CGFloat)fadeInDuration fadeOutDuration:(CGFloat)fadeOutDuration applyChangesFadeIn:(BOOL)applyChangesFadeIn applyChangesFadeOut:(BOOL)applyChangesFadeOut;
 @end

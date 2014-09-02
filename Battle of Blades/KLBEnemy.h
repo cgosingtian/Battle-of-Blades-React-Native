@@ -20,8 +20,8 @@ extern NSUInteger const KLB_DEFAULT_ENEMY_TIME_LIMIT_SECONDS;
 @property (retain, nonatomic) NSString *enemyName;
 @property (nonatomic) NSUInteger level;
 @property (nonatomic) NSUInteger healthMaximum;
-@property (nonatomic) NSUInteger healthRemaining;
-@property (nonatomic) NSUInteger timeLimitSeconds;
+@property (nonatomic) NSInteger healthRemaining; // can be negative
+@property (nonatomic) NSInteger timeLimitSeconds; // can be negative
 
 - (instancetype)initWithKey:(NSString *)key
                        name:(NSString *)enemyName

@@ -14,6 +14,7 @@
 NSUInteger const KLB_ENEMY_TIME_REDUCTION_SPEED_SECONDS = 1; //reduce time by X every second
 NSUInteger const KLB_ENEMY_HEALTH_LOSS_ON_ATTACK = 1; // reduce health by X on successful attack
 NSUInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
+NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, lose X seconds
 
 @implementation KLBEnemyController
 
@@ -47,6 +48,7 @@ NSUInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
 - (void)registerForNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startBattleCountdown) name:KLB_NOTIFICATION_BATTLE_START object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(attackSuccess) name:KLB_NOTIFICATION_ATTACK_SUCCESS object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blockSuccess) name:KLB_NOTIFICATION_BLOCK_SUCCESS object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(battleEnd) name:KLB_NOTIFICATION_BATTLE_END object:nil];
 }
 
@@ -63,16 +65,14 @@ NSUInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
 }
 
 - (void)performTimerTickActions {
-    if (self.enemy.timeLimitSeconds > 0) {
-        self.enemy.timeLimitSeconds--;
+    if ((self.enemy.timeLimitSeconds-KLB_ENEMY_TIME_REDUCTION_SPEED_SECONDS) > 0) {
+        self.enemy.timeLimitSeconds -= KLB_ENEMY_TIME_REDUCTION_SPEED_SECONDS;
         [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_TIME_CHANGED
                                                             object:nil
                                                           userInfo:nil];
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_TIME_OVER
-                                                            object:nil
-                                                          userInfo:nil];
-        [self.timer invalidate];
+        self.enemy.timeLimitSeconds = 0;
+        [self checkTime];
     }
 }
 
@@ -98,11 +98,28 @@ NSUInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
                                                           userInfo:nil];
     }
 }
+- (void)blockSuccess {
+    if (self.timer.isValid) {
+        self.enemy.timeLimitSeconds -= KLB_ENEMY_TIME_REDUCTION_ON_BLOCK;
+        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_TIME_CHANGED
+                                                            object:nil
+                                                          userInfo:nil];
+        [self checkTime];
+    }
+}
 - (void)checkAlive {
     if (self.enemy.healthRemaining <= KLB_ENEMY_HEALTH_TO_DIE) {
         [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_HEALTH_ZERO
                                                             object:nil
                                                           userInfo:nil];
+    }
+}
+- (void)checkTime {
+    if (self.enemy.timeLimitSeconds <= 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_TIME_OVER
+                                                            object:nil
+                                                          userInfo:nil];
+        [self.timer invalidate];
     }
 }
 

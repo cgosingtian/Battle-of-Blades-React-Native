@@ -28,7 +28,7 @@ CGFloat const KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH = 0.5;
 NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN = 10;
 CGFloat const KLB_BUTTON_SPAWN_FADE_IN_DURATION = 0.35;
 
-CGFloat const KLB_BUTTON_SHIELD_CONVERT_CHANCE_PERCENT = 10;
+CGFloat const KLB_BUTTON_SHIELD_CONVERT_CHANCE_PERCENT = 8;
 CGFloat const KLB_BUTTON_SHIELD_CONVERT_PERCENT = 100;
 
 CGFloat const KLB_VICTORY_FADE_IN_DURATION = 1;
@@ -56,6 +56,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
 #pragma mark - Dealloc
 - (void)dealloc {
     [_battleTimer invalidate];
+    [_enemyController release];
     [_battleTimer release];
     [_enemyImage release];
     [_battleInfoBackground release];
@@ -213,16 +214,19 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     UIImage *enemyImage = nil;
     switch (difficulty) {
         case 0: {
+            self.selectedDifficulty = Easy;
             enemyImage = [UIImage imageNamed:KLB_ENEMY_EASY_IMAGE_FILENAME];
             self.enemyDefenseAllowed = false;
             self.enemyMovementAllowed = false;
         } break;
         case 1: {
+            self.selectedDifficulty = Average;
             enemyImage = [UIImage imageNamed:KLB_ENEMY_AVERAGE_IMAGE_FILENAME];
             self.enemyDefenseAllowed = true;
             self.enemyMovementAllowed = false;
         } break;
         case 2: {
+            self.selectedDifficulty = Hard;
             enemyImage = [UIImage imageNamed:KLB_ENEMY_HARD_IMAGE_FILENAME];
             self.enemyDefenseAllowed = true;
             self.enemyMovementAllowed = true;
@@ -310,9 +314,11 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
 
 - (void)battleWin {
     // win due to enemy losing health before time runs out
+    NSNumber *difficultyValue = [NSNumber numberWithInteger:self.selectedDifficulty];
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
                                                         object:nil
-                                                      userInfo:@{KLB_JSON_ENEMY_KEY:self.enemyController.enemyKey}];
+                                                      userInfo:@{KLB_JSON_ENEMY_KEY:self.enemyController.enemyKey,
+                                                                 KLB_JSON_DIFFICULTY:difficultyValue}];
     [self battleCleanUp:YES];
 }
 - (void)battleTimeOver {
@@ -336,10 +342,13 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
                     applyChangesFadeIn:NO
                    applyChangesFadeOut:YES];
         
+        // Experience calculation from Player Controller
+        NSUInteger totalExperience = self.enemyController.enemy.level + (self.enemyController.enemy.level * self.selectedDifficulty);
+        
         // set and fade in the victory image and experience text
         self.experienceLabel.text = [NSString stringWithFormat:@"%@%lu",
                                      KLB_LABEL_EXPERIENCE_TEXT_FORMAT,
-                                     (unsigned long)self.enemyController.enemy.level];
+                                     (unsigned long)totalExperience];
         [KLBAnimator fadeInCALayer:self.experienceLabel.layer
                       applyChanges:YES];
         [KLBAnimator fadeInCALayer:self.victoryImage.layer

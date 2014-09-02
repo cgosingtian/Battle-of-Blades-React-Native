@@ -19,6 +19,7 @@
     
     KLBHomeViewController *homeViewController = [[KLBHomeViewController alloc] init];
     [self.window setRootViewController:homeViewController];
+    [homeViewController release];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

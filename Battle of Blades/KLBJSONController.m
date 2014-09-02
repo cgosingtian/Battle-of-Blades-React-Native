@@ -32,6 +32,9 @@ NSString *const KLB_JSON_ENEMY_LEVEL = @"level";
 NSString *const KLB_JSON_ENEMY_NAME = @"name";
 NSString *const KLB_JSON_ENEMY_TIME_LIMIT = @"time limit";
 
+// Others
+NSString *const KLB_JSON_DIFFICULTY = @"difficulty";
+
 @implementation KLBJSONController
 
 + (NSDictionary *) loadJSONfromFile:(NSString *)file {

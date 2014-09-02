@@ -63,22 +63,25 @@
 
 #pragma mark - IBActions
 - (IBAction)battleButtonTapped:(id)sender {
-    NSDictionary *difficulty = @{@"difficulty":@0};
-    NSLog(@"%@",[difficulty objectForKey:@"difficulty"]);
+    BattleDifficulty selectedDifficulty = Easy;
+    NSNumber *difficultyValue = [NSNumber numberWithInteger:selectedDifficulty];
+    NSDictionary *difficulty = @{@"difficulty":difficultyValue};
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
                                                         object:self
                                                       userInfo:difficulty];
 }
 - (IBAction)averageButtonTapped:(id)sender {
-    NSDictionary *difficulty = @{@"difficulty":@1};
-    NSLog(@"%@",[difficulty objectForKey:@"difficulty"]);
+    BattleDifficulty selectedDifficulty = Average;
+    NSNumber *difficultyValue = [NSNumber numberWithInteger:selectedDifficulty];
+    NSDictionary *difficulty = @{@"difficulty":difficultyValue};
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
                                                         object:self
                                                       userInfo:difficulty];
 }
 - (IBAction)hardButtonTapped:(id)sender {
-    NSDictionary *difficulty = @{@"difficulty":@2};
-    NSLog(@"%@",[difficulty objectForKey:@"difficulty"]);
+    BattleDifficulty selectedDifficulty = Hard;
+    NSNumber *difficultyValue = [NSNumber numberWithInteger:selectedDifficulty];
+    NSDictionary *difficulty = @{@"difficulty":difficultyValue};
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
                                                         object:self
                                                       userInfo:difficulty];

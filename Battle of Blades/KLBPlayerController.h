@@ -12,7 +12,7 @@
 @interface KLBPlayerController : NSObject
 
 // weak reference since PlayerStore has strong reference to it
-@property (unsafe_unretained, nonatomic) KLBPlayer *player;
+@property (retain, nonatomic) KLBPlayer *player;
 
 - (void)loadPlayerData;
 - (NSUInteger)levelUp;

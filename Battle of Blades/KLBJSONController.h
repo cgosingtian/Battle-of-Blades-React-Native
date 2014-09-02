@@ -32,6 +32,9 @@ extern NSString *const KLB_JSON_ENEMY_LEVEL;
 extern NSString *const KLB_JSON_ENEMY_NAME;
 extern NSString *const KLB_JSON_ENEMY_TIME_LIMIT;
 
+// Others
+extern NSString *const KLB_JSON_DIFFICULTY;
+
 @interface KLBJSONController : NSObject
 
 + (NSDictionary *) loadJSONfromFile:(NSString *)file;

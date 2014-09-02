@@ -13,4 +13,6 @@
 @property (retain, nonatomic) IBOutlet UIButton *battleButtonAverage;
 @property (retain, nonatomic) IBOutlet UIButton *battleButtonHard;
 
+@property (nonatomic) enum BattleDifficulty selectedDifficulty;
+
 @end

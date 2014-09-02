@@ -22,7 +22,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.timer invalidate];
-    [self.timer release];
+//    [self.timer release];
     
     [super dealloc];
 }
@@ -162,7 +162,10 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
                                    timeLimitSeconds:timeLimitSeconds];
     
     [[KLBEnemyStore sharedStore] addEnemy:enemy forKey:key];
-    
+    [enemy release];
+//    [keys release];
+//    [enemiesList release];
+//    [jsonDictionary release];
     // We return the key (not the retrieved dictionary) because we
     // want to restrict access to the EnemyStore only (which is done
     // via key).

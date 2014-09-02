@@ -24,6 +24,13 @@ extern NSString *const KLB_NOTIFICATION_ENEMY_TIME_CHANGED;
 extern NSString *const KLB_NOTIFICATION_ATTACK_SUCCESS;
 extern NSString *const KLB_NOTIFICATION_BLOCK_SUCCESS;
 
+typedef enum BattleDifficulty: NSInteger BattleDifficulty;
+enum BattleDifficulty : NSInteger {
+    Easy = 0,
+    Average = 1,
+    Hard = 2
+};
+
 @interface KLBNotifications : NSObject
 
 @end

@@ -21,7 +21,7 @@
 #pragma mark - Dealloc
 - (void)dealloc {
     [_headerViewPlaceholder release];
-    
+    [_playerController release];
     [_footerViewPlaceholder release];
     [_mainViewPlaceholder release];
     [super dealloc];

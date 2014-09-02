@@ -26,7 +26,7 @@ CGFloat const KLB_SHIELD_BUTTON_LAYER_Z_POSITION = 10.0;
 CGFloat const KLB_ATTACK_BUTTON_MAX_ALPHA = 1.0;
 CGFloat const KLB_ATTACK_BUTTON_MIN_ALPHA = 0.0;
 
-CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 2.0;
+CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 
 @implementation KLBAttackButton
 
@@ -65,7 +65,9 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 2.0;
 #pragma mark - Other Initialization Methods
 - (void)initializeValues {
     if (!self.attack) {
-        self.attack = [[KLBAttack alloc] init];
+        KLBAttack *attackInitialized = [[KLBAttack alloc] init];
+        self.attack = attackInitialized;
+        [attackInitialized release];
     } else {
         [self.attack resetValues];
     }
@@ -165,7 +167,9 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 2.0;
         // Timer counts down here
         if (self.attack.timeRemainingSeconds > KLB_ANIMATION_ZERO_F) {
             self.attack.timeRemainingSeconds--;
-            self.alpha = (CGFloat)self.attack.timeRemainingSeconds / (CGFloat)self.attack.lifetimeInSeconds;
+            if (!self.isShield) {
+                self.alpha = (CGFloat)self.attack.timeRemainingSeconds / (CGFloat)self.attack.lifetimeInSeconds;
+            }
         } else {
             [self timeUp];
         }

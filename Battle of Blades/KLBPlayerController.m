@@ -32,7 +32,7 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
 #pragma mark - Dealloc
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
+    [_player release];
     [super dealloc];
 }
 
@@ -78,13 +78,14 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
     NSUInteger playerEnergyMaximum = [[playerData objectForKey:KLB_JSON_PLAYER_ENERGY_MAXIMUM] integerValue];
     NSUInteger playerEnergyCurrent = [[playerData objectForKey:KLB_JSON_PLAYER_ENERGY_CURRENT] integerValue];
     
-    self.player = [[KLBPlayer alloc] initWithName:playerName
-                                            level:playerLevel
-                                        timeBonus:playerTimeBonus
-                                       experience:playerExperience
-                                            kills:playerKills
-                                    energyMaximum:playerEnergyMaximum
-                                    energyCurrent:playerEnergyCurrent];
+    KLBPlayer *newPlayer = [[KLBPlayer alloc] initWithName:playerName
+                                                     level:playerLevel
+                                                 timeBonus:playerTimeBonus
+                                                experience:playerExperience
+                                                     kills:playerKills
+                                             energyMaximum:playerEnergyMaximum
+                                             energyCurrent:playerEnergyCurrent];
+    self.player = newPlayer;
     
     [[KLBPlayerStore sharedStore] setPlayer:self.player];
     
@@ -92,6 +93,8 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
     [self postLevelUpdateNotice];
     [self postExperienceUpdateNotice];
     [self postEnergyUpdateNotice];
+    
+    [newPlayer release];
 }
 
 #pragma mark - Player Actions Performed
@@ -120,7 +123,9 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
     if (notification.userInfo != nil) {
         NSString *enemyKey = [notification.userInfo objectForKey:KLB_JSON_ENEMY_KEY];
         KLBEnemy *defeatedEnemy = [[KLBEnemyStore sharedStore] enemyForKey:enemyKey];
-        [self gainExperience:defeatedEnemy.level];
+        NSInteger difficultyMultiplier = [[notification.userInfo objectForKey:KLB_JSON_DIFFICULTY] integerValue];
+        NSUInteger totalExperience = defeatedEnemy.level + (defeatedEnemy.level * difficultyMultiplier);
+        [self gainExperience:totalExperience];
         [self postExperienceUpdateNotice];
     } else {
         // optional: handle any other player-related penalties here for losing
@@ -233,6 +238,12 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         [self restorePlayerEnergy];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Energy Restored!"
+                                                        message:@"Thank you for your purchase."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
     }
 }
 

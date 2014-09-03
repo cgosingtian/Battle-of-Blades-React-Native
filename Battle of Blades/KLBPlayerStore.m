@@ -38,7 +38,9 @@ NSString *const KLB_PLAYER_STORE_SINGLETON_EXCEPTION = @"Singleton";
 {
     self = [super init];
     if (self) {
-        self.player = [[KLBPlayer alloc] init];
+        KLBPlayer *player = [[KLBPlayer alloc] init];
+        self.player = player;
+        [player release];
     }
     return self;
 }

@@ -142,12 +142,22 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
 
 
 - (void)initializeVariables {
+    //remove all animations - in case the user interrupts an animation mid-way when starting a battle
+    [self.victoryImage.layer removeAllAnimations];
+    [self.experienceLabel.layer removeAllAnimations];
+    [self.defeatLabel.layer removeAllAnimations];
+    [self.defeatHintLabel.layer removeAllAnimations];
+    [self.battleGradientBackground.layer removeAllAnimations];
+    [self.coverView.layer removeAllAnimations];
+    
+    //initializations
     self.coverView.alpha = KLB_MAX_ALPHA;
     self.battleGradientBackground.alpha = KLB_ANIMATION_ZERO_F;
     self.battleGradientBackground.layer.opacity = KLB_ANIMATION_ZERO_F;
     self.defeatLabel.alpha = KLB_ANIMATION_ZERO_F;
     self.defeatHintLabel.alpha = KLB_ANIMATION_ZERO_F;
     self.victoryImage.alpha = KLB_ANIMATION_ZERO_F;
+    self.victoryImage.layer.opacity = KLB_ANIMATION_ZERO_F;
     self.experienceLabel.alpha = KLB_ANIMATION_ZERO_F;
     self.enemyDefenseAllowed = NO;
 }

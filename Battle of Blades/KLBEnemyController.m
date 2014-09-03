@@ -22,6 +22,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.timer invalidate];
+    [self.enemy release];
 //    [self.timer release];
     
     [super dealloc];
@@ -35,6 +36,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
         self.enemyKey = key;
         self.enemy = [[KLBEnemyStore sharedStore] enemyForKey:key];
         [self registerForNotifications];
+        [key release];
     }
     return self;
 }
@@ -138,8 +140,9 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
 
 #pragma mark - Enemy Loading
 - (void)loadNewEnemyRandom {
-    self.enemyKey = [self loadRandomEnemyData];
-    self.enemy = [[KLBEnemyStore sharedStore] enemyForKey:self.enemyKey];
+    NSString *enemyKey = [self loadRandomEnemyData];
+    self.enemyKey = enemyKey;
+    [enemyKey release];
 }
 
 - (NSString *)loadRandomEnemyData {
@@ -160,12 +163,14 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
                                               level:enemyLevel
                                       healthMaximum:enemyHealthMaximum
                                    timeLimitSeconds:timeLimitSeconds];
+
+    self.enemy = enemy;
     
     [[KLBEnemyStore sharedStore] addEnemy:enemy forKey:key];
     [enemy release];
-//    [keys release];
-//    [enemiesList release];
-//    [jsonDictionary release];
+    
+    // a string is getting leaked in memory here for some reason...
+    
     // We return the key (not the retrieved dictionary) because we
     // want to restrict access to the EnemyStore only (which is done
     // via key).

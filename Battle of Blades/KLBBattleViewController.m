@@ -150,6 +150,11 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     [self.battleGradientBackground.layer removeAllAnimations];
     [self.coverView.layer removeAllAnimations];
     
+    [self.victoryImage.layer setHidden:YES];
+    [self.experienceLabel.layer setHidden:YES];
+    [self.defeatLabel.layer setHidden:YES];
+    [self.defeatHintLabel.layer setHidden:YES];
+    
     //initializations
     self.coverView.alpha = KLB_MAX_ALPHA;
     self.battleGradientBackground.alpha = KLB_ANIMATION_ZERO_F;
@@ -362,8 +367,10 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
         self.experienceLabel.text = [NSString stringWithFormat:@"%@%lu",
                                      KLB_LABEL_EXPERIENCE_TEXT_FORMAT,
                                      (unsigned long)totalExperience];
+        [self.experienceLabel.layer setHidden:NO];
         [KLBAnimator fadeInCALayer:self.experienceLabel.layer
                       applyChanges:YES];
+        [self.victoryImage.layer setHidden:NO];
         [KLBAnimator fadeInCALayer:self.victoryImage.layer
                           duration:KLB_VICTORY_FADE_IN_DURATION
                       applyChanges:YES];
@@ -378,6 +385,9 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
                        fadeOutDuration:KLB_DEFEAT_FADE_OUT_DURATION
                     applyChangesFadeIn:NO
                    applyChangesFadeOut:YES];
+        
+        // show the defeat label
+        [self.defeatLabel.layer setHidden:NO];
         [KLBAnimator fadeInCALayer:self.defeatLabel.layer
                       applyChanges:YES];
         
@@ -387,6 +397,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
         (self.defeatHintLabel.text = KLB_DEFEAT_HINT_2);
         
         // show the hint via fade in
+        [self.defeatHintLabel.layer setHidden:NO];
         [KLBAnimator fadeInCALayer:self.defeatHintLabel.layer
                       applyChanges:YES];
     }

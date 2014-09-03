@@ -151,7 +151,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
     NSDictionary *enemiesList = [jsonDictionary objectForKey:KLB_JSON_ENEMIES_LIST];
     
     NSArray *keys = [enemiesList allKeys];
-    NSUInteger randomIndex = arc4random_uniform([keys count]);
+    NSUInteger randomIndex = (NSUInteger)arc4random_uniform([keys count]);
     NSString *key = [keys objectAtIndex:randomIndex];
     
     NSString *enemyName = [enemiesList[key] objectForKey:KLB_JSON_ENEMY_NAME];

@@ -34,6 +34,8 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     _delegate = nil;
+    [_moveTimer release];
+    [_waitTimer release];
     [_attackButton release];
     [_attack release];
     _attackButton = nil;

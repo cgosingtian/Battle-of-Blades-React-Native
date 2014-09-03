@@ -33,6 +33,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 #pragma mark - Dealloc
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    _delegate = nil;
     [_attackButton release];
     [_attack release];
     _attackButton = nil;
@@ -144,11 +145,11 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 
 #pragma mark - Battle Methods
 - (void)handleBattleEnd {
+    self.enabled = NO;
     [self.moveTimer invalidate];
     if (self.waitTimer)
         [self.waitTimer invalidate];
 //    _moveTimer = nil;
-    self.enabled = NO;
     [self removeFromSuperview];
     [[KLBAttackButtonStore sharedStore] removeItem:self];
 }
@@ -181,13 +182,14 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 // When the time of the attack expires, we tell the delegate that the attack failed.
 // Then we end the button's existence.
 - (void)timeUp {
+    self.enabled = NO;
     if ([self.delegate respondsToSelector:@selector(attackWillFail:)]) {
         [self.delegate attackWillFail:self];
     }
     if ([self.delegate respondsToSelector:@selector(attackDidFail:)]) {
         [self.delegate attackDidFail:self];
     }
-    [self handleBattleEnd];
+    //[self handleBattleEnd];
 }
 
 #pragma mark - Movement Methods
@@ -237,8 +239,6 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
             randomY = self.frame.origin.y - KLB_ATTACK_BUTTON_MOVEMENT_RANGE;
         }
     }
-    
-    NSLog(@"Generating random point x: %f y: %f",randomX,randomY);
     
     return CGPointMake(randomX, randomY);
 }

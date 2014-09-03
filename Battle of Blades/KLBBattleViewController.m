@@ -27,6 +27,7 @@ CGFloat const KLB_MAX_ALPHA = 1.0;
 CGFloat const KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH = 0.5;
 NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN = 10;
 CGFloat const KLB_BUTTON_SPAWN_FADE_IN_DURATION = 0.35;
+NSInteger const KLB_BUTTON_SPAWN_MINIMUM = 1;
 
 CGFloat const KLB_BUTTON_SHIELD_CONVERT_CHANCE_PERCENT = 8;
 CGFloat const KLB_BUTTON_SHIELD_CONVERT_PERCENT = 100;
@@ -265,6 +266,8 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
         NSUInteger maximumButtonSpawns = enemyHealth * KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH;
         NSUInteger numberOfButtons = arc4random_uniform(maximumButtonSpawns);
         if (numberOfButtons < minimumButtonSpawns) {
+            if (minimumButtonSpawns == 0)
+                numberOfButtons = KLB_BUTTON_SPAWN_MINIMUM;
             numberOfButtons = minimumButtonSpawns;
         } else if (numberOfButtons > KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN) {
             numberOfButtons = KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN;

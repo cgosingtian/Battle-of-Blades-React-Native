@@ -29,7 +29,7 @@ CGFloat const KLB_MOVE_ANIMATION_DURATION = 1.5;
 
 // flashWhiteCALayer
 CGFloat const KLB_FLASH_WHITE_DURATION = 0.1;
-CGFloat const KLB_FLASH_WHITE_SECOND_FLASH_OPACITY = 0.5;
+CGFloat const KLB_FLASH_WHITE_OPACITY = 0.5;
 
 // flashAlphaCALayer
 CGFloat const KLB_FLASH_ALPHA_FADE_IN_DURATION = 0.5;
@@ -192,6 +192,7 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     [tintLayer setBackgroundColor:[[UIColor whiteColor] CGColor]];
     [tintLayer setOpacity:KLB_FADE_IN_OPACITY_START];
     [tintLayer setBounds:[layer bounds]];
+    // Center the tint layer
     [tintLayer setPosition:CGPointMake([layer bounds].size.width/2.0,
                                        [layer bounds].size.height/2.0)];
     
@@ -210,7 +211,7 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     
     NSMutableArray *transparencyValues = [[NSMutableArray alloc] init];
     [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_START]];
-    [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_END]];
+    [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FLASH_WHITE_OPACITY]];
 
     transparency.values = transparencyValues;
     

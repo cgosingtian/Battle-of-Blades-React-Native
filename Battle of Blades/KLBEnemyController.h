@@ -11,7 +11,7 @@
 
 extern NSUInteger const KLB_ENEMY_TIME_REDUCTION_SPEED_SECONDS;
 extern NSUInteger const KLB_ENEMY_HEALTH_LOSS_ON_ATTACK;
-extern NSUInteger const KLB_ENEMY_HEALTH_TO_DIE;
+extern NSInteger const KLB_ENEMY_HEALTH_TO_DIE;
 extern NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK;
 
 @interface KLBEnemyController : NSObject

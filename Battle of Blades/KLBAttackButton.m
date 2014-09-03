@@ -20,11 +20,13 @@ CGFloat const KLB_ATTACK_BUTTON_MOVEMENT_SPEED = 1;
 CGFloat const KLB_ATTACK_BUTTON_MOVEMENT_INTERVAL = 0.03;
 CGFloat const KLB_ATTACK_BUTTON_WAIT_INTERVAL = 1.5;
 
-NSString *const KLB_SHIELD_BUTTON_IMAGE_FILENAME = @"shieldbutton.png";
+CGFloat const KLB_SHIELD_BUTTON_MOVEMENT_RANGE = 90.0;
+NSString *const KLB_SHIELD_BUTTON_IMAGE_FILENAME = @"shieldbutton2.png";
 CGFloat const KLB_SHIELD_BUTTON_LAYER_Z_POSITION = 10.0;
 
 CGFloat const KLB_ATTACK_BUTTON_MAX_ALPHA = 1.0;
-CGFloat const KLB_ATTACK_BUTTON_MIN_ALPHA = 0.0;
+CGFloat const KLB_ATTACK_BUTTON_MIN_ALPHA = 0.2;
+CGFloat const KLB_ATTACK_BUTTON_ZERO_ALPHA = 0.0;
 
 CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 
@@ -40,6 +42,8 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
     [_attack release];
     _attackButton = nil;
     _attack = nil;
+    [_countdownLabel release];
+    [_containerView release];
     [super dealloc];
 }
 
@@ -78,6 +82,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
     self.alpha = KLB_ATTACK_BUTTON_MAX_ALPHA;
     self.isShield = NO;
     self.canMove = NO;
+    self.countdownLabel.text = [NSString stringWithFormat:@"%ld",(long)self.attack.timeRemainingSeconds];
 }
 
 - (void)convertToShield {
@@ -87,18 +92,17 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
     self.attack.lifetimeInSeconds *= KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER;
     self.attack.timeRemainingSeconds = self.attack.lifetimeInSeconds;
     
-    UIButton *actualButton = [[self subviews] objectAtIndex:0];
-    
     UIImage *shieldImage = [UIImage imageNamed:KLB_SHIELD_BUTTON_IMAGE_FILENAME];
-    [actualButton setImage:shieldImage forState:UIControlStateNormal];
+    [self.attackButton setImage:shieldImage forState:UIControlStateNormal];
     
     self.layer.zPosition = KLB_SHIELD_BUTTON_LAYER_Z_POSITION;
-    CGRect buttonFrame = actualButton.frame;
-    CGPoint buttonOrigin = buttonFrame.origin;
-    CGSize buttonSize = buttonFrame.size;
+    CGSize buttonSize = self.containerView.frame.size;
     buttonSize = CGSizeMake(buttonSize.width*2.0, buttonSize.height*2.0);
-    actualButton.frame = CGRectMake(buttonOrigin.x, buttonOrigin.y, buttonSize.width, buttonSize.height);
-    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, actualButton.frame.size.width, actualButton.frame.size.width);
+    self.containerView.frame = CGRectMake(self.containerView.frame.origin.x, self.containerView.frame.origin.y, buttonSize.width, buttonSize.height);
+    self.frame = CGRectMake(self.frame.origin.x,self.frame.origin.y,self.containerView.frame.size.width,self.containerView.frame.size.height);
+    [self.containerView setNeedsLayout];
+    
+    [self.countdownLabel.layer setHidden:YES];
 }
 
 - (void)allowMovement {
@@ -129,7 +133,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 #pragma mark - IBActions
 - (IBAction)buttonTapped:(id)sender {
     self.enabled = NO;
-    self.alpha = KLB_ATTACK_BUTTON_MIN_ALPHA;
+    self.alpha = KLB_ATTACK_BUTTON_ZERO_ALPHA;
     if ([self.delegate respondsToSelector:@selector(attackWillSucceed:)]) {
         [self.delegate attackWillSucceed:self];
     }
@@ -147,16 +151,20 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 
 #pragma mark - Battle Methods
 - (void)handleBattleEnd {
-    self.enabled = NO;
-    [self.moveTimer invalidate];
-    if (self.waitTimer)
-        [self.waitTimer invalidate];
-//    _moveTimer = nil;
-    [self removeFromSuperview];
-    [[KLBAttackButtonStore sharedStore] removeItem:self];
+    // This method should only be run once in the lifetime of this object.
+    dispatch_once(&_onceToken, ^{
+        [self.layer removeAllAnimations];
+        self.attackButton.enabled = NO;
+        [self.moveTimer invalidate];
+        if (self.waitTimer)
+            [self.waitTimer invalidate];
+        [self removeFromSuperview];
+        [[KLBAttackButtonStore sharedStore] removeItem:self];
+    });
 }
 
 - (void)handleTime {
+    [self updateCountdownLabel];
     // If this attack button is enabled, proceed normally.
     // Otherwise, we end the button's existence.
     if (self.enabled) {
@@ -171,14 +179,23 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
         if (self.attack.timeRemainingSeconds > KLB_ANIMATION_ZERO_F) {
             self.attack.timeRemainingSeconds--;
             if (!self.isShield) {
-                self.alpha = (CGFloat)self.attack.timeRemainingSeconds / (CGFloat)self.attack.lifetimeInSeconds;
+                [self updateCountdownLabel];
+                self.alpha = MAX(KLB_ATTACK_BUTTON_MIN_ALPHA,
+                                 (CGFloat)self.attack.timeRemainingSeconds / (CGFloat)self.attack.lifetimeInSeconds
+                                 );
             }
-        } else {
+        }
+        if (self.attack.timeRemainingSeconds <= KLB_ANIMATION_ZERO_F) {
             [self timeUp];
         }
-    } else {
+      }
+    else {
         [self handleBattleEnd];
     }
+}
+
+- (void)updateCountdownLabel {
+    self.countdownLabel.text = [NSString stringWithFormat:@"%ld",(long)self.attack.timeRemainingSeconds];
 }
 
 // When the time of the attack expires, we tell the delegate that the attack failed.
@@ -191,7 +208,6 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
     if ([self.delegate respondsToSelector:@selector(attackDidFail:)]) {
         [self.delegate attackDidFail:self];
     }
-    //[self handleBattleEnd];
 }
 
 #pragma mark - Movement Methods
@@ -214,6 +230,12 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 }
 
 - (CGPoint)generateRandomPoint {
+    CGFloat range;
+    if (self.isShield) {
+        range = KLB_SHIELD_BUTTON_MOVEMENT_RANGE;
+    } else {
+        range = KLB_ATTACK_BUTTON_MOVEMENT_RANGE;
+    }
     CGRect superviewFrame = [self superview].frame;
     
     CGFloat maxX = superviewFrame.size.width - self.frame.size.width;
@@ -265,8 +287,9 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
             // we add together all of the needed movement adjustments to a single CGPoint
             // then update the frame in one go
             CGPoint destinationResult = self.frame.origin;
+            CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
+            
             if (destinationResult.x > self.moveDestination.x) {
-                CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
                 CGFloat x = destinationResult.x - velocity;
                 CGFloat y = destinationResult.y;
                 
@@ -275,7 +298,6 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
                 
                 destinationResult = CGPointMake(x, y);
             } else if (destinationResult.x < self.moveDestination.x) {
-                CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
                 CGFloat x = destinationResult.x + velocity;
                 CGFloat y = destinationResult.y;
                 
@@ -286,7 +308,6 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
             }
             
             if (destinationResult.y > self.moveDestination.y) {
-                CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
                 CGFloat x = destinationResult.x;
                 CGFloat y = destinationResult.y - velocity;
                 
@@ -295,7 +316,6 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
                 
                 destinationResult = CGPointMake(x, y);
             } else if (destinationResult.y < self.moveDestination.y) {
-                CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
                 CGFloat x = destinationResult.x;
                 CGFloat y = destinationResult.y + velocity;
                 

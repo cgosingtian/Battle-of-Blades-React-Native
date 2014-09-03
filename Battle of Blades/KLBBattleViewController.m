@@ -24,10 +24,10 @@ NSString *const KLB_LABEL_LEVEL_TEXT_FORMAT = @"Level ";
 NSString *const KLB_LABEL_EXPERIENCE_TEXT_FORMAT = @"Experience: +";
 
 CGFloat const KLB_MAX_ALPHA = 1.0;
-CGFloat const KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH = 0.5;
-NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN = 10;
+NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN = 16;
 CGFloat const KLB_BUTTON_SPAWN_FADE_IN_DURATION = 0.35;
-NSInteger const KLB_BUTTON_SPAWN_MINIMUM = 1;
+NSInteger const KLB_BUTTON_SPAWN_MAXIMUM_PER_SECOND = 3;
+NSInteger const KLB_BUTTON_SPAWN_MINIMUM_PER_SECOND = 1;
 
 CGFloat const KLB_BUTTON_SHIELD_CONVERT_CHANCE_PERCENT = 8;
 CGFloat const KLB_BUTTON_SHIELD_CONVERT_PERCENT = 100;
@@ -276,17 +276,14 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     NSUInteger enemyTime = self.enemyController.enemy.timeLimitSeconds;
     if ([[[KLBAttackButtonStore sharedStore] allItems] count] < KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN &&
         enemyTime > 0) {
-        NSUInteger enemyHealth = self.enemyController.enemy.healthMaximum;
-        NSUInteger minimumButtonSpawns = enemyHealth / enemyTime;
-        NSUInteger maximumButtonSpawns = enemyHealth * KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH;
+        NSUInteger minimumButtonSpawns = KLB_BUTTON_SPAWN_MINIMUM_PER_SECOND;
+        NSUInteger maximumButtonSpawns = KLB_BUTTON_SPAWN_MAXIMUM_PER_SECOND;
         NSUInteger numberOfButtons = arc4random_uniform(maximumButtonSpawns);
-        if (numberOfButtons < minimumButtonSpawns) {
-            if (minimumButtonSpawns == 0)
-                numberOfButtons = KLB_BUTTON_SPAWN_MINIMUM;
+        
+        if (numberOfButtons == 0) {
             numberOfButtons = minimumButtonSpawns;
-        } else if (numberOfButtons > KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN) {
-            numberOfButtons = KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN;
         }
+        
         for (int i = 0; i < numberOfButtons; i++) {
             [self spawnAttackButton];
         }
@@ -331,6 +328,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
 }
 
 - (void)battleWin {
+    NSLog(@"WIN");
     // win due to enemy losing health before time runs out
     NSNumber *difficultyValue = [NSNumber numberWithInteger:self.selectedDifficulty];
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
@@ -340,6 +338,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     [self battleCleanUp:YES];
 }
 - (void)battleTimeOver {
+    NSLog(@"LOSE");
     // lose due to time running out
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
                                                         object:nil
@@ -425,9 +424,11 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
                                                             object:nil
                                                           userInfo:nil];
     } else {
+        NSNumber *buttonTime = [NSNumber numberWithInteger:button.attack.timeRemainingSeconds];
+        NSDictionary *buttonData = @{KLB_JSON_ENEMY_TIME_LIMIT:buttonTime};
         [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ATTACK_SUCCESS
                                                             object:nil
-                                                          userInfo:nil];
+                                                          userInfo:buttonData];
     }
 }
 - (void)attackWillFail:(id)sender { //optional

@@ -29,7 +29,7 @@ NSUInteger const KLB_DEFAULT_ENEMY_TIME_LIMIT_SECONDS = 30;
         self.enemyName = enemyName;
         self.level = level;
         self.healthMaximum = healthMaximum;
-        self.healthRemaining = healthMaximum;
+        self.healthRemaining = (NSInteger)healthMaximum;
         self.timeLimitSeconds = timeLimitSeconds;
     }
     return self;

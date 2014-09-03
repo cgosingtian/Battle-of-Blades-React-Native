@@ -13,7 +13,7 @@
 
 NSUInteger const KLB_ENEMY_TIME_REDUCTION_SPEED_SECONDS = 1; //reduce time by X every second
 NSUInteger const KLB_ENEMY_HEALTH_LOSS_ON_ATTACK = 1; // reduce health by X on successful attack
-NSUInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
+NSInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
 NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, lose X seconds
 
 @implementation KLBEnemyController
@@ -54,7 +54,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
                                                  name:KLB_NOTIFICATION_BATTLE_START
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(attackSuccess)
+                                             selector:@selector(attackSuccess:)
                                                  name:KLB_NOTIFICATION_ATTACK_SUCCESS
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -97,9 +97,14 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
 }
 
 #pragma mark - Enemy Stats Management
-- (void)attackSuccess {
+- (void)attackSuccess:(NSNotification *) notification {
     if (self.timer.isValid) {
-        self.enemy.healthRemaining -= KLB_ENEMY_HEALTH_LOSS_ON_ATTACK;
+        if (notification.userInfo) {
+            NSUInteger damage = [[notification.userInfo objectForKey:KLB_JSON_ENEMY_TIME_LIMIT] integerValue];
+            self.enemy.healthRemaining -= damage;
+        } else {
+            self.enemy.healthRemaining -= KLB_ENEMY_HEALTH_LOSS_ON_ATTACK;
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_HEALTH_CHANGED
                                                             object:nil
                                                           userInfo:nil];
@@ -116,6 +121,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
 }
 - (void)blockSuccess {
     if (self.timer.isValid) {
+        NSLog(@"ENEMY TIME CHANGE");
         self.enemy.timeLimitSeconds -= KLB_ENEMY_TIME_REDUCTION_ON_BLOCK;
         [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_TIME_CHANGED
                                                             object:nil

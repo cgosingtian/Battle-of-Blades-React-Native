@@ -48,6 +48,8 @@
 		4FA46DC619B0333B0078E23B /* KLBAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA46DC519B0333B0078E23B /* KLBAnimator.m */; };
 		4FBF313C19B6C948002AA212 /* screenfooteravghardhint.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF313A19B6C948002AA212 /* screenfooteravghardhint.png */; };
 		4FBF313D19B6C948002AA212 /* screenfootereasyhint.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF313B19B6C948002AA212 /* screenfootereasyhint.png */; };
+		4FBF314019B6EBB2002AA212 /* attackbutton2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF313F19B6EBB2002AA212 /* attackbutton2.png */; };
+		4FBF314219B712A5002AA212 /* shieldbutton2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF314119B712A5002AA212 /* shieldbutton2.png */; };
 		4FCD802C19B5B79B000DBE8B /* maincover.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FCD802B19B5B79B000DBE8B /* maincover.png */; };
 		4FEC6DB319AF1A7600C9DAA8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEC6DB219AF1A7600C9DAA8 /* Foundation.framework */; };
 		4FEC6DB519AF1A7600C9DAA8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEC6DB419AF1A7600C9DAA8 /* CoreGraphics.framework */; };
@@ -133,6 +135,8 @@
 		4FBF313A19B6C948002AA212 /* screenfooteravghardhint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = screenfooteravghardhint.png; path = Resources/screenfooteravghardhint.png; sourceTree = "<group>"; };
 		4FBF313B19B6C948002AA212 /* screenfootereasyhint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = screenfootereasyhint.png; path = Resources/screenfootereasyhint.png; sourceTree = "<group>"; };
 		4FBF313E19B6CF53002AA212 /* KLBChildViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KLBChildViewDelegate.h; sourceTree = "<group>"; };
+		4FBF313F19B6EBB2002AA212 /* attackbutton2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = attackbutton2.png; path = Resources/attackbutton2.png; sourceTree = "<group>"; };
+		4FBF314119B712A5002AA212 /* shieldbutton2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shieldbutton2.png; path = Resources/shieldbutton2.png; sourceTree = "<group>"; };
 		4FCD802B19B5B79B000DBE8B /* maincover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = maincover.png; path = Resources/maincover.png; sourceTree = "<group>"; };
 		4FEC6DAF19AF1A7600C9DAA8 /* Battle of Blades.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Battle of Blades.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FEC6DB219AF1A7600C9DAA8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -341,29 +345,31 @@
 		4FEC6DE419AF1B3D00C9DAA8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FBF313A19B6C948002AA212 /* screenfooteravghardhint.png */,
-				4FBF313B19B6C948002AA212 /* screenfootereasyhint.png */,
-				4FCD802B19B5B79B000DBE8B /* maincover.png */,
-				4F5613B419B571CD000DA489 /* enemyaverage.png */,
-				4F5613B519B571CD000DA489 /* enemyeasy.png */,
-				4F5613B619B571CD000DA489 /* enemyhard.png */,
+				4F5C324219AF24240020AA13 /* bladedata.json */,
+				4FA46DA519B011CD0078E23B /* attackbutton.png */,
+				4FBF313F19B6EBB2002AA212 /* attackbutton2.png */,
+				4F5C324F19AF2AC00020AA13 /* battlebutton.png */,
 				4F5613AE19B56F0F000DA489 /* battlebuttonaverage.png */,
 				4F5613AF19B56F0F000DA489 /* battlebuttoneasy.png */,
 				4F5613B019B56F0F000DA489 /* battlebuttonhard.png */,
-				4F5613AC19B5642F000DA489 /* shieldbutton.png */,
-				4F5613A419B54ADC000DA489 /* bluegradientbg.png */,
-				4F5613A519B54ADC000DA489 /* greengradientbg.png */,
-				4F5613A619B54ADC000DA489 /* redgradientbg.png */,
-				4F5613A719B54ADC000DA489 /* victory.png */,
 				4FA46DC019B02D8F0078E23B /* battleinfobg.png */,
+				4F5613A419B54ADC000DA489 /* bluegradientbg.png */,
 				4FA46DC119B02D8F0078E23B /* enemy.png */,
-				4FA46DA519B011CD0078E23B /* attackbutton.png */,
-				4F5C324F19AF2AC00020AA13 /* battlebutton.png */,
-				4F5C325019AF2AC00020AA13 /* screenfooterbg.png */,
+				4F5613B419B571CD000DA489 /* enemyaverage.png */,
+				4F5613B519B571CD000DA489 /* enemyeasy.png */,
+				4F5613B619B571CD000DA489 /* enemyhard.png */,
+				4F5613A519B54ADC000DA489 /* greengradientbg.png */,
 				4F5C324419AF242C0020AA13 /* headerbgleft.png */,
 				4F5C324619AF24700020AA13 /* headerbgright.png */,
-				4F5C324219AF24240020AA13 /* bladedata.json */,
+				4FCD802B19B5B79B000DBE8B /* maincover.png */,
 				4F5C324819AF24B20020AA13 /* playerbutton.png */,
+				4F5613A619B54ADC000DA489 /* redgradientbg.png */,
+				4FBF313A19B6C948002AA212 /* screenfooteravghardhint.png */,
+				4F5C325019AF2AC00020AA13 /* screenfooterbg.png */,
+				4FBF313B19B6C948002AA212 /* screenfootereasyhint.png */,
+				4F5613AC19B5642F000DA489 /* shieldbutton.png */,
+				4FBF314119B712A5002AA212 /* shieldbutton2.png */,
+				4F5613A719B54ADC000DA489 /* victory.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -451,12 +457,14 @@
 				4F5C325219AF2AC00020AA13 /* screenfooterbg.png in Resources */,
 				4F5C324519AF242C0020AA13 /* headerbgleft.png in Resources */,
 				4F5C324719AF24700020AA13 /* headerbgright.png in Resources */,
+				4FBF314019B6EBB2002AA212 /* attackbutton2.png in Resources */,
 				4F5C324E19AF29C40020AA13 /* KLBHomeFooterView.xib in Resources */,
 				4FA46DC219B02D8F0078E23B /* battleinfobg.png in Resources */,
 				4F5613AA19B54ADC000DA489 /* redgradientbg.png in Resources */,
 				4F5613A819B54ADC000DA489 /* bluegradientbg.png in Resources */,
 				4F5613B119B56F0F000DA489 /* battlebuttonaverage.png in Resources */,
 				4F5613B319B56F0F000DA489 /* battlebuttonhard.png in Resources */,
+				4FBF314219B712A5002AA212 /* shieldbutton2.png in Resources */,
 				4FBF313C19B6C948002AA212 /* screenfooteravghardhint.png in Resources */,
 				4F5C323F19AF22F50020AA13 /* KLBHomeHeaderView.xib in Resources */,
 				4FEC6DBD19AF1A7600C9DAA8 /* InfoPlist.strings in Resources */,

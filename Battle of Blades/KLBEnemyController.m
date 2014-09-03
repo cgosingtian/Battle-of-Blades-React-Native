@@ -23,6 +23,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.timer invalidate];
     [self.enemy release];
+    [self.enemyKey release];
 //    [self.timer release];
     
     [super dealloc];
@@ -168,6 +169,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
     
     [[KLBEnemyStore sharedStore] addEnemy:enemy forKey:key];
     [enemy release];
+    [enemyName release];
     
     // a string is getting leaked in memory here for some reason...
     

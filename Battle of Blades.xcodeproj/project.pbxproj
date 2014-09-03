@@ -35,8 +35,6 @@
 		4F5C325519AF2BDC0020AA13 /* KLBBattleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C325419AF2BDC0020AA13 /* KLBBattleViewController.m */; };
 		4F5C325719AF2BEB0020AA13 /* KLBBattleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C325619AF2BEB0020AA13 /* KLBBattleViewController.xib */; };
 		4FA261E319B04BFA00E81CE2 /* KLBPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA261E219B04BFA00E81CE2 /* KLBPlayerController.m */; };
-		4FA46D9A19B00E7E0078E23B /* KLBPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA46D9919B00E7E0078E23B /* KLBPlayerView.m */; };
-		4FA46D9C19B00E9C0078E23B /* KLBPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA46D9B19B00E9C0078E23B /* KLBPlayerView.xib */; };
 		4FA46D9F19B0106E0078E23B /* KLBAttack.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA46D9E19B0106E0078E23B /* KLBAttack.m */; };
 		4FA46DA219B0117F0078E23B /* KLBAttackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA46DA119B0117F0078E23B /* KLBAttackButton.m */; };
 		4FA46DA419B011A00078E23B /* KLBAttackButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA46DA319B011A00078E23B /* KLBAttackButton.xib */; };
@@ -113,9 +111,6 @@
 		4F5C325619AF2BEB0020AA13 /* KLBBattleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBBattleViewController.xib; sourceTree = "<group>"; };
 		4FA261E119B04BFA00E81CE2 /* KLBPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBPlayerController.h; sourceTree = "<group>"; };
 		4FA261E219B04BFA00E81CE2 /* KLBPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBPlayerController.m; sourceTree = "<group>"; };
-		4FA46D9819B00E7E0078E23B /* KLBPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBPlayerView.h; sourceTree = "<group>"; };
-		4FA46D9919B00E7E0078E23B /* KLBPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBPlayerView.m; sourceTree = "<group>"; };
-		4FA46D9B19B00E9C0078E23B /* KLBPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KLBPlayerView.xib; sourceTree = "<group>"; };
 		4FA46D9D19B0106E0078E23B /* KLBAttack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBAttack.h; sourceTree = "<group>"; };
 		4FA46D9E19B0106E0078E23B /* KLBAttack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBAttack.m; sourceTree = "<group>"; };
 		4FA46DA019B0117F0078E23B /* KLBAttackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLBAttackButton.h; sourceTree = "<group>"; };
@@ -319,9 +314,6 @@
 				4F5C324A19AF29B20020AA13 /* KLBHomeFooterView.h */,
 				4F5C324B19AF29B20020AA13 /* KLBHomeFooterView.m */,
 				4F5C324D19AF29C40020AA13 /* KLBHomeFooterView.xib */,
-				4FA46D9819B00E7E0078E23B /* KLBPlayerView.h */,
-				4FA46D9919B00E7E0078E23B /* KLBPlayerView.m */,
-				4FA46D9B19B00E9C0078E23B /* KLBPlayerView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -461,7 +453,6 @@
 				4F5C324719AF24700020AA13 /* headerbgright.png in Resources */,
 				4F5C324E19AF29C40020AA13 /* KLBHomeFooterView.xib in Resources */,
 				4FA46DC219B02D8F0078E23B /* battleinfobg.png in Resources */,
-				4FA46D9C19B00E9C0078E23B /* KLBPlayerView.xib in Resources */,
 				4F5613AA19B54ADC000DA489 /* redgradientbg.png in Resources */,
 				4F5613A819B54ADC000DA489 /* bluegradientbg.png in Resources */,
 				4F5613B119B56F0F000DA489 /* battlebuttonaverage.png in Resources */,
@@ -511,7 +502,6 @@
 				4FEC6DEC19AF1BE200C9DAA8 /* KLBEnemy.m in Sources */,
 				4F2B0DD219B3F8BC00D99433 /* KLBEnemyController.m in Sources */,
 				4F5C325519AF2BDC0020AA13 /* KLBBattleViewController.m in Sources */,
-				4FA46D9A19B00E7E0078E23B /* KLBPlayerView.m in Sources */,
 				4F5C324C19AF29B20020AA13 /* KLBHomeFooterView.m in Sources */,
 				4FEC6DC319AF1A7600C9DAA8 /* KLBAppDelegate.m in Sources */,
 				4FEC6DE919AF1BD600C9DAA8 /* KLBPlayer.m in Sources */,

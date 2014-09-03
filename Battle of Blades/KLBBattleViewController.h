@@ -68,6 +68,4 @@ extern NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME;
 
 @property (nonatomic) BattleDifficulty selectedDifficulty;
 
-//@property (retain,nonatomic) UIView *blackView;
-
 @end

@@ -8,6 +8,11 @@
 
 #import "KLBHomeFooterView.h"
 #import "KLBNotifications.h"
+#import "KLBAnimator.h"
+
+NSString *const KLB_FOOTER_HINT_EASY_IMAGE_FILENAME = @"screenfootereasyhint.png";
+NSString *const KLB_FOOTER_HINT_AVERAGE_IMAGE_FILENAME = @"screenfooteravghardhint.png";
+NSString *const KLB_FOOTER_HINT_HARD_IMAGE_FILENAME = @"screenfooteravghardhint.png";
 
 @implementation KLBHomeFooterView
 
@@ -16,6 +21,7 @@
     [_battleButton release];
     [_battleButtonAverage release];
     [_battleButtonHard release];
+    [_imageHint release];
     [super dealloc];
 }
 
@@ -61,26 +67,30 @@
                                                object:nil];
 }
 
+- (void)initializeVariables {
+    [self.imageHint.layer setHidden:YES];
+}
+
 #pragma mark - IBActions
 - (IBAction)battleButtonTapped:(id)sender {
-    BattleDifficulty selectedDifficulty = Easy;
-    NSNumber *difficultyValue = [NSNumber numberWithInteger:selectedDifficulty];
+    self.selectedDifficulty = Easy;
+    NSNumber *difficultyValue = [NSNumber numberWithInteger:self.selectedDifficulty];
     NSDictionary *difficulty = @{@"difficulty":difficultyValue};
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
                                                         object:self
                                                       userInfo:difficulty];
 }
 - (IBAction)averageButtonTapped:(id)sender {
-    BattleDifficulty selectedDifficulty = Average;
-    NSNumber *difficultyValue = [NSNumber numberWithInteger:selectedDifficulty];
+    self.selectedDifficulty = Average;
+    NSNumber *difficultyValue = [NSNumber numberWithInteger:self.selectedDifficulty];
     NSDictionary *difficulty = @{@"difficulty":difficultyValue};
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
                                                         object:self
                                                       userInfo:difficulty];
 }
 - (IBAction)hardButtonTapped:(id)sender {
-    BattleDifficulty selectedDifficulty = Hard;
-    NSNumber *difficultyValue = [NSNumber numberWithInteger:selectedDifficulty];
+    self.selectedDifficulty = Hard;
+    NSNumber *difficultyValue = [NSNumber numberWithInteger:self.selectedDifficulty];
     NSDictionary *difficulty = @{@"difficulty":difficultyValue};
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
                                                         object:self
@@ -92,10 +102,37 @@
     [_battleButton setEnabled:NO];
     [_battleButtonAverage setEnabled:NO];
     [_battleButtonHard setEnabled:NO];
+    [self setupImageHint];
+    [self.imageHint.layer setHidden:NO];
+    [KLBAnimator fadeInCALayer:self.imageHint.layer applyChanges:YES];
 }
 - (void)battleWillEnd {
     [_battleButton setEnabled:YES];
     [_battleButtonAverage setEnabled:YES];
     [_battleButtonHard setEnabled:YES];
+    [self setupImageHint];
+    [self.imageHint.layer setHidden:NO];
+    [KLBAnimator fadeOutCALayer:self.imageHint.layer applyChanges:YES];
+}
+
+#pragma mark - Image Hint Setup
+- (void)setupImageHint {
+    UIImage *imageHint;
+    switch (self.selectedDifficulty) {
+        case Easy: {
+            imageHint = [UIImage imageNamed:KLB_FOOTER_HINT_EASY_IMAGE_FILENAME];
+        } break;
+        case Average: {
+            imageHint = [UIImage imageNamed:KLB_FOOTER_HINT_AVERAGE_IMAGE_FILENAME];
+        } break;
+        case Hard: {
+            imageHint = [UIImage imageNamed:KLB_FOOTER_HINT_HARD_IMAGE_FILENAME];
+        } break;
+        default: {
+            imageHint = [UIImage imageNamed:KLB_FOOTER_HINT_EASY_IMAGE_FILENAME];
+        }
+    }
+    self.imageHint.image = imageHint;
+//    [imageHint release];
 }
 @end

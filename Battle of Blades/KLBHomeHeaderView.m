@@ -95,9 +95,7 @@ NSString *const KLB_LABEL_PLAYER_ENERGY_TIME_GAIN_FORMAT = @"Energy +1 in ";
                              KLB_LABEL_SLASH,
                              KLB_LABEL_PLAYER_ENERGY_MAXIMUM_FORMAT,(unsigned long)energyMax];
 }
-- (void) respondToTimeInSecondsOccurring: (NSNotification *)notification {
-    //low priority
-}
+
 - (IBAction)playerButtonTapped:(id)sender {
     if ([self.delegate respondsToSelector:@selector(childDidRequestViewChange:)]) {
         [self.delegate childDidRequestViewChange:self];

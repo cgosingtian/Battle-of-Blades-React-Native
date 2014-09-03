@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KLBChildViewDelegate.h"
 
 extern NSString *const KLB_LABEL_PLAYER_NAME_FORMAT;
 extern NSString *const KLB_LABEL_PLAYER_LEVEL_FORMAT;
@@ -25,5 +26,6 @@ NSString *const KLB_LABEL_PLAYER_ENERGY_TIME_GAIN_FORMAT;
 @property (retain, nonatomic) IBOutlet UILabel *playerNameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *energyLabel;
 @property (retain, nonatomic) IBOutlet UILabel *energyTimeToGainLabel;
+@property (unsafe_unretained, nonatomic) id<KLBChildViewDelegate> delegate;
 
 @end

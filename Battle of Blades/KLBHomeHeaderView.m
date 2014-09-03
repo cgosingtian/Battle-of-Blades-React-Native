@@ -99,7 +99,9 @@ NSString *const KLB_LABEL_PLAYER_ENERGY_TIME_GAIN_FORMAT = @"Energy +1 in ";
     //low priority
 }
 - (IBAction)playerButtonTapped:(id)sender {
-    NSLog(@"tap");
+    if ([self.delegate respondsToSelector:@selector(childDidRequestViewChange:)]) {
+        [self.delegate childDidRequestViewChange:self];
+    }
 }
 
 @end

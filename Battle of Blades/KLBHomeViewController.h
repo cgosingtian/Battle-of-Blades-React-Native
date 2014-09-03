@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "KLBHomeHeaderView.h"
 #import "KLBPlayerController.h"
+#import "KLBChildViewDelegate.h"
 
-@interface KLBHomeViewController : UIViewController
+@interface KLBHomeViewController : UIViewController <KLBChildViewDelegate>
 
 @property (retain, nonatomic) IBOutlet UIView *headerViewPlaceholder;
 @property (retain, nonatomic) IBOutlet UIView *footerViewPlaceholder;

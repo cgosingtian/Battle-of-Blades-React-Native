@@ -52,7 +52,7 @@ NSString *const KLB_ATTACK_BUTTON_STORE_SINGLETON_EXCEPTION = @"Singleton";
 
 - (KLBAttackButton *)getRandomItem {
     NSUInteger maxIndex = [self.attackButtons count];
-    NSUInteger randomIndex = arc4random_uniform(maxIndex);
+    NSUInteger randomIndex = (NSUInteger)arc4random_uniform(maxIndex);
     return [self.attackButtons objectAtIndex:randomIndex];
 }
 

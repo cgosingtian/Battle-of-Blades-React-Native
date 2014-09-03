@@ -42,6 +42,9 @@
 {
     [super viewDidLoad];
     self.playerController = [[KLBPlayerController alloc] init];
+    KLBHomeHeaderView *headerView = (KLBHomeHeaderView *)self.headerViewPlaceholder;
+    headerView.delegate = self;
+    [headerView release];
 }
 
 #pragma mark - Memory Management
@@ -49,5 +52,10 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - ChildViewDelegate Protocol
+- (void)childDidRequestViewChange:(id)sender {
+    NSLog(@"tapped from delegate: %@", NSStringFromClass([sender class]));
 }
 @end

@@ -137,6 +137,7 @@
 		4FA46DC519B0333B0078E23B /* KLBAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KLBAnimator.m; sourceTree = "<group>"; };
 		4FBF313A19B6C948002AA212 /* screenfooteravghardhint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = screenfooteravghardhint.png; path = Resources/screenfooteravghardhint.png; sourceTree = "<group>"; };
 		4FBF313B19B6C948002AA212 /* screenfootereasyhint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = screenfootereasyhint.png; path = Resources/screenfootereasyhint.png; sourceTree = "<group>"; };
+		4FBF313E19B6CF53002AA212 /* KLBChildViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KLBChildViewDelegate.h; sourceTree = "<group>"; };
 		4FCD802B19B5B79B000DBE8B /* maincover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = maincover.png; path = Resources/maincover.png; sourceTree = "<group>"; };
 		4FEC6DAF19AF1A7600C9DAA8 /* Battle of Blades.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Battle of Blades.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FEC6DB219AF1A7600C9DAA8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -188,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				4FA46DA819B012A90078E23B /* KLBAttackDelegate.h */,
+				4FBF313E19B6CF53002AA212 /* KLBChildViewDelegate.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";

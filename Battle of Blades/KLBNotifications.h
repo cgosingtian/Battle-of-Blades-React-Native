@@ -23,6 +23,8 @@ extern NSString *const KLB_NOTIFICATION_ENEMY_HEALTH_CHANGED;
 extern NSString *const KLB_NOTIFICATION_ENEMY_TIME_CHANGED;
 extern NSString *const KLB_NOTIFICATION_ATTACK_SUCCESS;
 extern NSString *const KLB_NOTIFICATION_BLOCK_SUCCESS;
+extern NSString *const KLB_NOTIFICATION_BUTTON_SPAWN_START;
+extern NSString *const KLB_NOTIFICATION_CHEAT_CLEAR_SHIELDS;
 
 typedef enum BattleDifficulty: NSInteger BattleDifficulty;
 enum BattleDifficulty : NSInteger {

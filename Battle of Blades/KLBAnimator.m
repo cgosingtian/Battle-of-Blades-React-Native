@@ -40,7 +40,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_START = 1.0;
 CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
 
 @implementation KLBAnimator
-+ (void)fadeOutCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges {
++ (void)fadeOutCALayer:(CALayer *)layer
+          applyChanges:(BOOL)applyChanges {
     if (!layer.isHidden) {
         [CATransaction begin];
     
@@ -78,7 +79,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     }
 }
 
-+ (void)fadeInCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges {
++ (void)fadeInCALayer:(CALayer *)layer
+         applyChanges:(BOOL)applyChanges {
     if (!layer.isHidden) {
         [CATransaction begin];
     
@@ -116,7 +118,9 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     }
 }
 
-+ (void)fadeInCALayer:(CALayer *)layer duration:(CGFloat)duration applyChanges:(BOOL)applyChanges {
++ (void)fadeInCALayer:(CALayer *)layer
+             duration:(CGFloat)duration
+         applyChanges:(BOOL)applyChanges {
     if (!layer.isHidden) {
         [CATransaction begin];
     
@@ -154,7 +158,10 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     }
 }
 
-+ (void)moveCALayer:(CALayer *)layer startPoint:(CGPoint)start endPoint:(CGPoint)end applyChanges:(BOOL)applyChanges {
++ (void)moveCALayer:(CALayer *)layer
+         startPoint:(CGPoint)start
+           endPoint:(CGPoint)end
+       applyChanges:(BOOL)applyChanges {
     if (!layer.isHidden) {
         [CATransaction begin];
     
@@ -192,7 +199,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     }
 }
 
-+ (void)flashWhiteCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges {
++ (void)flashWhiteCALayer:(CALayer *)layer
+             applyChanges:(BOOL)applyChanges {
     if (!layer.isHidden) {
         CALayer *tintLayer = [[CALayer alloc] init];
         [tintLayer setBackgroundColor:[[UIColor whiteColor] CGColor]];
@@ -234,52 +242,98 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     }
 }
 
++ (void)flashWhiteCALayer:(CALayer *)layer
+                 duration:(CGFloat)duration
+             startOpacity:(CGFloat)startOpacity
+               endOpacity:(CGFloat)endOpacity
+             applyChanges:(BOOL)applyChanges {
+    if (!layer.isHidden) {
+        CALayer *tintLayer = [[CALayer alloc] init];
+        [tintLayer setBackgroundColor:[[UIColor whiteColor] CGColor]];
+        [tintLayer setOpacity:startOpacity];
+        [tintLayer setBounds:[layer bounds]];
+        // Center the tint layer
+        [tintLayer setPosition:CGPointMake([layer bounds].size.width/2.0,
+                                           [layer bounds].size.height/2.0)];
+        
+        [layer addSublayer:tintLayer];
+        
+        [CATransaction begin];
+        
+        NSString *keyPathTransparency = KLB_CA_OPACITY_STRING;
+        
+        CAKeyframeAnimation *transparency = [[CAKeyframeAnimation alloc] init];
+        
+        transparency.fillMode = kCAFillModeForwards;
+        
+        [transparency setKeyPath:keyPathTransparency];
+        transparency.duration = duration;
+        
+        NSMutableArray *transparencyValues = [[NSMutableArray alloc] init];
+        [transparencyValues addObject:[NSNumber numberWithFloat:startOpacity]];
+        [transparencyValues addObject:[NSNumber numberWithFloat:endOpacity]];
+        
+        transparency.values = transparencyValues;
+        
+        
+        [CATransaction setCompletionBlock:^()
+         {
+             [transparencyValues release];
+             [transparency release];
+         }];
+        
+        [tintLayer addAnimation:transparency forKey:keyPathTransparency];
+        
+        [CATransaction commit];
+    }
+}
+
 + (void)flashAlphaCALayer:(CALayer *)layer applyChanges:(BOOL)applyChanges {
     if (!layer.isHidden) {
         NSString *keyPathTransparency = KLB_CA_OPACITY_STRING;
         // FADE IN
         CAKeyframeAnimation *fadeIn = [[CAKeyframeAnimation alloc] init];
-    
+        
         fadeIn.fillMode = kCAFillModeForwards;
-    
+        
         [fadeIn setKeyPath:keyPathTransparency];
         fadeIn.duration = KLB_FLASH_ALPHA_FADE_IN_DURATION;
-    
+        
         NSMutableArray *fadeInValues = [[NSMutableArray alloc] init];
         [fadeInValues addObject:[NSNumber numberWithFloat:KLB_FLASH_ALPHA_FADE_IN_OPACITY_START]];
         [fadeInValues addObject:[NSNumber numberWithFloat:KLB_FLASH_ALPHA_FADE_IN_OPACITY_END]];
         fadeIn.values = fadeInValues;
-    
+        
         // FADE OUT
         CAKeyframeAnimation *fadeOut = [[CAKeyframeAnimation alloc] init];
-    
+        
         [fadeOut setKeyPath:keyPathTransparency];
         fadeOut.duration = KLB_FLASH_ALPHA_FADE_OUT_DURATION;
-    
+        
         NSMutableArray *fadeOutValues = [[NSMutableArray alloc] init];
         [fadeOutValues addObject:[NSNumber numberWithFloat:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_START]];
         [fadeOutValues addObject:[NSNumber numberWithFloat:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END]];
         fadeOut.values = fadeOutValues;
-    
+        
         if (applyChanges) {
             [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
         }
-    
+        
         [CATransaction setCompletionBlock:^()
          {
              [fadeIn release];
              [fadeInValues release];
              [fadeOut release];
              [fadeOutValues release];
-         
+             
              if (applyChanges) {
                  [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
              }
          }];
-    
+        
         [layer addAnimation:fadeIn forKey:keyPathTransparency];
         [layer addAnimation:fadeOut forKey:keyPathTransparency];
-    
+        
         [CATransaction commit];
     }
 }

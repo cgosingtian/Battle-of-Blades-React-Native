@@ -58,6 +58,12 @@ extern CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END;
 + (void)flashWhiteCALayer:(CALayer *)layer
              applyChanges:(BOOL)applyChanges;
 
++ (void)flashWhiteCALayer:(CALayer *)layer
+                 duration:(CGFloat)duration
+             startOpacity:(CGFloat)startOpacity
+               endOpacity:(CGFloat)endOpacity
+             applyChanges:(BOOL)applyChanges;
+
 + (void)flashAlphaCALayer:(CALayer *)layer
              applyChanges:(BOOL)applyChanges;
 

@@ -16,6 +16,12 @@ NSUInteger const KLB_ENEMY_HEALTH_LOSS_ON_ATTACK = 1; // reduce health by X on s
 NSInteger const KLB_ENEMY_HEALTH_TO_DIE = 0; // if health remaining = X, die
 NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, lose X seconds
 
+CGFloat const KLB_ENEMY_HEALTH_MODIFIER_EASY = 1.0; // 100%, no change
+CGFloat const KLB_ENEMY_HEALTH_MODIFIER_AVERAGE = 2.0; // 200%
+CGFloat const KLB_ENEMY_HEALTH_MODIFIER_HARD = 2.5; //250%
+
+BattleDifficulty const KLB_DEFAULT_DIFFICULTY = Easy;
+
 @implementation KLBEnemyController
 
 #pragma mark - Dealloc
@@ -24,18 +30,20 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
     [self.timer invalidate];
     [self.enemy release];
     [self.enemyKey release];
-//    [self.timer release];
     
     [super dealloc];
 }
 
 #pragma mark - Initializers
 // Designated Initializer
-- (instancetype)initWithEnemyKey: (NSString *)key {
+- (instancetype)initWithDifficulty:(BattleDifficulty)selectedDifficulty {
     self = [super init];
     if (self) {
+        NSString *key = [self loadRandomEnemyData];
         self.enemyKey = key;
         self.enemy = [[KLBEnemyStore sharedStore] enemyForKey:key];
+        self.selectedDifficulty = selectedDifficulty;
+        [self applyDifficultyModifiersToEnemyStats];
         [self registerForNotifications];
         [key release];
     }
@@ -43,8 +51,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
 }
 
 - (instancetype)init {
-    NSString *key = [self loadRandomEnemyData];
-    return [self initWithEnemyKey:key];
+    return [self initWithDifficulty:KLB_DEFAULT_DIFFICULTY];
 }
 
 #pragma mark - Other Initialization Methods
@@ -65,6 +72,25 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
                                              selector:@selector(battleEnd)
                                                  name:KLB_NOTIFICATION_BATTLE_END
                                                object:nil];
+}
+
+- (void)applyDifficultyModifiersToEnemyStats {
+    switch (self.selectedDifficulty) {
+        case Easy: {
+            self.enemy.healthMaximum *= KLB_ENEMY_HEALTH_MODIFIER_EASY;
+            self.enemy.healthRemaining *= KLB_ENEMY_HEALTH_MODIFIER_EASY;
+        } break;
+        case Average: {
+            self.enemy.healthMaximum *= KLB_ENEMY_HEALTH_MODIFIER_AVERAGE;
+            self.enemy.healthRemaining *= KLB_ENEMY_HEALTH_MODIFIER_AVERAGE;
+            
+        } break;
+        case Hard: {
+            self.enemy.healthMaximum *= KLB_ENEMY_HEALTH_MODIFIER_HARD;
+            self.enemy.healthRemaining *= KLB_ENEMY_HEALTH_MODIFIER_HARD;
+            
+        } break;
+    }
 }
 
 #pragma mark - Battle Methods
@@ -121,7 +147,6 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
 }
 - (void)blockSuccess {
     if (self.timer.isValid) {
-        NSLog(@"ENEMY TIME CHANGE");
         self.enemy.timeLimitSeconds -= KLB_ENEMY_TIME_REDUCTION_ON_BLOCK;
         [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_TIME_CHANGED
                                                             object:nil
@@ -150,6 +175,7 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
     NSString *enemyKey = [self loadRandomEnemyData];
     self.enemyKey = enemyKey;
     [enemyKey release];
+    [self applyDifficultyModifiersToEnemyStats];
 }
 
 - (NSString *)loadRandomEnemyData {
@@ -176,8 +202,6 @@ NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK = 5; // if shield tapped, los
     [[KLBEnemyStore sharedStore] addEnemy:enemy forKey:key];
     [enemy release];
     [enemyName release];
-    
-    // a string is getting leaked in memory here for some reason...
     
     // We return the key (not the retrieved dictionary) because we
     // want to restrict access to the EnemyStore only (which is done

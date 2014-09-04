@@ -9,7 +9,8 @@
 #import "KLBNotifications.h"
 #import "KLBAttackButton.h"
 #import "KLBAnimator.h"
-#import "KLBAttackButtonStore.h"
+#import "KLBImageStore.h"
+//#import "KLBAttackButtonStore.h"
 
 //These floats MUST match the size of your button in the XIB! (otherwise you make the touchable space smaller)
 CGFloat const KLB_ATTACK_BUTTON_WIDTH = 60;
@@ -28,7 +29,8 @@ CGFloat const KLB_ATTACK_BUTTON_MAX_ALPHA = 1.0;
 CGFloat const KLB_ATTACK_BUTTON_MIN_ALPHA = 0.2;
 CGFloat const KLB_ATTACK_BUTTON_ZERO_ALPHA = 0.0;
 
-CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
+CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 0.5;
+CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
 
 @implementation KLBAttackButton
 
@@ -92,14 +94,21 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
     self.attack.lifetimeInSeconds *= KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER;
     self.attack.timeRemainingSeconds = self.attack.lifetimeInSeconds;
     
-    UIImage *shieldImage = [UIImage imageNamed:KLB_SHIELD_BUTTON_IMAGE_FILENAME];
+    UIImage *shieldImage = [[KLBImageStore sharedStore] imageForFilename:KLB_SHIELD_BUTTON_IMAGE_FILENAME];
     [self.attackButton setImage:shieldImage forState:UIControlStateNormal];
     
     self.layer.zPosition = KLB_SHIELD_BUTTON_LAYER_Z_POSITION;
     CGSize buttonSize = self.containerView.frame.size;
-    buttonSize = CGSizeMake(buttonSize.width*2.0, buttonSize.height*2.0);
-    self.containerView.frame = CGRectMake(self.containerView.frame.origin.x, self.containerView.frame.origin.y, buttonSize.width, buttonSize.height);
-    self.frame = CGRectMake(self.frame.origin.x,self.frame.origin.y,self.containerView.frame.size.width,self.containerView.frame.size.height);
+    buttonSize = CGSizeMake(buttonSize.width*KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER,
+                            buttonSize.height*KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER);
+    self.containerView.frame = CGRectMake(self.containerView.frame.origin.x,
+                                          self.containerView.frame.origin.y,
+                                          buttonSize.width,
+                                          buttonSize.height);
+    self.frame = CGRectMake(self.frame.origin.x,
+                            self.frame.origin.y,
+                            self.containerView.frame.size.width,
+                            self.containerView.frame.size.height);
     [self.containerView setNeedsLayout];
     
     [self.countdownLabel.layer setHidden:YES];
@@ -128,6 +137,10 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
                                              selector:@selector(handleTime)
                                                  name:KLB_NOTIFICATION_ENEMY_TIME_CHANGED
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleClearShields)
+                                                 name:KLB_NOTIFICATION_CHEAT_CLEAR_SHIELDS
+                                               object:nil];
 }
 
 #pragma mark - IBActions
@@ -150,16 +163,23 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 }
 
 #pragma mark - Battle Methods
+- (void)handleClearShields {
+    if (self.isShield) {
+        [self handleBattleEnd];
+    }
+}
 - (void)handleBattleEnd {
     // This method should only be run once in the lifetime of this object.
-    dispatch_once(&_onceToken, ^{
+    dispatch_once(&_onceHandleEndToken, ^{
+        if ([self.delegateButtonSpawnController respondsToSelector:@selector(buttonWillEnd)]) {
+            [self.delegateButtonSpawnController buttonWillEnd];
+        }
         [self.layer removeAllAnimations];
         self.attackButton.enabled = NO;
         [self.moveTimer invalidate];
         if (self.waitTimer)
             [self.waitTimer invalidate];
         [self removeFromSuperview];
-        [[KLBAttackButtonStore sharedStore] removeItem:self];
     });
 }
 
@@ -185,6 +205,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
                                  );
             }
         }
+        // If out of time, handle accordingly
         if (self.attack.timeRemainingSeconds <= KLB_ANIMATION_ZERO_F) {
             [self timeUp];
         }
@@ -202,12 +223,15 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER = 1.5;
 // Then we end the button's existence.
 - (void)timeUp {
     self.enabled = NO;
-    if ([self.delegate respondsToSelector:@selector(attackWillFail:)]) {
-        [self.delegate attackWillFail:self];
+    if (!self.isShield) {
+        if ([self.delegate respondsToSelector:@selector(attackWillFail:)]) {
+            [self.delegate attackWillFail:self];
+        }
+        if ([self.delegate respondsToSelector:@selector(attackDidFail:)]) {
+            [self.delegate attackDidFail:self];
+        }
     }
-    if ([self.delegate respondsToSelector:@selector(attackDidFail:)]) {
-        [self.delegate attackDidFail:self];
-    }
+    [self handleBattleEnd];
 }
 
 #pragma mark - Movement Methods

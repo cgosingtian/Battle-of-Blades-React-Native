@@ -11,15 +11,16 @@
 
 extern NSUInteger const KLB_ENEMY_TIME_REDUCTION_SPEED_SECONDS;
 extern NSUInteger const KLB_ENEMY_HEALTH_LOSS_ON_ATTACK;
-extern NSUInteger const KLB_ENEMY_HEALTH_TO_DIE;
+extern NSInteger const KLB_ENEMY_HEALTH_TO_DIE;
 extern NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK;
 
 @interface KLBEnemyController : NSObject
 
+@property (nonatomic) BattleDifficulty selectedDifficulty;
 @property (retain, nonatomic) NSString *enemyKey;
 @property (unsafe_unretained, nonatomic) KLBEnemy *enemy;
 @property (retain, nonatomic) NSTimer *timer;
-- (instancetype)initWithEnemyKey: (NSString *)key;
+- (instancetype)initWithDifficulty:(BattleDifficulty)selectedDifficulty;
 - (void)loadNewEnemyRandom;
 - (NSString *)loadRandomEnemyData;
 - (void)attackFail;

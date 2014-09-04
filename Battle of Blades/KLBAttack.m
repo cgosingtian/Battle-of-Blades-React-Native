@@ -8,8 +8,7 @@
 
 #import "KLBAttack.h"
 
-NSUInteger const KLB_DEFAULT_ATTACK_DAMAGE = 1;
-NSUInteger const KLB_DEFAULT_ATTACK_LIFETIME_SECONDS = 5;
+NSUInteger const KLB_DEFAULT_ATTACK_LIFETIME_SECONDS = 9;
 
 @implementation KLBAttack
 
@@ -22,7 +21,6 @@ NSUInteger const KLB_DEFAULT_ATTACK_LIFETIME_SECONDS = 5;
 }
 
 - (void)resetValues {
-    self.damageOnSuccessfulAttack = KLB_DEFAULT_ATTACK_DAMAGE;
     self.lifetimeInSeconds = KLB_DEFAULT_ATTACK_LIFETIME_SECONDS;
     self.timeRemainingSeconds = self.lifetimeInSeconds;
 }

@@ -8,12 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSUInteger const KLB_DEFAULT_ATTACK_DAMAGE;
 extern NSUInteger const KLB_DEFAULT_ATTACK_LIFETIME_SECONDS;
 
 @interface KLBAttack : NSObject
 
-@property (nonatomic) NSUInteger damageOnSuccessfulAttack;
 @property (nonatomic) NSUInteger lifetimeInSeconds;
 @property (nonatomic) NSUInteger timeRemainingSeconds;
 

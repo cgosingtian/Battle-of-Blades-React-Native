@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "KLBEnemyController.h"
 #import "KLBAttackDelegate.h"
+#import "KLBButtonSpawnController.h"
 
 extern CGFloat const KLB_BATTLE_SPEED_SECONDS;
 
@@ -19,12 +20,11 @@ extern NSString *const KLB_LABEL_LEVEL_TEXT_FORMAT;
 extern NSString *const KLB_LABEL_EXPERIENCE_TEXT_FORMAT;
 
 extern CGFloat const KLB_MAX_ALPHA;
-extern CGFloat const KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH;
-extern NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN;
 extern CGFloat const KLB_BUTTON_SPAWN_FADE_IN_DURATION;
+extern CGFloat const KLB_BUTTON_SPAWN_CONTROLLER_ALPHA;
 
-extern CGFloat const KLB_BUTTON_SHIELD_CONVERT_CHANCE_PERCENT;
-extern CGFloat const KLB_BUTTON_SHIELD_CONVERT_PERCENT;
+extern CGFloat const KLB_BUTTON_SHIELD_SPAWN_CHANCE_PER_SECOND;
+extern NSUInteger const KLB_BUTTON_SHIELD_SPAWN_MAXIMUM_PER_SECOND;
 
 extern CGFloat const KLB_VICTORY_FADE_IN_DURATION;
 extern CGFloat const KLB_VICTORY_FADE_OUT_DURATION;
@@ -62,10 +62,10 @@ extern NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME;
 @property (retain, nonatomic) NSTimer *battleTimer;
 
 @property (retain, nonatomic) KLBEnemyController *enemyController;
-
-@property (nonatomic) BOOL enemyDefenseAllowed;
-@property (nonatomic) BOOL enemyMovementAllowed;
+@property (retain, nonatomic) IBOutletCollection(KLBButtonSpawnController) NSArray *buttonSpawnControllers;
 
 @property (nonatomic) BattleDifficulty selectedDifficulty;
+
+@property (nonatomic) CGFloat shieldSpawnChance;
 
 @end

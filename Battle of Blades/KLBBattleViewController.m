@@ -12,8 +12,10 @@
 #import "KLBEnemy.h"
 #import "KLBNotifications.h"
 #import "KLBAnimator.h"
-#import "KLBAttackButtonStore.h"
+//#import "KLBAttackButtonStore.h"
 #import "KLBAttackButton.h"
+#import "KLBButtonSpawnController.h"
+#import "KLBImageStore.h"
 
 CGFloat const KLB_BATTLE_SPEED_SECONDS = 0.75;
 
@@ -24,13 +26,14 @@ NSString *const KLB_LABEL_LEVEL_TEXT_FORMAT = @"Level ";
 NSString *const KLB_LABEL_EXPERIENCE_TEXT_FORMAT = @"Experience: +";
 
 CGFloat const KLB_MAX_ALPHA = 1.0;
-CGFloat const KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH = 0.5;
-NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN = 10;
 CGFloat const KLB_BUTTON_SPAWN_FADE_IN_DURATION = 0.35;
-NSInteger const KLB_BUTTON_SPAWN_MINIMUM = 1;
+CGFloat const KLB_BUTTON_SPAWN_CONTROLLER_ALPHA = 0.0;
 
-CGFloat const KLB_BUTTON_SHIELD_CONVERT_CHANCE_PERCENT = 8;
-CGFloat const KLB_BUTTON_SHIELD_CONVERT_PERCENT = 100;
+// Spawn chance percentages should match in terms of decimal places
+// If max chance is 100, spawn chance per second should be within 0 - 100.
+CGFloat const KLB_BUTTON_SHIELD_SPAWN_CHANCE_PER_SECOND = 0.05; //5%
+CGFloat const KLB_BUTTON_SHIELD_SPAWN_CHANCE_MAX = 1.0; //100%
+NSUInteger const KLB_BUTTON_SHIELD_SPAWN_MAXIMUM_PER_SECOND = 1;
 
 CGFloat const KLB_VICTORY_FADE_IN_DURATION = 1;
 CGFloat const KLB_VICTORY_FADE_OUT_DURATION = 2;
@@ -52,6 +55,11 @@ NSString *const KLB_ENEMY_HARD_IMAGE_FILENAME = @"enemyhard.png";
 NSString *const KLB_ENEMY_AVERAGE_IMAGE_FILENAME = @"enemyaverage.png";
 NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
 
+// Difficulty Modifiers
+CGFloat const KLB_DIFFICULTY_EASY_SHIELD_SPAWN_CHANCE_MODIFIER = 0.5; // 50%
+CGFloat const KLB_DIFFICULTY_AVERAGE_SHIELD_SPAWN_CHANCE_MODIFIER = 1.0; // 100%, same
+CGFloat const KLB_DIFFICULTY_HARD_SHIELD_SPAWN_CHANCE_MODIFIER = 2.0; // 200%, double
+
 @implementation KLBBattleViewController
 
 #pragma mark - Dealloc
@@ -71,6 +79,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     [_victoryImage release];
     [_defeatLabel release];
     [_defeatHintLabel release];
+    [_buttonSpawnControllers release];
     [super dealloc];
 }
 
@@ -81,7 +90,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
         [self replacePlaceholderViewsWithActual];
         [self registerForNotifications];
         [self initializeVariables];
-        [self instantiateVariables];
+        [self instantiateEnemyController];
     }
     return self;
 }
@@ -93,7 +102,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
         [self replacePlaceholderViewsWithActual];
         [self registerForNotifications];
         [self initializeVariables];
-        [self instantiateVariables];
+        [self instantiateEnemyController];
     }
     return self;
 }
@@ -138,6 +147,10 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
                                              selector:@selector(respondToEnemyTimeModification:)
                                                  name:KLB_NOTIFICATION_ENEMY_TIME_CHANGED
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(clearShields)
+                                                 name:KLB_NOTIFICATION_CHEAT_CLEAR_SHIELDS
+                                               object:nil];
 }
 
 
@@ -164,10 +177,15 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     self.victoryImage.alpha = KLB_ANIMATION_ZERO_F;
     self.victoryImage.layer.opacity = KLB_ANIMATION_ZERO_F;
     self.experienceLabel.alpha = KLB_ANIMATION_ZERO_F;
-    self.enemyDefenseAllowed = NO;
+    self.shieldSpawnChance = KLB_BUTTON_SHIELD_SPAWN_CHANCE_PER_SECOND;
+    
+    //hide all button spawn controllers from view
+    for (KLBButtonSpawnController *buttonSpawnController in self.buttonSpawnControllers) {
+        buttonSpawnController.alpha = KLB_BUTTON_SPAWN_CONTROLLER_ALPHA;
+    }
 }
 
-- (void)instantiateVariables {
+- (void)instantiateEnemyController {
     self.enemyController = [[KLBEnemyController alloc] init];
 }
 
@@ -209,7 +227,6 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
                              (long)enemyHealthRemaining];
 }
 - (void)respondToEnemyTimeModification: (NSNotification *)notification {
-    // Update the time label:
     NSInteger enemyTimeLimit = 0;
     if (!notification.userInfo) {
         enemyTimeLimit = (NSInteger)[[notification.userInfo objectForKey:KLB_JSON_ENEMY_TIME_LIMIT] integerValue];
@@ -225,27 +242,25 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
 #pragma mark - Battle Control
 - (void)startBattle:(NSNotification *)notification {
     [self initializeVariables];
+    [self setupButtonSpawnControllers];
     
     NSInteger difficulty = [[notification.userInfo objectForKey:@"difficulty"] integerValue];
     UIImage *enemyImage = nil;
     switch (difficulty) {
         case 0: {
             self.selectedDifficulty = Easy;
-            enemyImage = [UIImage imageNamed:KLB_ENEMY_EASY_IMAGE_FILENAME];
-            self.enemyDefenseAllowed = false;
-            self.enemyMovementAllowed = false;
+            enemyImage = [[KLBImageStore sharedStore] imageForFilename:KLB_ENEMY_EASY_IMAGE_FILENAME];
+            self.shieldSpawnChance *= KLB_DIFFICULTY_EASY_SHIELD_SPAWN_CHANCE_MODIFIER;
         } break;
         case 1: {
             self.selectedDifficulty = Average;
-            enemyImage = [UIImage imageNamed:KLB_ENEMY_AVERAGE_IMAGE_FILENAME];
-            self.enemyDefenseAllowed = true;
-            self.enemyMovementAllowed = false;
+            enemyImage = [[KLBImageStore sharedStore] imageForFilename:KLB_ENEMY_AVERAGE_IMAGE_FILENAME];
+            self.shieldSpawnChance *= KLB_DIFFICULTY_AVERAGE_SHIELD_SPAWN_CHANCE_MODIFIER;
         } break;
         case 2: {
             self.selectedDifficulty = Hard;
-            enemyImage = [UIImage imageNamed:KLB_ENEMY_HARD_IMAGE_FILENAME];
-            self.enemyDefenseAllowed = true;
-            self.enemyMovementAllowed = true;
+            enemyImage = [[KLBImageStore sharedStore] imageForFilename:KLB_ENEMY_HARD_IMAGE_FILENAME];
+            self.shieldSpawnChance *= KLB_DIFFICULTY_HARD_SHIELD_SPAWN_CHANCE_MODIFIER;
         } break;
     }
     if (enemyImage) {
@@ -256,6 +271,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     [KLBAnimator fadeOutCALayer:self.coverView.layer applyChanges:YES];
 
     //load an enemy
+    self.enemyController.selectedDifficulty = self.selectedDifficulty;
     [self.enemyController loadNewEnemyRandom];
     
     //configure the screen labels - USE A DELEGATE FOR THIS LATER (low priority)
@@ -272,48 +288,49 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
                                                        repeats:YES];
 }
 
+- (void)setupButtonSpawnControllers {
+    // For each Button Spawn Controller in our IBOutletCollection, set their button Class and Frame
+    for (KLBButtonSpawnController *buttonSpawnController in self.buttonSpawnControllers) {
+        buttonSpawnController.alpha = KLB_BUTTON_SPAWN_CONTROLLER_ALPHA;
+        CGRect spawnFrame = [self generateAttackButtonFrameForSpawnerFrame:buttonSpawnController.frame];
+        [buttonSpawnController initializeSpawnerWithButtonClass:[KLBAttackButton class]
+                                                          frame:spawnFrame];
+    }
+}
+
 - (void)timePassed {
-    NSUInteger enemyTime = self.enemyController.enemy.timeLimitSeconds;
-    if ([[[KLBAttackButtonStore sharedStore] allItems] count] < KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN &&
-        enemyTime > 0) {
-        NSUInteger enemyHealth = self.enemyController.enemy.healthMaximum;
-        NSUInteger minimumButtonSpawns = enemyHealth / enemyTime;
-        NSUInteger maximumButtonSpawns = enemyHealth * KLB_BUTTON_SPAWN_MAXIMUM_RATIO_TO_HEALTH;
-        NSUInteger numberOfButtons = arc4random_uniform(maximumButtonSpawns);
-        if (numberOfButtons < minimumButtonSpawns) {
-            if (minimumButtonSpawns == 0)
-                numberOfButtons = KLB_BUTTON_SPAWN_MINIMUM;
-            numberOfButtons = minimumButtonSpawns;
-        } else if (numberOfButtons > KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN) {
-            numberOfButtons = KLB_BUTTON_SPAWN_MAXIMUM_ON_SCREEN;
-        }
-        for (int i = 0; i < numberOfButtons; i++) {
-            [self spawnAttackButton];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BUTTON_SPAWN_START
+                                                        object:nil
+                                                      userInfo:nil];
+    
+    // Create shields to block attack buttons based on chance
+    NSUInteger numberOfShields = KLB_BUTTON_SHIELD_SPAWN_MAXIMUM_PER_SECOND;
+    for (int i = 0; i < numberOfShields; i++) {
+        if (arc4random_uniform(KLB_BUTTON_SHIELD_SPAWN_CHANCE_MAX) <= self.shieldSpawnChance) {
+            [self spawnShieldButton];
         }
     }
 }
 
-- (void)spawnAttackButton {
+- (void)spawnShieldButton {
+    // Shield spawns in random location
     CGRect frame = [self generateRandomAttackButtonFrame];
-    KLBAttackButton *attackButton = [[KLBAttackButton alloc] initWithFrame:frame];
-    attackButton.delegate = self;
-    [[KLBAttackButtonStore sharedStore] addItem:attackButton];
-    [attackButton setAlpha:KLB_FADE_IN_OPACITY_START];
-    [self addSubview:attackButton];
-    [KLBAnimator fadeInCALayer:attackButton.layer duration:KLB_BUTTON_SPAWN_FADE_IN_DURATION applyChanges:YES];
+    KLBAttackButton *shieldButton = [[KLBAttackButton alloc] initWithFrame:frame];
+    shieldButton.delegate = self;
+    [shieldButton setAlpha:KLB_FADE_IN_OPACITY_START];
+    [shieldButton convertToShield];
+    [self addSubview:shieldButton];
+    [KLBAnimator fadeInCALayer:shieldButton.layer duration:KLB_BUTTON_SPAWN_FADE_IN_DURATION applyChanges:YES];
     
-    // Allow the button to move on its own
-    if (self.enemyMovementAllowed) {
-        [attackButton allowMovement];
-    }
+    [shieldButton allowMovement];
+}
+
+- (CGRect)generateAttackButtonFrameForSpawnerFrame:(CGRect)spawnerFrame {
+    CGFloat attackButtonWidth = KLB_ATTACK_BUTTON_WIDTH;
+    CGFloat attackButtonHeight = KLB_ATTACK_BUTTON_HEIGHT;
+    CGRect attackButtonFrame = CGRectMake(spawnerFrame.origin.x, spawnerFrame.origin.y, attackButtonWidth, attackButtonHeight);
     
-    // Allow the button to convert to a shield based on chance
-    if (self.enemyDefenseAllowed) {
-        CGFloat chance = arc4random_uniform(KLB_BUTTON_SHIELD_CONVERT_PERCENT);
-        if (chance <= KLB_BUTTON_SHIELD_CONVERT_CHANCE_PERCENT) {
-            [attackButton convertToShield];
-        }
-    }
+    return attackButtonFrame;
 }
 
 - (CGRect)generateRandomAttackButtonFrame {
@@ -352,7 +369,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     [KLBAnimator fadeInCALayer:self.coverView.layer applyChanges:YES];
     if (didWin) {
         // load the proper gradient for the gradient image view, then apply the flash effect on it
-        UIImage *gradientImage = [UIImage imageNamed:KLB_VICTORY_GRADIENT_FILENAME];
+        UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_VICTORY_GRADIENT_FILENAME];
         self.battleGradientBackground.image = gradientImage;
         [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer
                         fadeInDuration:KLB_VICTORY_FADE_IN_DURATION
@@ -378,7 +395,7 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
         
     } else {
         // load the proper gradient for the gradient image view, then apply the flash effect on it
-        UIImage *gradientImage = [UIImage imageNamed:KLB_DEFEAT_GRADIENT_FILENAME];
+        UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_DEFEAT_GRADIENT_FILENAME];
         self.battleGradientBackground.image = gradientImage;
         [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer
                         fadeInDuration:KLB_DEFEAT_FADE_IN_DURATION
@@ -403,17 +420,22 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
     }
 }
 
+- (void)clearShields {
+    // The buttons will handle destroying themselves; here we just show an effect
+    [KLBAnimator flashWhiteCALayer:self.enemyImage.layer duration:0.1 startOpacity:0.0 endOpacity:1.0 applyChanges:NO];
+}
+
 #pragma mark - AttackDelegate Protocol
 - (void)attackWillSucceed:(id)sender { //optional
     KLBAttackButton *button = (KLBAttackButton *)sender;
     if (button.isShield) { // shield button
         [KLBAnimator flashWhiteCALayer:self.enemyImage.layer applyChanges:NO];
-        UIImage *gradientImage = [UIImage imageNamed:KLB_BATTLE_GRADIENT_BLUE_FILENAME];
+        UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_BATTLE_GRADIENT_BLUE_FILENAME];
         self.battleGradientBackground.image = gradientImage;
         [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer applyChanges:YES];
     } else { // attack button
         [KLBAnimator flashWhiteCALayer:self.enemyImage.layer applyChanges:NO];
-        UIImage *gradientImage = [UIImage imageNamed:KLB_BATTLE_GRADIENT_RED_FILENAME];
+        UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_BATTLE_GRADIENT_RED_FILENAME];
         self.battleGradientBackground.image = gradientImage;
         [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer applyChanges:YES];
     }
@@ -425,13 +447,15 @@ NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME = @"enemyeasy.png";
                                                             object:nil
                                                           userInfo:nil];
     } else {
+        NSNumber *buttonTime = [NSNumber numberWithInteger:button.attack.timeRemainingSeconds];
+        NSDictionary *buttonData = @{KLB_JSON_ENEMY_TIME_LIMIT:buttonTime};
         [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ATTACK_SUCCESS
                                                             object:nil
-                                                          userInfo:nil];
+                                                          userInfo:buttonData];
     }
 }
 - (void)attackWillFail:(id)sender { //optional
-    UIImage *gradientImage = [UIImage imageNamed:KLB_BATTLE_GRADIENT_GREEN_FILENAME];
+    UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_BATTLE_GRADIENT_GREEN_FILENAME];
     self.battleGradientBackground.image = gradientImage;
     [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer applyChanges:YES];
 }

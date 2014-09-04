@@ -56,8 +56,8 @@
 
 #pragma mark - ChildViewDelegate Protocol
 - (void)childDidRequestViewChange:(id)sender {
-    // The implementation of this method is still on-going; for now at least
-    // we know that the objects communicate through the delegate correctly.
-    NSLog(@"tapped from delegate: %@", NSStringFromClass([sender class]));
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_CHEAT_CLEAR_SHIELDS
+                                                        object:nil
+                                                      userInfo:nil];
 }
 @end

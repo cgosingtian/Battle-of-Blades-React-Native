@@ -11,6 +11,12 @@
 #import "KLBHomeFooterView.h"
 #import "KLBBattleViewController.h"
 #import "KLBPlayerController.h"
+#import "KLBAnimator.h"
+#import "KLBJSONController.h"
+
+CGFloat const KLB_HOME_LEVEL_UP_FLASH_DURATION = 1.0;
+CGFloat const KLB_HOME_LEVEL_UP_FLASH_OPACITY_START = 1.0;
+CGFloat const KLB_HOME_LEVEL_UP_FLASH_OPACITY_END = 0.0;
 
 @interface KLBHomeViewController ()
 
@@ -20,6 +26,7 @@
 
 #pragma mark - Dealloc
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_headerViewPlaceholder release];
     [_playerController release];
     [_footerViewPlaceholder release];
@@ -33,8 +40,29 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Do any additional setup after loading the view from its nib.
+        [self registerForNotifications];
     }
     return self;
+}
+
+#pragma mark - Other Initializer Methods
+- (void)registerForNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applyLevelUpFlashEffect:)
+                                                 name:KLB_NOTIFICATION_PLAYER_LEVEL_CHANGED
+                                               object:nil];
+}
+
+#pragma mark - Level Up Effects
+- (void)applyLevelUpFlashEffect:(NSNotification *)notification {
+    NSInteger playerLevel = [[notification.userInfo objectForKey:KLB_JSON_PLAYER_LEVEL] integerValue];
+    if (playerLevel > 1) {
+        [KLBAnimator flashGoldCALayer:self.view.layer
+                             duration:KLB_HOME_LEVEL_UP_FLASH_DURATION
+                         startOpacity:KLB_HOME_LEVEL_UP_FLASH_OPACITY_START
+                           endOpacity:KLB_HOME_LEVEL_UP_FLASH_OPACITY_END
+                         applyChanges:NO];
+    }
 }
 
 #pragma mark - View States
@@ -57,6 +85,9 @@
 #pragma mark - ChildViewDelegate Protocol
 - (void)childDidRequestViewChange:(id)sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_CHEAT_CLEAR_SHIELDS
+                                                        object:nil
+                                                      userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_CHEAT_GAIN_LEVEL
                                                         object:nil
                                                       userInfo:nil];
 }

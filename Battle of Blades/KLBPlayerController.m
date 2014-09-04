@@ -63,6 +63,10 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
                                              selector:@selector(battleEnded:)
                                                  name:KLB_NOTIFICATION_BATTLE_END
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleGainLevelCheat)
+                                                 name:KLB_NOTIFICATION_CHEAT_GAIN_LEVEL
+                                               object:nil];
 }
 
 #pragma mark - Data Loading from JSON
@@ -188,6 +192,7 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
         [self increasePlayerTimeBonus:timeBonusGained];
         [self increasePlayerLevel:levelsGained];
         
+        [self postExperienceUpdateNotice];
         [self postLevelUpdateNotice];
     }
     
@@ -245,6 +250,12 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
                                               otherButtonTitles:nil];
         [alert show];
     }
+}
+
+#pragma mark - Gain Level Cheat
+- (void)handleGainLevelCheat {
+    [self gainExperience:[self experienceNeededToLevelUp]];
+    [self levelUp];
 }
 
 @end

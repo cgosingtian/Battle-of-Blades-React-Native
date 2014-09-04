@@ -59,10 +59,9 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
         [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_OUT_OPACITY_END]];
         transparency.values = transparencyValues;
     
-        if (applyChanges) {
-            [layer setOpacity:KLB_FADE_OUT_OPACITY_END];
-        }
-    
+        // prevent flickering
+        [layer setOpacity:KLB_FADE_OUT_OPACITY_END];
+        
         [CATransaction setCompletionBlock:^()
         {
             [transparencyValues release];
@@ -70,6 +69,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
          
             if (applyChanges) {
                 [layer setOpacity:KLB_FADE_OUT_OPACITY_END];
+            } else {
+                [layer setOpacity:KLB_FADE_OUT_OPACITY_START];
             }
         }];
     
@@ -98,9 +99,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
         [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_END]];
         transparency.values = transparencyValues;
     
-        if (applyChanges) {
-            [layer setOpacity:KLB_FADE_IN_OPACITY_END];
-        }
+        // prevent flickering
+        [layer setOpacity:KLB_FADE_IN_OPACITY_END];
     
         [CATransaction setCompletionBlock:^()
          {
@@ -109,6 +109,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
          
              if (applyChanges) {
                  [layer setOpacity:KLB_FADE_IN_OPACITY_END];
+             } else {
+                 [layer setOpacity:KLB_FADE_IN_OPACITY_START];
              }
          }];
     
@@ -138,9 +140,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
         [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FADE_IN_OPACITY_END]];
         transparency.values = transparencyValues;
     
-        if (applyChanges) {
-            [layer setOpacity:KLB_FADE_IN_OPACITY_END];
-        }
+        // prevent flickering
+        [layer setOpacity:KLB_FADE_IN_OPACITY_END];
     
         [CATransaction setCompletionBlock:^()
         {
@@ -149,6 +150,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
          
             if (applyChanges) {
                 [layer setOpacity:KLB_FADE_IN_OPACITY_END];
+            } else {
+                [layer setOpacity:KLB_FADE_IN_OPACITY_START];
             }
         }];
     
@@ -179,9 +182,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
         [positionValues addObject:[NSValue valueWithCGPoint:end]];
         positionAnimation.values = positionValues;
     
-        if (applyChanges) {
-            [layer setPosition:end];
-        }
+        // prevent flickering
+        [layer setPosition:end];
     
         [CATransaction setCompletionBlock:^()
          {
@@ -190,6 +192,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
          
              if (applyChanges) {
                  [layer setPosition:end];
+             } else {
+                 [layer setPosition:start];
              }
          }];
     
@@ -228,12 +232,18 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
         [transparencyValues addObject:[NSNumber numberWithFloat:KLB_FLASH_WHITE_OPACITY]];
 
         transparency.values = transparencyValues;
-    
+        
+        // prevent flickering
+        tintLayer.opacity = KLB_FLASH_WHITE_OPACITY;
     
         [CATransaction setCompletionBlock:^()
          {
              [transparencyValues release];
              [transparency release];
+             
+             if (!applyChanges) {
+                 [tintLayer removeFromSuperlayer];
+             }
          }];
     
         [tintLayer addAnimation:transparency forKey:keyPathTransparency];
@@ -275,11 +285,68 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
         
         transparency.values = transparencyValues;
         
+        // prevent flickering
+        tintLayer.opacity = endOpacity;
         
         [CATransaction setCompletionBlock:^()
          {
              [transparencyValues release];
              [transparency release];
+             
+             if (!applyChanges) {
+                 [tintLayer removeFromSuperlayer];
+             }
+         }];
+        
+        [tintLayer addAnimation:transparency forKey:keyPathTransparency];
+        
+        [CATransaction commit];
+    }
+}
+
++ (void)flashGoldCALayer:(CALayer *)layer
+                 duration:(CGFloat)duration
+             startOpacity:(CGFloat)startOpacity
+               endOpacity:(CGFloat)endOpacity
+             applyChanges:(BOOL)applyChanges {
+    if (!layer.isHidden) {
+        CALayer *tintLayer = [[CALayer alloc] init];
+        [tintLayer setBackgroundColor:[[UIColor yellowColor] CGColor]];
+        [tintLayer setOpacity:startOpacity];
+        [tintLayer setBounds:[layer bounds]];
+        // Center the tint layer
+        [tintLayer setPosition:CGPointMake([layer bounds].size.width/2.0,
+                                           [layer bounds].size.height/2.0)];
+        
+        [layer addSublayer:tintLayer];
+        
+        [CATransaction begin];
+        
+        NSString *keyPathTransparency = KLB_CA_OPACITY_STRING;
+        
+        CAKeyframeAnimation *transparency = [[CAKeyframeAnimation alloc] init];
+        
+        transparency.fillMode = kCAFillModeForwards;
+        
+        [transparency setKeyPath:keyPathTransparency];
+        transparency.duration = duration;
+        
+        NSMutableArray *transparencyValues = [[NSMutableArray alloc] init];
+        [transparencyValues addObject:[NSNumber numberWithFloat:startOpacity]];
+        [transparencyValues addObject:[NSNumber numberWithFloat:endOpacity]];
+        
+        transparency.values = transparencyValues;
+        
+        // prevent flickering
+        tintLayer.opacity = endOpacity;
+        
+        [CATransaction setCompletionBlock:^()
+         {
+             [transparencyValues release];
+             [transparency release];
+             if (!applyChanges) {
+                 [tintLayer removeFromSuperlayer];
+             }
          }];
         
         [tintLayer addAnimation:transparency forKey:keyPathTransparency];
@@ -315,9 +382,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
         [fadeOutValues addObject:[NSNumber numberWithFloat:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END]];
         fadeOut.values = fadeOutValues;
         
-        if (applyChanges) {
-            [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
-        }
+        // prevent flickering
+        [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
         
         [CATransaction setCompletionBlock:^()
          {
@@ -328,6 +394,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
              
              if (applyChanges) {
                  [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
+             } else {
+                 [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_START];
              }
          }];
         
@@ -369,12 +437,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
         [fadeOutValues addObject:[NSNumber numberWithFloat:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END]];
         fadeOut.values = fadeOutValues;
     
-        if (applyChangesFadeIn) {
-            [layer setOpacity:KLB_FLASH_ALPHA_FADE_IN_OPACITY_END];
-        }
-        if (applyChangesFadeOut) {
-            [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
-        }
+        // prevent flickering
+        [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
     
         [CATransaction setCompletionBlock:^()
          {
@@ -385,9 +449,13 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
          
              if (applyChangesFadeIn) {
                  [layer setOpacity:KLB_FLASH_ALPHA_FADE_IN_OPACITY_END];
+             } else {
+                 [layer setOpacity:KLB_FLASH_ALPHA_FADE_IN_OPACITY_START];
              }
              if (applyChangesFadeOut) {
                  [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
+             } else {
+                 [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_START];
              }
          }];
     

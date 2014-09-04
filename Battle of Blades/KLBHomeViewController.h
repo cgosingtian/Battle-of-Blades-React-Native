@@ -11,6 +11,10 @@
 #import "KLBPlayerController.h"
 #import "KLBChildViewDelegate.h"
 
+extern CGFloat const KLB_HOME_LEVEL_UP_FLASH_DURATION;
+extern CGFloat const KLB_HOME_LEVEL_UP_FLASH_OPACITY_START;
+extern CGFloat const KLB_HOME_LEVEL_UP_FLASH_OPACITY_END;
+
 @interface KLBHomeViewController : UIViewController <KLBChildViewDelegate>
 
 @property (retain, nonatomic) IBOutlet UIView *headerViewPlaceholder;

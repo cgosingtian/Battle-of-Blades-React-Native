@@ -178,8 +178,8 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
         levelsGained++;
     }
 
-    NSUInteger energyGained = KLB_ZERO_INITIALIZER;
-    CGFloat timeBonusGained = KLB_ZERO_F_INITIALIZER;
+    NSUInteger energyGained = KLB_LEVEL_UP_ENERGY_GAINED;
+    CGFloat timeBonusGained = KLB_LEVEL_UP_TIME_BONUS_GAINED;
     if (levelsGained > 0) {
         energyGained *= levelsGained;
         timeBonusGained *= levelsGained;

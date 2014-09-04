@@ -10,6 +10,7 @@
 #import "KLBEnemyController.h"
 #import "KLBAttackDelegate.h"
 #import "KLBButtonSpawnController.h"
+#import "KLBPlayerController.h"
 
 extern CGFloat const KLB_BATTLE_SPEED_SECONDS;
 

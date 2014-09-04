@@ -12,7 +12,7 @@
 #import "KLBEnemy.h"
 #import "KLBNotifications.h"
 #import "KLBAnimator.h"
-//#import "KLBAttackButtonStore.h"
+#import "KLBPlayerStore.h"
 #import "KLBAttackButton.h"
 #import "KLBButtonSpawnController.h"
 #import "KLBImageStore.h"
@@ -270,9 +270,12 @@ CGFloat const KLB_DIFFICULTY_HARD_SHIELD_SPAWN_CHANCE_MODIFIER = 2.0; // 200%, d
     //apply a fade out animation to the coverView, and apply the changes
     [KLBAnimator fadeOutCALayer:self.coverView.layer applyChanges:YES];
 
+    //get the player's time bonus and add it later to the enemy's total time
+    KLBPlayer *player = [[KLBPlayerStore sharedStore] player];
     //load an enemy
     self.enemyController.selectedDifficulty = self.selectedDifficulty;
     [self.enemyController loadNewEnemyRandom];
+    self.enemyController.enemy.timeLimitSeconds += player.timeBonus;
     
     //configure the screen labels - USE A DELEGATE FOR THIS LATER (low priority)
     [self respondToEnemyHealthModification:nil];

@@ -13,31 +13,31 @@
 		"FlameKnight1": {
 			"name": "Flame Knight",
 			"level": 1,
-			"health": 20,
-			"time limit": 10
+			"health": 80,
+			"time limit": 25
 		},
 		"BurnLancer1": {
 			"name": "Burn Lancer",
 			"level": 1,
-			"health": 50,
-			"time limit": 30
+			"health": 100,
+			"time limit": 40
 		},
 		"FlameKnight2": {
 			"name": "Flame Knight Lv2",
 			"level": 2,
-			"health": 40,
-			"time limit": 15
+			"health": 90,
+			"time limit": 25
 		},
 		"FlameKnight3": {
 			"name": "Flame Knight Lv3",
 			"level": 3,
-			"health": 55,
-			"time limit": 20
+			"health": 100,
+			"time limit": 25
 		},
 		"BurnLancer5": {
 			"name": "Burn Lancer Lv5",
 			"level": 5,
-			"health": 100,
+			"health": 150,
 			"time limit": 40
 		}
 	}

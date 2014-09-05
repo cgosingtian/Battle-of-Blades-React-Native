@@ -98,10 +98,13 @@ NSString *const KLB_FOOTER_HINT_HARD_IMAGE_FILENAME = @"screenfooteravghardhint.
 }
 
 #pragma mark - Battle Lifecycle
-- (void)battleDidStart {
+- (void)disableButtons {
     [_battleButton setEnabled:NO];
     [_battleButtonAverage setEnabled:NO];
     [_battleButtonHard setEnabled:NO];
+}
+- (void)battleDidStart {
+    [self disableButtons];
     [self setupImageHint];
     [self.imageHint.layer setHidden:NO];
     [KLBAnimator fadeInCALayer:self.imageHint.layer applyChanges:YES];

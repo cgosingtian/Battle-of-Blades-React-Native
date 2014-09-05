@@ -70,5 +70,6 @@ extern NSInteger const KLB_ZERO;
 @property (nonatomic) BattleDifficulty selectedDifficulty;
 
 @property (nonatomic) CGFloat shieldSpawnChance;
+@property (nonatomic) BOOL battleIsActive;
 
 @end

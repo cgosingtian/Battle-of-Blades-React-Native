@@ -185,6 +185,8 @@ NSInteger const KLB_ZERO = 0;
     for (KLBButtonSpawnController *buttonSpawnController in self.buttonSpawnControllers) {
         buttonSpawnController.alpha = KLB_BUTTON_SPAWN_CONTROLLER_ALPHA;
     }
+    
+    self.battleIsActive = NO;
 }
 
 - (void)instantiateEnemyController {
@@ -249,54 +251,58 @@ NSInteger const KLB_ZERO = 0;
 
 #pragma mark - Battle Control
 - (void)startBattle:(NSNotification *)notification {
-    [self initializeVariables];
-    [self setupButtonSpawnControllers];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self.battleIsActive) {
+            [self initializeVariables];
+            [self setupButtonSpawnControllers];
     
-    NSInteger difficulty = [[notification.userInfo objectForKey:@"difficulty"] integerValue];
-    UIImage *enemyImage = nil;
-    switch (difficulty) {
-        case 0: {
-            self.selectedDifficulty = Easy;
-            enemyImage = [[KLBImageStore sharedStore] imageForFilename:KLB_ENEMY_EASY_IMAGE_FILENAME];
-            self.shieldSpawnChance *= KLB_DIFFICULTY_EASY_SHIELD_SPAWN_CHANCE_MODIFIER;
-        } break;
-        case 1: {
-            self.selectedDifficulty = Average;
-            enemyImage = [[KLBImageStore sharedStore] imageForFilename:KLB_ENEMY_AVERAGE_IMAGE_FILENAME];
-            self.shieldSpawnChance *= KLB_DIFFICULTY_AVERAGE_SHIELD_SPAWN_CHANCE_MODIFIER;
-        } break;
-        case 2: {
-            self.selectedDifficulty = Hard;
-            enemyImage = [[KLBImageStore sharedStore] imageForFilename:KLB_ENEMY_HARD_IMAGE_FILENAME];
-            self.shieldSpawnChance *= KLB_DIFFICULTY_HARD_SHIELD_SPAWN_CHANCE_MODIFIER;
-        } break;
-    }
-    if (enemyImage) {
-        self.enemyImage.image = enemyImage;
-    }
+            NSInteger difficulty = [[notification.userInfo objectForKey:@"difficulty"] integerValue];
+            UIImage *enemyImage = nil;
+            switch (difficulty) {
+                case 0: {
+                    self.selectedDifficulty = Easy;
+                    enemyImage = [[KLBImageStore sharedStore] imageForFilename:KLB_ENEMY_EASY_IMAGE_FILENAME];
+                    self.shieldSpawnChance *= KLB_DIFFICULTY_EASY_SHIELD_SPAWN_CHANCE_MODIFIER;
+                } break;
+                case 1: {
+                    self.selectedDifficulty = Average;
+                    enemyImage = [[KLBImageStore sharedStore] imageForFilename:KLB_ENEMY_AVERAGE_IMAGE_FILENAME];
+                    self.shieldSpawnChance *= KLB_DIFFICULTY_AVERAGE_SHIELD_SPAWN_CHANCE_MODIFIER;
+                } break;
+                case 2: {
+                    self.selectedDifficulty = Hard;
+                    enemyImage = [[KLBImageStore sharedStore] imageForFilename:KLB_ENEMY_HARD_IMAGE_FILENAME];
+                    self.shieldSpawnChance *= KLB_DIFFICULTY_HARD_SHIELD_SPAWN_CHANCE_MODIFIER;
+                } break;
+            }
+            if (enemyImage) {
+                self.enemyImage.image = enemyImage;
+            }
     
-    //apply a fade out animation to the coverView, and apply the changes
-    [KLBAnimator fadeOutCALayer:self.coverView.layer applyChanges:YES];
+            //apply a fade out animation to the coverView, and apply the changes
+            [KLBAnimator fadeOutCALayer:self.coverView.layer applyChanges:YES];
 
-    //get the player's time bonus and add it later to the enemy's total time
-    KLBPlayer *player = [[KLBPlayerStore sharedStore] player];
-    //load an enemy
-    self.enemyController.selectedDifficulty = self.selectedDifficulty;
-    [self.enemyController loadNewEnemyRandom];
-    self.enemyController.enemy.timeLimitSeconds += player.timeBonus;
+            //get the player's time bonus and add it later to the enemy's total time
+            KLBPlayer *player = [[KLBPlayerStore sharedStore] player];
+            //load an enemy
+            self.enemyController.selectedDifficulty = self.selectedDifficulty;
+            [self.enemyController loadNewEnemyRandom];
+            self.enemyController.enemy.timeLimitSeconds += player.timeBonus;
     
-    //configure the screen labels - USE A DELEGATE FOR THIS LATER (low priority)
-    [self respondToEnemyHealthModification:nil];
-    [self respondToEnemyLevelModification:nil];
-    [self respondToEnemyNameChange:nil];
-    [self respondToEnemyTimeModification:nil];
-    
+            //configure the screen labels - USE A DELEGATE FOR THIS LATER (low priority)
+            [self respondToEnemyHealthModification:nil];
+            [self respondToEnemyLevelModification:nil];
+            [self respondToEnemyNameChange:nil];
+            [self respondToEnemyTimeModification:nil];
 
-    self.battleTimer = [NSTimer scheduledTimerWithTimeInterval:KLB_BATTLE_SPEED_SECONDS
-                                                        target:self
-                                                      selector:@selector(timePassed)
-                                                      userInfo:nil
-                                                       repeats:YES];
+            self.battleTimer = [NSTimer scheduledTimerWithTimeInterval:KLB_BATTLE_SPEED_SECONDS
+                                                                target:self
+                                                              selector:@selector(timePassed)
+                                                              userInfo:nil
+                                                               repeats:YES];
+            self.battleIsActive = YES;
+        }
+    });
 }
 
 - (void)setupButtonSpawnControllers {
@@ -429,6 +435,7 @@ NSInteger const KLB_ZERO = 0;
         [KLBAnimator fadeInCALayer:self.defeatHintLabel.layer
                       applyChanges:YES];
     }
+    self.battleIsActive = NO;
 }
 
 - (void)clearShields {

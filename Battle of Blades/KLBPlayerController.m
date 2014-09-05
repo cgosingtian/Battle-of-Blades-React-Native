@@ -110,10 +110,10 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Out of Energy!"
-                                                        message:@"Energy replenishes over time. You may also pay $1000 for 1 energy."
+                                                        message:@"Energy replenishes over time. You may also pay $1000 to refill all energy."
                                                        delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:@"Pay $1000",nil];
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"OK",@"Pay $1000",nil];
         [alert show];
     }
 }
@@ -246,8 +246,8 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Energy Restored!"
                                                         message:@"Thank you for your purchase."
                                                        delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"OK",nil];
         [alert show];
     }
 }

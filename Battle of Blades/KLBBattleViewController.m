@@ -60,6 +60,8 @@ CGFloat const KLB_DIFFICULTY_EASY_SHIELD_SPAWN_CHANCE_MODIFIER = 0.5; // 50%
 CGFloat const KLB_DIFFICULTY_AVERAGE_SHIELD_SPAWN_CHANCE_MODIFIER = 1.0; // 100%, same
 CGFloat const KLB_DIFFICULTY_HARD_SHIELD_SPAWN_CHANCE_MODIFIER = 2.0; // 200%, double
 
+NSInteger const KLB_ZERO = 0;
+
 @implementation KLBBattleViewController
 
 #pragma mark - Dealloc
@@ -203,7 +205,7 @@ CGFloat const KLB_DIFFICULTY_HARD_SHIELD_SPAWN_CHANCE_MODIFIER = 2.0; // 200%, d
                                 newName];
 }
 - (void)respondToEnemyLevelModification: (NSNotification *)notification {
-    NSUInteger enemyLevel = 0;
+    NSUInteger enemyLevel = KLB_ZERO;
     if (notification.userInfo) {
         enemyLevel = [[notification.userInfo objectForKey:KLB_JSON_ENEMY_LEVEL] integerValue];
     }
@@ -215,24 +217,30 @@ CGFloat const KLB_DIFFICULTY_HARD_SHIELD_SPAWN_CHANCE_MODIFIER = 2.0; // 200%, d
                                  (unsigned long)enemyLevel];
 }
 - (void)respondToEnemyHealthModification: (NSNotification *)notification {
-    NSUInteger enemyHealthRemaining = 0;
+    NSInteger enemyHealthRemaining = KLB_ZERO;
     if (notification.userInfo) {
-        enemyHealthRemaining = [[notification.userInfo objectForKey:KLB_JSON_ENEMY_HEALTH_REMAINING] integerValue];
+        enemyHealthRemaining = (NSInteger)[[notification.userInfo objectForKey:KLB_JSON_ENEMY_HEALTH_REMAINING] integerValue];
     }
     if (!enemyHealthRemaining || !notification.userInfo) {
-        enemyHealthRemaining = self.enemyController.enemy.healthRemaining;
+        enemyHealthRemaining = (NSInteger)self.enemyController.enemy.healthRemaining;
+    }
+    if (enemyHealthRemaining < KLB_ZERO) {
+        enemyHealthRemaining = KLB_ZERO;
     }
     self.healthLabel.text = [NSString stringWithFormat:@"%@%ld",
                              KLB_LABEL_HEALTH_TEXT_FORMAT,
                              (long)enemyHealthRemaining];
 }
 - (void)respondToEnemyTimeModification: (NSNotification *)notification {
-    NSInteger enemyTimeLimit = 0;
+    NSInteger enemyTimeLimit = KLB_ZERO;
     if (!notification.userInfo) {
         enemyTimeLimit = (NSInteger)[[notification.userInfo objectForKey:KLB_JSON_ENEMY_TIME_LIMIT] integerValue];
     }
     if (!enemyTimeLimit || !notification.userInfo) {
         enemyTimeLimit = (NSInteger)self.enemyController.enemy.timeLimitSeconds;
+    }
+    if (enemyTimeLimit < KLB_ZERO) {
+        enemyTimeLimit = KLB_ZERO;
     }
     self.timeLeftLabel.text = [NSString stringWithFormat:@"%@%ld",
                                KLB_LABEL_TIME_LEFT_TEXT_FORMAT,

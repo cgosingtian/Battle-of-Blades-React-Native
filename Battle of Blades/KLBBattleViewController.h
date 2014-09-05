@@ -47,6 +47,8 @@ extern NSString *const KLB_ENEMY_HARD_IMAGE_FILENAME;
 extern NSString *const KLB_ENEMY_AVERAGE_IMAGE_FILENAME;
 extern NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME;
 
+extern NSInteger const KLB_ZERO;
+
 @interface KLBBattleViewController : UIView <KLBAttackDelegate>
 @property (retain, nonatomic) IBOutlet UIImageView *enemyImage;
 @property (retain, nonatomic) IBOutlet UIImageView *battleInfoBackground;

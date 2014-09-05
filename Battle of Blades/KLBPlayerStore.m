@@ -9,8 +9,6 @@
 #import "KLBPlayerStore.h"
 #import "KLBPlayer.h"
 
-NSString *const KLB_PLAYER_STORE_SINGLETON_EXCEPTION = @"Singleton";
-
 @interface KLBPlayerStore ()
 
 @property (retain,nonatomic) KLBPlayer *player;
@@ -22,18 +20,12 @@ NSString *const KLB_PLAYER_STORE_SINGLETON_EXCEPTION = @"Singleton";
 + (instancetype) sharedStore {
     static KLBPlayerStore *sharedStore;
     if (!sharedStore) {
-        sharedStore = [[KLBPlayerStore alloc] initPrivate];
+        sharedStore = [[KLBPlayerStore alloc] init];
     }
     return sharedStore;
 }
 
 - (instancetype) init {
-    [NSException raise:KLB_PLAYER_STORE_SINGLETON_EXCEPTION format:@"Use +[KLBPlayerStore sharedStore]"];
-    return nil;
-}
-
-- (instancetype)initPrivate
-{
     self = [super init];
     if (self) {
         KLBPlayer *player = [[KLBPlayer alloc] init];

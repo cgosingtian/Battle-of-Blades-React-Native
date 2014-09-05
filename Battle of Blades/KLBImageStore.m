@@ -21,13 +21,18 @@
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        imageStore = [[self alloc] initPrivate];
+        imageStore = [[self alloc] init];
     });
     
     return imageStore;
 }
 
-- (instancetype)initPrivate
+- (void)clearCache:(id)sender
+{
+    [self.dictionary removeAllObjects];
+}
+
+- (instancetype)init
 {
     self = [super init];
     if (self)
@@ -40,17 +45,6 @@
                                                    object:nil];
     }
     return self;
-}
-
-- (void)clearCache:(id)sender
-{
-    [self.dictionary removeAllObjects];
-}
-
-- (instancetype)init
-{
-    [NSException raise:@"Singleton" format:@"Use +[KLBImageStore sharedStore]"];
-    return nil;
 }
 
 #pragma mark - Image Getters and Setters

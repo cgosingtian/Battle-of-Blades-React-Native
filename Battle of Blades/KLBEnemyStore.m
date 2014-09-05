@@ -26,18 +26,12 @@ NSString *const KLB_ENEMY_STORE_SINGLETON_EXCEPTION = @"Singleton";
 + (instancetype) sharedStore {
     static KLBEnemyStore *sharedStore;
     if (!sharedStore) {
-        sharedStore = [[KLBEnemyStore alloc] initPrivate];
+        sharedStore = [[KLBEnemyStore alloc] init];
     }
     return sharedStore;
 }
 
 - (instancetype) init {
-    [NSException raise:KLB_ENEMY_STORE_SINGLETON_EXCEPTION format:@"Use +[KLBEnemyStore sharedStore]"];
-    return nil;
-}
-
-- (instancetype)initPrivate
-{
     self = [super init];
     if (self) {
         self.enemyDictionary = [[NSMutableDictionary alloc] init];

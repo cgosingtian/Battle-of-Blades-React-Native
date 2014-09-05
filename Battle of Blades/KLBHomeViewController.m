@@ -91,4 +91,11 @@ CGFloat const KLB_HOME_LEVEL_UP_FLASH_OPACITY_END = 0.0;
                                                         object:nil
                                                       userInfo:nil];
 }
+
+#pragma mark - Disable Autorotate
+- (BOOL)shouldAutorotate
+{
+    return NO;
+    
+}
 @end

@@ -123,6 +123,7 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
                                                       cancelButtonTitle:nil
                                                       otherButtonTitles:@"OK",@"Pay $1000",nil];
                 [alert show];
+                [alert release];
             }
         }
     });
@@ -260,6 +261,7 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
                                               cancelButtonTitle:nil
                                               otherButtonTitles:@"OK",nil];
         [alert show];
+        [alert release];
     }
 }
 

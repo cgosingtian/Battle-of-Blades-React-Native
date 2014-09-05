@@ -28,8 +28,8 @@ BattleDifficulty const KLB_DEFAULT_DIFFICULTY = Easy;
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.timer invalidate];
-    [self.enemy release];
     [self.enemyKey release];
+    self.enemy = nil;
     
     [super dealloc];
 }

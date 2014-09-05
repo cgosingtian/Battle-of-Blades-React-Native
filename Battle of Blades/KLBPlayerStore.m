@@ -19,8 +19,6 @@ NSString *const KLB_PLAYER_STORE_SINGLETON_EXCEPTION = @"Singleton";
 
 @implementation KLBPlayerStore
 
-@synthesize player = _player; // custom getter/setter below
-
 + (instancetype) sharedStore {
     static KLBPlayerStore *sharedStore;
     if (!sharedStore) {
@@ -44,13 +42,4 @@ NSString *const KLB_PLAYER_STORE_SINGLETON_EXCEPTION = @"Singleton";
     }
     return self;
 }
-
-- (KLBPlayer *)player {
-    return _player;
-}
-
-- (void)setPlayer:(KLBPlayer *)player {
-    _player = player;
-}
-
 @end

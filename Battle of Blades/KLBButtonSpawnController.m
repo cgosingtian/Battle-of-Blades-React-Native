@@ -23,7 +23,6 @@ CGFloat const KLB_BUTTON_SPAWN_DELAY = 0.0;
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_buttonClass release];
-    [_button release];
     _button = nil;
     _buttonClass = nil;
     [super dealloc];

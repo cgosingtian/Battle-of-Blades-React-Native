@@ -12,6 +12,7 @@
 @interface KLBPlayerController : NSObject
 
 @property (unsafe_unretained, nonatomic) KLBPlayer *player;
+@property (nonatomic) BOOL battleIsActive;
 
 - (void)loadPlayerData;
 - (NSUInteger)levelUp;

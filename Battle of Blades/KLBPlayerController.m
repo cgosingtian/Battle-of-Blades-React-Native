@@ -43,14 +43,15 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
         if (!self.player) {
             //Load Player Data
             [self loadPlayerData];
-            [self registerForNotifications];
         }
+        [self registerForNotifications];
+        [self initializeVariables];
     }
     return self;
 }
 
 #pragma mark - Other Initialization Methods
-- (void) registerForNotifications {
+- (void)registerForNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(battleStartAttempt:)
                                                  name:KLB_NOTIFICATION_BATTLE_START_ATTEMPT
@@ -67,6 +68,10 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
                                              selector:@selector(handleGainLevelCheat)
                                                  name:KLB_NOTIFICATION_CHEAT_GAIN_LEVEL
                                                object:nil];
+}
+
+- (void)initializeVariables {
+    self.battleIsActive = NO;
 }
 
 #pragma mark - Data Loading from JSON
@@ -103,19 +108,24 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
 
 #pragma mark - Player Actions Performed
 - (void)battleStartAttempt: (NSNotification *)notification {
-    if (((NSInteger)self.player.energyCurrent - (NSInteger)KLB_BATTLE_ENERGY_COST) >= 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START
-                                                            object:nil
-                                                          userInfo:notification.userInfo];
-    }
-    else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Out of Energy!"
-                                                        message:@"Energy replenishes over time. You may also pay $1000 to refill all energy."
-                                                       delegate:self
-                                              cancelButtonTitle:nil
-                                              otherButtonTitles:@"OK",@"Pay $1000",nil];
-        [alert show];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self.battleIsActive) {
+            if (((NSInteger)self.player.energyCurrent - (NSInteger)KLB_BATTLE_ENERGY_COST) >= 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_START
+                                                                    object:nil
+                                                                  userInfo:notification.userInfo];
+                self.battleIsActive = YES;
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Out of Energy!"
+                                                                message:@"Energy replenishes over time. You may also pay $1000 to refill all energy."
+                                                               delegate:self
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:@"OK",@"Pay $1000",nil];
+                [alert show];
+            }
+        }
+    });
 }
 - (void)battleStarted: (NSNotification *)notification {
     [self reducePlayerEnergy:KLB_BATTLE_ENERGY_COST];
@@ -134,6 +144,7 @@ CGFloat const KLB_ZERO_F_INITIALIZER = 0.0;
     } else {
         // optional: handle any other player-related penalties here for losing
     }
+    self.battleIsActive = NO;
 }
 
 #pragma mark - Post Notifications

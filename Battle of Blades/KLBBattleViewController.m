@@ -33,6 +33,7 @@ CGFloat const KLB_BUTTON_SPAWN_CONTROLLER_ALPHA = 0.0;
 // If max chance is 100, spawn chance per second should be within 0 - 100.
 CGFloat const KLB_BUTTON_SHIELD_SPAWN_CHANCE_PER_SECOND = 0.05; //5%
 CGFloat const KLB_BUTTON_SHIELD_SPAWN_CHANCE_MAX = 1.0; //100%
+// Ultimately, the number of shields that will spawn is determined by:
 NSUInteger const KLB_BUTTON_SHIELD_SPAWN_MAXIMUM_PER_SECOND = 1;
 
 CGFloat const KLB_VICTORY_FADE_IN_DURATION = 1;
@@ -351,10 +352,11 @@ NSInteger const KLB_ZERO = 0;
     shieldButton.delegate = self;
     [shieldButton setAlpha:KLB_FADE_IN_OPACITY_START];
     [shieldButton convertToShield];
-    [self addSubview:shieldButton];
+    [self addSubview:[shieldButton retain]];
     [KLBAnimator fadeInCALayer:shieldButton.layer duration:KLB_BUTTON_SPAWN_FADE_IN_DURATION applyChanges:YES];
     
     [shieldButton allowMovement];
+    [shieldButton release];
 }
 
 - (CGRect)generateAttackButtonFrameForSpawnerFrame:(CGRect)spawnerFrame {

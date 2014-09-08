@@ -12,7 +12,7 @@
 extern NSString *const KLB_CA_OPACITY_STRING;
 extern NSString *const KLB_CA_POSITION_STRING;
 
-extern CGFloat const KLB_ANIMATION_ZERO_F;
+extern CGFloat const KLB_ZERO_F;
 
 // fadeOutCALayer
 extern CGFloat const KLB_FADE_OUT_DURATION;

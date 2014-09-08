@@ -181,13 +181,13 @@ NSInteger const KLB_ZERO = 0;
     
     //initializations
     self.coverView.alpha = KLB_MAX_ALPHA;
-    self.battleGradientBackground.alpha = KLB_ANIMATION_ZERO_F;
-    self.battleGradientBackground.layer.opacity = KLB_ANIMATION_ZERO_F;
-    self.defeatLabel.alpha = KLB_ANIMATION_ZERO_F;
-    self.defeatHintLabel.alpha = KLB_ANIMATION_ZERO_F;
-    self.victoryImage.alpha = KLB_ANIMATION_ZERO_F;
-    self.victoryImage.layer.opacity = KLB_ANIMATION_ZERO_F;
-    self.experienceLabel.alpha = KLB_ANIMATION_ZERO_F;
+    self.battleGradientBackground.alpha = KLB_ZERO_F;
+    self.battleGradientBackground.layer.opacity = KLB_ZERO_F;
+    self.defeatLabel.alpha = KLB_ZERO_F;
+    self.defeatHintLabel.alpha = KLB_ZERO_F;
+    self.victoryImage.alpha = KLB_ZERO_F;
+    self.victoryImage.layer.opacity = KLB_ZERO_F;
+    self.experienceLabel.alpha = KLB_ZERO_F;
     self.shieldSpawnChance = KLB_BUTTON_SHIELD_SPAWN_CHANCE_PER_SECOND;
     
     //hide all button spawn controllers from view

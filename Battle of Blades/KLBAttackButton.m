@@ -207,7 +207,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
             self.canMove = NO;
         }
         // Timer counts down here
-        if (self.attack.timeRemainingSeconds > KLB_ANIMATION_ZERO_F) {
+        if (self.attack.timeRemainingSeconds > KLB_ZERO_F) {
             self.attack.timeRemainingSeconds--;
             if (!self.isShield) {
                 [self updateCountdownLabel];
@@ -217,7 +217,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
             }
         }
         // If out of time, handle accordingly
-        if (self.attack.timeRemainingSeconds <= KLB_ANIMATION_ZERO_F) {
+        if (self.attack.timeRemainingSeconds <= KLB_ZERO_F) {
             [self timeUp];
         }
       }
@@ -280,7 +280,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     float randomX = arc4random_uniform(maxX);
     float randomY = arc4random_uniform(maxY);
     
-    // Limit X and Y to movement range
+    // Limit the maximum of X and Y to movement range
     if (randomX > self.frame.origin.x) {
         if (randomX - self.frame.origin.x > range) {
             randomX = self.frame.origin.x + range;
@@ -298,6 +298,15 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
         if (randomY + self.frame.origin.y > range) {
             randomY = self.frame.origin.y - range;
         }
+    }
+    
+    // Limit the resulting coordinates' minimum X and Y to zero, if negative
+    // due to movement range
+    if (randomX < KLB_ZERO_F) {
+        randomX = KLB_ZERO_F;
+    }
+    if (randomY < KLB_ZERO_F) {
+        randomY = KLB_ZERO_F;
     }
     
     return CGPointMake(randomX, randomY);
@@ -325,44 +334,37 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
             CGPoint destinationResult = self.frame.origin;
             CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
             
+            // Configure movement along X Axis
             if (destinationResult.x > self.moveDestination.x) {
-                CGFloat x = destinationResult.x - velocity;
-                CGFloat y = destinationResult.y;
+                destinationResult.x -= velocity;
                 
-                if (x < self.moveDestination.x) //don't overshoot coordinates
-                    x = self.moveDestination.x;
-                
-                destinationResult = CGPointMake(x, y);
+                if (destinationResult.x < self.moveDestination.x) //don't overshoot coordinates
+                    destinationResult.x = self.moveDestination.x;
             } else if (destinationResult.x < self.moveDestination.x) {
-                CGFloat x = destinationResult.x + velocity;
-                CGFloat y = destinationResult.y;
+                destinationResult.x += velocity;
                 
-                if (x > self.moveDestination.x) //don't overshoot coordinates
-                    x = self.moveDestination.x;
-                
-                destinationResult = CGPointMake(x, y);
+                if (destinationResult.x > self.moveDestination.x) //don't overshoot coordinates
+                    destinationResult.x = self.moveDestination.x;
             }
             
+            // Configure movement along Y Axis
             if (destinationResult.y > self.moveDestination.y) {
-                CGFloat x = destinationResult.x;
-                CGFloat y = destinationResult.y - velocity;
+                destinationResult.y -= velocity;
                 
-                if (y < self.moveDestination.y) //don't overshoot coordinates
-                    y = self.moveDestination.y;
-                
-                destinationResult = CGPointMake(x, y);
+                if (destinationResult.y < self.moveDestination.y) //don't overshoot coordinates
+                    destinationResult.y = self.moveDestination.y;
             } else if (destinationResult.y < self.moveDestination.y) {
-                CGFloat x = destinationResult.x;
-                CGFloat y = destinationResult.y + velocity;
+                destinationResult.y += velocity;
                 
-                if (y > self.moveDestination.y) //don't overshoot coordinates
-                    y = self.moveDestination.y;
-                
-                destinationResult = CGPointMake(x, y);
+                if (destinationResult.y > self.moveDestination.y) //don't overshoot coordinates
+                    destinationResult.y = self.moveDestination.y;
             }
             
             // Update the frame
-            self.frame = CGRectMake(destinationResult.x, destinationResult.y, self.frame.size.width, self.frame.size.height);
+            self.frame = CGRectMake(destinationResult.x,
+                                    destinationResult.y,
+                                    self.frame.size.width,
+                                    self.frame.size.height);
         }
     }
 }

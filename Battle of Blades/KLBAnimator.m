@@ -12,7 +12,7 @@
 NSString *const KLB_CA_OPACITY_STRING = @"opacity";
 NSString *const KLB_CA_POSITION_STRING = @"position";
 
-CGFloat const KLB_ANIMATION_ZERO_F = 0.0;
+CGFloat const KLB_ZERO_F = 0.0;
 
 // fadeOutCALayer
 CGFloat const KLB_FADE_OUT_DURATION = 0.5;

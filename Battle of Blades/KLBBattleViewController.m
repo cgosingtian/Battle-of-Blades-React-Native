@@ -159,6 +159,10 @@ NSInteger const KLB_ZERO = 0;
                                                  name:KLB_NOTIFICATION_ENEMY_TIME_CHANGED
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(respondToEnemyTimeModification:)
+                                                 name:KLB_NOTIFICATION_ENEMY_BLOCK_APPLIED
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(clearShields)
                                                  name:KLB_NOTIFICATION_CHEAT_CLEAR_SHIELDS
                                                object:nil];

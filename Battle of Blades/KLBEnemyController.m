@@ -148,7 +148,7 @@ BattleDifficulty const KLB_DEFAULT_DIFFICULTY = Easy;
 - (void)blockSuccess {
     if (self.timer.isValid) {
         self.enemy.timeLimitSeconds -= KLB_ENEMY_TIME_REDUCTION_ON_BLOCK;
-        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_TIME_CHANGED
+        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ENEMY_BLOCK_APPLIED
                                                             object:nil
                                                           userInfo:nil];
         [self checkTime];

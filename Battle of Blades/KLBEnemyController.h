@@ -20,9 +20,9 @@ extern NSUInteger const KLB_ENEMY_TIME_REDUCTION_ON_BLOCK;
 @property (retain, nonatomic) NSString *enemyKey;
 @property (unsafe_unretained, nonatomic) KLBEnemy *enemy;
 @property (retain, nonatomic) NSTimer *timer;
+
 - (instancetype)initWithDifficulty:(BattleDifficulty)selectedDifficulty;
 - (void)loadNewEnemyRandom;
-- (NSString *)loadRandomEnemyData;
 - (void)attackFail;
 
 @end

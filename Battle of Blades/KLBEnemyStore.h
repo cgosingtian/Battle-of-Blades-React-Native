@@ -14,5 +14,5 @@
 - (NSDictionary *)allItems;
 - (void)addEnemy:(KLBEnemy *)enemy forKey:(NSString *)key;
 - (KLBEnemy *)enemyForKey:(NSString *)key;
-- (void)setAllItems:(NSMutableDictionary *)dictionary;
+//- (void)setAllItems:(NSMutableDictionary *)dictionary;
 @end

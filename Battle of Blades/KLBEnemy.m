@@ -16,6 +16,13 @@ NSUInteger const KLB_DEFAULT_ENEMY_TIME_LIMIT_SECONDS = 30;
 
 @implementation KLBEnemy
 
+#pragma mark - Dealloc
+- (void)dealloc {
+    [_key release];
+    [_enemyName release];
+    [super dealloc];
+}
+
 #pragma mark - Initializers
 // Designated Initializer
 - (instancetype)initWithKey:(NSString *)key

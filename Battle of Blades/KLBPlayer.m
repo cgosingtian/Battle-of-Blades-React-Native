@@ -17,6 +17,11 @@ NSUInteger const KLB_DEFAULT_PLAYER_ENERGY_MAXIMUM = 10;
 NSUInteger const KLB_DEFAULT_PLAYER_ENERGY_CURRENT = 10;
 
 @implementation KLBPlayer
+#pragma mark - Dealloc
+- (void)dealloc {
+    [_name release];
+    [super dealloc];
+}
 
 #pragma mark - Initializers
 // Designated Initializer

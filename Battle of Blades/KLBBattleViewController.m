@@ -204,6 +204,7 @@ NSInteger const KLB_ZERO = 0;
 
 - (void)instantiateEnemyController {
     self.enemyController = [[KLBEnemyController alloc] init];
+    [self.enemyController release];
 }
 
 #pragma mark - Update Labels Upon Notice

@@ -18,18 +18,12 @@
 + (instancetype)sharedStore
 {
     static KLBImageStore *imageStore;
-    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         imageStore = [[self alloc] init];
     });
     
     return imageStore;
-}
-
-- (void)clearCache:(id)sender
-{
-    [self.dictionary removeAllObjects];
 }
 
 - (instancetype)init
@@ -55,13 +49,16 @@
 
 -(UIImage *)imageForFilename:(NSString *)filename
 {
-    // If possible, get it from the dictionary
+    // Check if the image requested is already cached
     UIImage *result = self.dictionary[filename];
     if (!result) {
+        // Otherwise, try loading the image from Resources
         result = [UIImage imageNamed:filename];
         if (result) {
+            // Cache the image found
             self.dictionary[filename] = result;
         } else {
+            // Report that no image was found
             NSLog(@"Error: unable to find %@ in resources or image store.", filename);
         }
     }
@@ -76,13 +73,8 @@
     [self.dictionary removeObjectForKey:filename];
 }
 
-//- (NSString *)imagePathForKey:(NSString *)key
-//{
-//    NSArray *documentDirectories =
-//    NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-//                                        NSUserDomainMask,
-//                                        YES);
-//    NSString *documentDirectory = [documentDirectories firstObject];
-//    return [documentDirectory stringByAppendingPathComponent:key];
-//}
+- (void)clearCache:(id)sender
+{
+    [self.dictionary removeAllObjects];
+}
 @end

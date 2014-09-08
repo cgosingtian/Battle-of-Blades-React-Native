@@ -23,22 +23,33 @@ NSString *const KLB_ENEMY_STORE_SINGLETON_EXCEPTION = @"Singleton";
 
 @implementation KLBEnemyStore
 
+#pragma mark - Dealloc
+- (void) dealloc {
+    [_enemyDictionary release];
+    [super dealloc];
+}
+
+#pragma mark - Initializations
 + (instancetype) sharedStore {
     static KLBEnemyStore *sharedStore;
-    if (!sharedStore) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         sharedStore = [[KLBEnemyStore alloc] init];
-    }
+    });
     return sharedStore;
 }
 
 - (instancetype) init {
     self = [super init];
     if (self) {
-        self.enemyDictionary = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *newDictionary = [[NSMutableDictionary alloc] init];
+        self.enemyDictionary = newDictionary;
+        [newDictionary release];
     }
     return self;
 }
 
+#pragma mark - Getters and Setters
 - (NSDictionary *)allItems {
     return self.enemyDictionary;
 }

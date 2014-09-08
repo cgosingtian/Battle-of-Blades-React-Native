@@ -11,6 +11,7 @@
 
 @interface KLBPlayerStore : NSObject
 +(instancetype)sharedStore;
+// Access to the Player object restricted to the following methods:
 - (KLBPlayer *)player;
 - (void)setPlayer:(KLBPlayer *)player;
 @end

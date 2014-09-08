@@ -17,11 +17,19 @@
 
 @implementation KLBPlayerStore
 
+#pragma mark - Dealloc
+- (void) dealloc {
+    [_player release];
+    [super dealloc];
+}
+
+#pragma mark - Initializations
 + (instancetype) sharedStore {
     static KLBPlayerStore *sharedStore;
-    if (!sharedStore) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         sharedStore = [[KLBPlayerStore alloc] init];
-    }
+    });
     return sharedStore;
 }
 

@@ -50,25 +50,23 @@ extern NSString *const KLB_ENEMY_EASY_IMAGE_FILENAME;
 extern NSInteger const KLB_ZERO;
 
 @interface KLBBattleViewController : UIView <KLBAttackDelegate>
+@property (retain, nonatomic) NSTimer *battleTimer;
 @property (retain, nonatomic) IBOutlet UIImageView *enemyImage;
 @property (retain, nonatomic) IBOutlet UIImageView *battleInfoBackground;
+@property (retain, nonatomic) IBOutlet UIImageView *coverView;
+@property (retain, nonatomic) IBOutlet UIImageView *battleGradientBackground;
+@property (retain, nonatomic) IBOutlet UIImageView *victoryImage;
 @property (retain, nonatomic) IBOutlet UILabel *healthLabel;
 @property (retain, nonatomic) IBOutlet UILabel *timeLeftLabel;
-@property (retain, nonatomic) IBOutlet UIImageView *coverView;
 @property (retain, nonatomic) IBOutlet UILabel *enemyNameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *enemyLevelLabel;
-@property (retain, nonatomic) IBOutlet UIImageView *battleGradientBackground;
 @property (retain, nonatomic) IBOutlet UILabel *experienceLabel;
-@property (retain, nonatomic) IBOutlet UIImageView *victoryImage;
 @property (retain, nonatomic) IBOutlet UILabel *defeatLabel;
 @property (retain, nonatomic) IBOutlet UILabel *defeatHintLabel;
-@property (retain, nonatomic) NSTimer *battleTimer;
-
-@property (retain, nonatomic) KLBEnemyController *enemyController;
 @property (retain, nonatomic) IBOutletCollection(KLBButtonSpawnController) NSArray *buttonSpawnControllers;
 
+@property (retain, nonatomic) KLBEnemyController *enemyController;
 @property (nonatomic) BattleDifficulty selectedDifficulty;
-
 @property (nonatomic) CGFloat shieldSpawnChance;
 @property (nonatomic) BOOL battleIsActive;
 

@@ -66,22 +66,31 @@ NSInteger const KLB_ZERO = 0;
 
 #pragma mark - Dealloc
 - (void)dealloc {
+    // Release Timers
     [_battleTimer invalidate];
-    [_enemyController release];
     [_battleTimer release];
+    
+    // Release IBOutlet Image Views
     [_enemyImage release];
     [_battleInfoBackground release];
+    [_coverView release];
+    [_battleGradientBackground release];
+    [_victoryImage release];
+    
+    // Release IBOutlet Labels
     [_healthLabel release];
     [_timeLeftLabel release];
-    [_coverView release];
+    [_experienceLabel release];
     [_enemyNameLabel release];
     [_enemyLevelLabel release];
-    [_battleGradientBackground release];
-    [_experienceLabel release];
-    [_victoryImage release];
     [_defeatLabel release];
     [_defeatHintLabel release];
+    
+    // Release IBOutletCollection - Button Spawn Controllers
     [_buttonSpawnControllers release];
+    
+    // Release Enemy Controller
+    [_enemyController release];
     [super dealloc];
 }
 
@@ -408,8 +417,6 @@ NSInteger const KLB_ZERO = 0;
         [KLBAnimator fadeInCALayer:self.victoryImage.layer
                           duration:KLB_VICTORY_FADE_IN_DURATION
                       applyChanges:YES];
-        
-        
     } else {
         // load the proper gradient for the gradient image view, then apply the flash effect on it
         UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_DEFEAT_GRADIENT_FILENAME];

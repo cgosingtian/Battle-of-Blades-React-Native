@@ -58,7 +58,7 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     [animationValues addObject:[NSNumber numberWithFloat:endValue]];
     
     animation.values = animationValues;
-//    [animationValues release]; // TEST THIS
+    [animationValues release];
     
     return animation;
 }
@@ -69,35 +69,39 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
        startOpacity:(CGFloat)startOpacity
          endOpacity:(CGFloat)endOpacity
        applyChanges:(BOOL)applyChanges {
-    if (!layer.isHidden) {
-        NSString *key = KLB_CA_OPACITY_STRING;
-        [CATransaction begin];
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        if (!layer.isHidden) {
+            NSString *key = KLB_CA_OPACITY_STRING;
+            [CATransaction flush];
+            [CATransaction begin];
+            [layer retain];
         
-        // Initialize Animation object
-        CAKeyframeAnimation *animation = [self initializeAnimationWithKey:key
-                                                                 duration:duration
-                                                          startValueFloat:startOpacity
-                                                            endValueFloat:endOpacity];
+            // Initialize Animation object
+            CAKeyframeAnimation *animation = [self initializeAnimationWithKey:key
+                                                                     duration:duration
+                                                              startValueFloat:startOpacity
+                                                                endValueFloat:endOpacity];
         
-        // Prevent flickering by setting final value on layer
-        [layer setOpacity:endOpacity];
+            // Prevent flickering by setting final value on layer
+            [layer setOpacity:endOpacity];
         
-        [CATransaction setCompletionBlock:^()
-         {
-//             [animation.values release];
-             [animation release];
+            [CATransaction setCompletionBlock:^()
+             {
+                 [animation release];
              
-             if (applyChanges) {
-                 [layer setOpacity:endOpacity];
-             } else {
-                 [layer setOpacity:startOpacity];
-             }
-         }];
+                 if (applyChanges) {
+                     [layer setOpacity:endOpacity];
+                 } else {
+                     [layer setOpacity:startOpacity];
+                 }
+             }];
         
-        [layer addAnimation:animation forKey:key];
+            [layer addAnimation:animation forKey:key];
         
-        [CATransaction commit];
-    }
+            [layer release];
+            [CATransaction commit];
+        }
+    });
 }
 
 + (void)fadeOutCALayer:(CALayer *)layer
@@ -135,47 +139,51 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
               endOpacity:(CGFloat)endOpacity
             applyChanges:(BOOL)applyChanges
               flashColor:(UIColor *)flashColor {
-    if (!layer.isHidden) {
-        NSString *keyPath = KLB_CA_OPACITY_STRING;
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        if (!layer.isHidden) {
+            NSString *keyPath = KLB_CA_OPACITY_STRING;
         
-        // Setup the Tint Layer
-        CALayer *tintLayer = [[CALayer alloc] init];
-        CGColorRef cgFlashColor = [flashColor CGColor];
-        [tintLayer setBackgroundColor:cgFlashColor];
-        [tintLayer setOpacity:startOpacity];
-        [tintLayer setBounds:[layer bounds]];
+            // Setup the Tint Layer
+            CALayer *tintLayer = [[CALayer alloc] init];
+            CGColorRef cgFlashColor = [flashColor CGColor];
+            [tintLayer setBackgroundColor:cgFlashColor];
+            [tintLayer setOpacity:startOpacity];
+            [tintLayer setBounds:[layer bounds]];
         
-        // Center the Tint Layer onto the Main Layer
-        [tintLayer setPosition:CGPointMake([layer bounds].size.width/2.0,
-                                           [layer bounds].size.height/2.0)];
+            // Center the Tint Layer onto the Main Layer
+            [tintLayer setPosition:CGPointMake([layer bounds].size.width/2.0,
+                                               [layer bounds].size.height/2.0)];
         
-        // Add the Tint Layer to the Main Layer
-        [layer addSublayer:tintLayer];
+            // Add the Tint Layer to the Main Layer
+            [layer addSublayer:tintLayer];
         
-        [CATransaction begin];
+            [CATransaction flush];
+            [CATransaction begin];
         
-        // Initialize the Animation
-        CAKeyframeAnimation *animation = [self initializeAnimationWithKey:keyPath
-                                                                    duration:duration
-                                                             startValueFloat:startOpacity
-                                                               endValueFloat:endOpacity];
+            // Initialize the Animation
+            CAKeyframeAnimation *animation = [self initializeAnimationWithKey:keyPath
+                                                                     duration:duration
+                                                              startValueFloat:startOpacity
+                                                                endValueFloat:endOpacity];
         
-        // prevent flickering
-        tintLayer.opacity = endOpacity;
+            // prevent flickering
+            tintLayer.opacity = endOpacity;
         
-        [CATransaction setCompletionBlock:^()
-         {
-             [animation release];
-             if (!applyChanges) {
-                 [tintLayer removeFromSuperlayer];
-             }
-             [tintLayer release];
-         }];
+            [CATransaction setCompletionBlock:^()
+             {
+                 [flashColor release];
+                 [animation release];
+                 if (!applyChanges) {
+                     [tintLayer removeFromSuperlayer];
+                 }
+                 [tintLayer release];
+             }];
         
-        [tintLayer addAnimation:animation forKey:keyPath];
+            [tintLayer addAnimation:animation forKey:keyPath];
         
-        [CATransaction commit];
-    }
+            [CATransaction commit];
+        }
+    });
 }
 
 + (void)flashWhiteCALayer:(CALayer *)layer
@@ -237,6 +245,7 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
                                                                         duration:fadeOutDuration
                                                                  startValueFloat:fadeOutStartOpacity
                                                                    endValueFloat:fadeOutEndOpacity];
+        [layer retain];
         
         // prevent flickering
         [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
@@ -260,6 +269,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
     
         [layer addAnimation:fadeInAnimation forKey:key];
         [layer addAnimation:fadeOutAnimation forKey:key];
+        
+        [layer release];
     
         [CATransaction commit];
     }

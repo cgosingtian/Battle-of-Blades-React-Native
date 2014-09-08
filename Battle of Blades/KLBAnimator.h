@@ -40,9 +40,11 @@ extern CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_START;
 extern CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END;
 
 @interface KLBAnimator : NSObject
+// FADE OUT
 + (void)fadeOutCALayer:(CALayer *)layer
           applyChanges:(BOOL)applyChanges;
 
+// FADE IN
 + (void)fadeInCALayer:(CALayer *)layer
          applyChanges:(BOOL)applyChanges;
 
@@ -50,11 +52,7 @@ extern CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END;
              duration:(CGFloat)duration
          applyChanges:(BOOL)applyChanges;
 
-+ (void)moveCALayer:(CALayer *)layer
-         startPoint:(CGPoint)start
-           endPoint:(CGPoint)end
-       applyChanges:(BOOL)applyChanges;
-
+// FLASH WITH WHITE TINT LAYER
 + (void)flashWhiteCALayer:(CALayer *)layer
              applyChanges:(BOOL)applyChanges;
 
@@ -64,12 +62,14 @@ extern CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END;
                endOpacity:(CGFloat)endOpacity
              applyChanges:(BOOL)applyChanges;
 
+// FLASH WITH GOLD TINT LAYER
 + (void)flashGoldCALayer:(CALayer *)layer
                  duration:(CGFloat)duration
              startOpacity:(CGFloat)startOpacity
                endOpacity:(CGFloat)endOpacity
              applyChanges:(BOOL)applyChanges;
 
+// FLASH LAYER
 + (void)flashAlphaCALayer:(CALayer *)layer
              applyChanges:(BOOL)applyChanges;
 

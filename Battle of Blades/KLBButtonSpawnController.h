@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "KLBButtonSpawnDelegate.h"
+#import "KLBAttackDelegate.h"
 
 extern CGFloat const KLB_BUTTON_SPAWN_DELAY;
 
@@ -17,7 +18,8 @@ extern CGFloat const KLB_BUTTON_SPAWN_DELAY;
 @property (nonatomic) Class buttonClass;
 @property (nonatomic) CGRect buttonFrame;
 @property (nonatomic) BOOL canLoadButton;
+@property (unsafe_unretained, nonatomic) UIView* mainView;
 
-- (void)initializeSpawnerWithButtonClass:(Class)class frame:(CGRect)frame;
+- (void)initializeSpawnerWithButtonClass:(Class)class frame:(CGRect)frame mainView:(UIView *)mainView;
 
 @end

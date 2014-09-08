@@ -25,13 +25,15 @@ CGFloat const KLB_BUTTON_SPAWN_DELAY = 0.0;
     [_buttonClass release];
     _button = nil;
     _buttonClass = nil;
+    _mainView = nil;
     [super dealloc];
 }
 
 #pragma mark - Initializers
 // We won't be using a NIB to load this object - it doesn't have an interface.
 // The parent view controller will have to call this to initialize the object.
-- (void)initializeSpawnerWithButtonClass:(Class)class frame:(CGRect)frame {
+- (void)initializeSpawnerWithButtonClass:(Class)class frame:(CGRect)frame mainView:(UIView *)mainView {
+    self.mainView = mainView;
     self.canLoadButton = YES;
     [self setupSpawnButtonClass:class frame:frame];
     [self registerForNotifications];
@@ -68,11 +70,9 @@ CGFloat const KLB_BUTTON_SPAWN_DELAY = 0.0;
     if ([_button isKindOfClass:[KLBAttackButton class]]) {
         KLBAttackButton *attackButton = (KLBAttackButton *)_button;
         attackButton.delegateButtonSpawnController = self;
-        // The attackButton's delegate (for KLBAttackDelegate) is this object's superview's superview's
-        // nextResponder, ie., its view controller. Also, this assumes that the button spawn controllers
-        // are placed inside a view before they're placed inside the view controller's view
-        if ([[[[[self superview] superview] nextResponder] class] conformsToProtocol:@protocol(KLBAttackDelegate)]) {
-            attackButton.delegate = (id<KLBAttackDelegate>)[[[self superview] superview] nextResponder];
+        
+        if ([[self.mainView class] conformsToProtocol:@protocol(KLBAttackDelegate)]) {
+            attackButton.delegate = (id<KLBAttackDelegate>)self.mainView;
         }
     }
     [[self superview] addSubview:_button];

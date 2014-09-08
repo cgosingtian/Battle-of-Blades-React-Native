@@ -325,7 +325,8 @@ NSInteger const KLB_ZERO = 0;
         buttonSpawnController.alpha = KLB_BUTTON_SPAWN_CONTROLLER_ALPHA;
         CGRect spawnFrame = [self generateAttackButtonFrameForSpawnerFrame:buttonSpawnController.frame];
         [buttonSpawnController initializeSpawnerWithButtonClass:[KLBAttackButton class]
-                                                          frame:spawnFrame];
+                                                          frame:spawnFrame
+                                                       mainView:self];
     }
 }
 

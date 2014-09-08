@@ -31,14 +31,17 @@ extern CGFloat const KLB_ATTACK_BUTTON_SHIELD_LIFETIME_MULTIPLIER;
 extern CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER;
 
 @interface KLBAttackButton : UIButton
-@property (retain, nonatomic) IBOutlet UIButton *attackButton;
-@property (unsafe_unretained, nonatomic) id<KLBAttackDelegate> delegate;
-@property (unsafe_unretained, nonatomic) id<KLBButtonSpawnDelegate> delegateButtonSpawnController;
-@property (retain, nonatomic) KLBAttack *attack;
 @property (retain, nonatomic) NSTimer *moveTimer;
 @property (retain, nonatomic) NSTimer *waitTimer;
+
+@property (unsafe_unretained, nonatomic) id<KLBAttackDelegate> delegate;
+@property (unsafe_unretained, nonatomic) id<KLBButtonSpawnDelegate> delegateButtonSpawnController;
+
+@property (retain, nonatomic) IBOutlet UIButton *attackButton;
 @property (retain, nonatomic) IBOutlet UILabel *countdownLabel;
 @property (retain, nonatomic) IBOutlet UIView *containerView;
+
+@property (retain, nonatomic) KLBAttack *attack;
 
 @property (nonatomic) BOOL isShield;
 

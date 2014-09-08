@@ -36,16 +36,27 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
 
 #pragma mark - Dealloc
 - (void)dealloc {
+    // Undo notification registration
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    // Nil delegates
     _delegate = nil;
+
+    // Release Timers
     [_moveTimer release];
     [_waitTimer release];
+
+    // Release IBOutlets
     [_attackButton release];
-    [_attack release];
-    _attackButton = nil;
-    _attack = nil;
     [_countdownLabel release];
     [_containerView release];
+
+    // Release owned objects
+    [_attack release];
+    
+    // Avoid dangling pointers for safety
+    _attackButton = nil;
+    _attack = nil;
     [super dealloc];
 }
 
@@ -96,6 +107,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     
     UIImage *shieldImage = [[KLBImageStore sharedStore] imageForFilename:KLB_SHIELD_BUTTON_IMAGE_FILENAME];
     [self.attackButton setImage:shieldImage forState:UIControlStateNormal];
+    [shieldImage release];
     
     self.layer.zPosition = KLB_SHIELD_BUTTON_LAYER_Z_POSITION;
     CGSize buttonSize = self.containerView.frame.size;
@@ -120,11 +132,10 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
 
 - (void)replacePlaceholderViewsWithActual {
     //Replace placeholders of this class in other XIBs with our defined XIB
-    KLBAttackButton *actualView = [[[UINib nibWithNibName:NSStringFromClass([self class])
-                                                bundle:nil]
-                                    instantiateWithOwner:self
-                                    options:nil]
-                                   objectAtIndex:0];
+    UINib *nib = [UINib nibWithNibName:NSStringFromClass([self class])
+                                bundle:nil];
+    NSArray *nibViews = [nib instantiateWithOwner:self options:nil];
+    KLBAttackButton *actualView = [nibViews objectAtIndex:0];
     [self addSubview:actualView];
 }
 
@@ -255,6 +266,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
 
 - (CGPoint)generateRandomPoint {
     CGFloat range;
+    // Button type determines movement range
     if (self.isShield) {
         range = KLB_SHIELD_BUTTON_MOVEMENT_RANGE;
     } else {
@@ -270,21 +282,21 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     
     // Limit X and Y to movement range
     if (randomX > self.frame.origin.x) {
-        if (randomX - self.frame.origin.x > KLB_ATTACK_BUTTON_MOVEMENT_RANGE) {
-            randomX = self.frame.origin.x + KLB_ATTACK_BUTTON_MOVEMENT_RANGE;
+        if (randomX - self.frame.origin.x > range) {
+            randomX = self.frame.origin.x + range;
         }
     } else {
-        if (randomX + self.frame.origin.x > KLB_ATTACK_BUTTON_MOVEMENT_RANGE) {
-            randomX = self.frame.origin.x - KLB_ATTACK_BUTTON_MOVEMENT_RANGE;
+        if (randomX + self.frame.origin.x > range) {
+            randomX = self.frame.origin.x - range;
         }
     }
     if (randomY > self.frame.origin.y) {
-        if (randomY - self.frame.origin.y > KLB_ATTACK_BUTTON_MOVEMENT_RANGE) {
-            randomY = self.frame.origin.y + KLB_ATTACK_BUTTON_MOVEMENT_RANGE;
+        if (randomY - self.frame.origin.y > range) {
+            randomY = self.frame.origin.y + range;
         }
     } else {
-        if (randomY + self.frame.origin.y > KLB_ATTACK_BUTTON_MOVEMENT_RANGE) {
-            randomY = self.frame.origin.y - KLB_ATTACK_BUTTON_MOVEMENT_RANGE;
+        if (randomY + self.frame.origin.y > range) {
+            randomY = self.frame.origin.y - range;
         }
     }
     
@@ -308,8 +320,8 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
             // then generate random coordinates (in the doneWaiting method)
         }
         else {
-            // we add together all of the needed movement adjustments to a single CGPoint
-            // then update the frame in one go
+            // we add together all of the needed movement adjustments to a single
+            // CGPoint (destinationResult) then update the frame in one go
             CGPoint destinationResult = self.frame.origin;
             CGFloat velocity = KLB_ATTACK_BUTTON_MOVEMENT_SPEED;
             
@@ -349,6 +361,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
                 destinationResult = CGPointMake(x, y);
             }
             
+            // Update the frame
             self.frame = CGRectMake(destinationResult.x, destinationResult.y, self.frame.size.width, self.frame.size.height);
         }
     }

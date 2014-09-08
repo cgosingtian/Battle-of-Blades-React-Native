@@ -48,12 +48,13 @@ NSString *const KLB_FOOTER_HINT_HARD_IMAGE_FILENAME = @"screenfooteravghardhint.
 #pragma mark - Other Initializing Methods
 - (void)replacePlaceholderViewsWithActual {
     //Replace placeholders of this class in other XIBs with our defined XIB
-    KLBHomeFooterView *actualView = [[[UINib nibWithNibName:NSStringFromClass([self class])
-                                                     bundle:nil]
-                                      instantiateWithOwner:self
-                                      options:nil]
-                                     objectAtIndex:0];
+    UINib *nib = [UINib nibWithNibName:NSStringFromClass([self class])
+                                bundle:nil];
+    NSArray *nibViews = [nib instantiateWithOwner:self
+                                          options:nil];
+    KLBHomeFooterView *actualView = [[nibViews objectAtIndex:0] retain];
     [self addSubview:actualView];
+    [actualView release];
 }
 
 - (void)registerForNotifications {

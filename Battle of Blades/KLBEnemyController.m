@@ -198,7 +198,7 @@ BattleDifficulty const KLB_DEFAULT_DIFFICULTY = Easy;
 
     self.enemy = enemy;
     
-    [[KLBEnemyStore sharedStore] addEnemy:enemy forKey:key];
+    [[KLBEnemyStore sharedStore] addEnemy:self.enemy forKey:key];
     [enemy release];
     
     // We return the key (not the retrieved dictionary) because we

@@ -69,10 +69,12 @@ CGFloat const KLB_HOME_LEVEL_UP_FLASH_OPACITY_END = 0.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.playerController = [[KLBPlayerController alloc] init];
+    KLBPlayerController *playerController = [[KLBPlayerController alloc] init];
+    self.playerController = playerController;
     KLBHomeHeaderView *headerView = (KLBHomeHeaderView *)self.headerViewPlaceholder;
     headerView.delegate = self;
     [headerView release];
+    [playerController release];
 }
 
 #pragma mark - Memory Management

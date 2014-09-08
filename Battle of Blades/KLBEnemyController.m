@@ -174,7 +174,6 @@ BattleDifficulty const KLB_DEFAULT_DIFFICULTY = Easy;
 - (void)loadNewEnemyRandom {
     NSString *enemyKey = [self loadRandomEnemyData];
     self.enemyKey = enemyKey;
-    [enemyKey release];
     [self applyDifficultyModifiersToEnemyStats];
 }
 
@@ -201,7 +200,6 @@ BattleDifficulty const KLB_DEFAULT_DIFFICULTY = Easy;
     
     [[KLBEnemyStore sharedStore] addEnemy:enemy forKey:key];
     [enemy release];
-    [enemyName release];
     
     // We return the key (not the retrieved dictionary) because we
     // want to restrict access to the EnemyStore only (which is done

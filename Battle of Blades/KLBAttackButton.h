@@ -39,7 +39,7 @@ extern CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER;
 
 @property (retain, nonatomic) IBOutlet UIButton *attackButton;
 @property (retain, nonatomic) IBOutlet UILabel *countdownLabel;
-@property (retain, nonatomic) IBOutlet UIView *containerView;
+@property (unsafe_unretained, nonatomic) IBOutlet UIView *containerView;
 
 @property (retain, nonatomic) KLBAttack *attack;
 

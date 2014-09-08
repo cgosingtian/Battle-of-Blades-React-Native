@@ -10,7 +10,6 @@
 #import "KLBAttackButton.h"
 #import "KLBAnimator.h"
 #import "KLBImageStore.h"
-//#import "KLBAttackButtonStore.h"
 
 //These floats MUST match the size of your button in the XIB! (otherwise you make the touchable space smaller)
 CGFloat const KLB_ATTACK_BUTTON_WIDTH = 60;
@@ -41,6 +40,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
 
     // Nil delegates
     _delegate = nil;
+    _delegateButtonSpawnController = nil;
 
     // Release Timers
     [_moveTimer release];
@@ -111,12 +111,15 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     
     self.layer.zPosition = KLB_SHIELD_BUTTON_LAYER_Z_POSITION;
     CGSize buttonSize = self.containerView.frame.size;
+    // Apply a modifier to the button's size
     buttonSize = CGSizeMake(buttonSize.width*KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER,
                             buttonSize.height*KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER);
+    // Set the frame of the button's container to be this increased size
     self.containerView.frame = CGRectMake(self.containerView.frame.origin.x,
                                           self.containerView.frame.origin.y,
                                           buttonSize.width,
                                           buttonSize.height);
+    // Set the frame of the button itself to match its container's new size
     self.frame = CGRectMake(self.frame.origin.x,
                             self.frame.origin.y,
                             self.containerView.frame.size.width,
@@ -124,6 +127,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     [self.containerView setNeedsLayout];
     
     [self.countdownLabel.layer setHidden:YES];
+
 }
 
 - (void)allowMovement {
@@ -135,8 +139,9 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([self class])
                                 bundle:nil];
     NSArray *nibViews = [nib instantiateWithOwner:self options:nil];
-    KLBAttackButton *actualView = [nibViews objectAtIndex:0];
+    KLBAttackButton *actualView = [[nibViews objectAtIndex:0] retain];
     [self addSubview:actualView];
+    [actualView release];
 }
 
 - (void)registerForNotifications {
@@ -164,13 +169,6 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     if ([self.delegate respondsToSelector:@selector(attackDidSucceed:)]) {
         [self.delegate attackDidSucceed:self];
     }
-    
-    // We do cleanup of tapped buttons either during the timer tick (see handleTime below)
-    // or when the battle view controller tells us that the battle is done.
-    // We do this to prevent calling [self handleBattleEnd] twice: when the battle ends
-    // (from the KLB_NOTIFICATION_BATTLE_END notification) and from the buttonTapped IBAction,
-    // the latter of which causes a crash.
-    //[self handleBattleEnd]; // don't do this
 }
 
 #pragma mark - Battle Methods

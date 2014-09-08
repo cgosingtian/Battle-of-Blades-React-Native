@@ -338,26 +338,30 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
             if (destinationResult.x > self.moveDestination.x) {
                 destinationResult.x -= velocity;
                 
-                if (destinationResult.x < self.moveDestination.x) //don't overshoot coordinates
-                    destinationResult.x = self.moveDestination.x;
+                [self limitFloat:destinationResult.x
+                      floatLimit:self.moveDestination.x
+                     greaterThan:NO];
             } else if (destinationResult.x < self.moveDestination.x) {
                 destinationResult.x += velocity;
                 
-                if (destinationResult.x > self.moveDestination.x) //don't overshoot coordinates
-                    destinationResult.x = self.moveDestination.x;
+                [self limitFloat:destinationResult.x
+                      floatLimit:self.moveDestination.x
+                     greaterThan:YES];
             }
             
             // Configure movement along Y Axis
             if (destinationResult.y > self.moveDestination.y) {
                 destinationResult.y -= velocity;
                 
-                if (destinationResult.y < self.moveDestination.y) //don't overshoot coordinates
-                    destinationResult.y = self.moveDestination.y;
+                [self limitFloat:destinationResult.y
+                      floatLimit:self.moveDestination.y
+                     greaterThan:NO];
             } else if (destinationResult.y < self.moveDestination.y) {
                 destinationResult.y += velocity;
                 
-                if (destinationResult.y > self.moveDestination.y) //don't overshoot coordinates
-                    destinationResult.y = self.moveDestination.y;
+                [self limitFloat:destinationResult.y
+                      floatLimit:self.moveDestination.y
+                     greaterThan:YES];
             }
             
             // Update the frame
@@ -367,5 +371,18 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
                                     self.frame.size.height);
         }
     }
+}
+
+- (CGFloat)limitFloat:(CGFloat)floatValue floatLimit:(CGFloat)limitValue greaterThan:(BOOL)greaterThan {
+    if (greaterThan) {
+        if (floatValue > limitValue) {
+            floatValue = limitValue;
+        }
+    } else {
+        if (floatValue < limitValue) {
+            floatValue = limitValue;
+        }
+    }
+    return floatValue;
 }
 @end

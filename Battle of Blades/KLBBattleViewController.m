@@ -332,6 +332,7 @@ NSInteger const KLB_ZERO = 0;
 }
 
 - (void)timePassed {
+    // Tell button spawn controllers to try spawning buttons
     [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BUTTON_SPAWN_START
                                                         object:nil
                                                       userInfo:nil];

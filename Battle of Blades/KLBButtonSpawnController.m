@@ -111,7 +111,6 @@ const NSInteger KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL = 7;
 
 #pragma mark - Button Spawn Delegate
 - (void)buttonWillEnd {
-    self.mainView = nil;
     self.canLoadButton = YES;
     [self initializeRandomWaitTime];
 }

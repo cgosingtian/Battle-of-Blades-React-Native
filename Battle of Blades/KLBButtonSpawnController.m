@@ -15,7 +15,7 @@
 #import "KLBAttackButton.h"
 #import "KLBAttackDelegate.h"
 
-CGFloat const KLB_BUTTON_SPAWN_DELAY = 0.0;
+NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL = 7;
 
 @implementation KLBButtonSpawnController
 
@@ -37,6 +37,7 @@ CGFloat const KLB_BUTTON_SPAWN_DELAY = 0.0;
     self.canLoadButton = YES;
     [self setupSpawnButtonClass:class frame:frame];
     [self registerForNotifications];
+    [self initializeRandomWaitTime];
 }
 
 #pragma mark - Other Initialization Methods
@@ -45,6 +46,9 @@ CGFloat const KLB_BUTTON_SPAWN_DELAY = 0.0;
                                              selector:@selector(handleTime)
                                                  name:KLB_NOTIFICATION_BUTTON_SPAWN_START
                                                object:nil];
+}
+- (void)initializeRandomWaitTime {
+    self.waitTimeOnceSeconds = arc4random_uniform(KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL);
 }
 
 #pragma mark - Button Spawning Methods
@@ -57,7 +61,9 @@ CGFloat const KLB_BUTTON_SPAWN_DELAY = 0.0;
 }
 
 - (void)spawnButtonAttempt {
-    if (_buttonClass) {
+    if (self.waitTimeOnceSeconds > 0) {
+        self.waitTimeOnceSeconds--;
+    } else if (_buttonClass) {
         if (self.canLoadButton) {
             self.canLoadButton = NO;
             [self instantiateButton];
@@ -81,5 +87,6 @@ CGFloat const KLB_BUTTON_SPAWN_DELAY = 0.0;
 #pragma mark - Button Spawn Delegate
 - (void)buttonWillEnd {
     self.canLoadButton = YES;
+    [self initializeRandomWaitTime];
 }
 @end

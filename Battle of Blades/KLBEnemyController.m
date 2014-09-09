@@ -174,6 +174,7 @@ BattleDifficulty const KLB_DEFAULT_DIFFICULTY = Easy;
     NSString *enemyKey = [self loadRandomEnemyData];
     self.enemyKey = enemyKey;
     [self applyDifficultyModifiersToEnemyStats];
+    [enemyKey release];
 }
 
 - (NSString *)loadRandomEnemyData {
@@ -195,10 +196,10 @@ BattleDifficulty const KLB_DEFAULT_DIFFICULTY = Easy;
                                       healthMaximum:enemyHealthMaximum
                                    timeLimitSeconds:timeLimitSeconds];
 
-    self.enemy = enemy;
+    self.enemy = [enemy retain];
+    [enemy release];
     
     [[KLBEnemyStore sharedStore] addEnemy:self.enemy forKey:key];
-    [enemy release];
     
     // We return the key (not the retrieved dictionary) because we
     // want to restrict access to the EnemyStore only (which is done

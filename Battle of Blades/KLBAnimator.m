@@ -96,6 +96,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
                  }
              }];
         
+            [layer addAnimation:animation forKey:key];
+        
             [layer release];
             [CATransaction commit];
         }

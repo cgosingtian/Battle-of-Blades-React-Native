@@ -74,7 +74,6 @@ NSString *const KLB_JSON_DIFFICULTY = @"difficulty";
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:nil];
     [JSONData writeToURL:fileURL atomically:YES];
-    [JSONData release];
 }
 
 + (NSString *)filePathInDocuments:(NSString *)filename

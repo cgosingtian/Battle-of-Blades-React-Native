@@ -74,7 +74,10 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
             NSString *key = KLB_CA_OPACITY_STRING;
             [CATransaction flush];
             [CATransaction begin];
-            [layer retain];
+            
+            __unsafe_unretained CALayer *weakLayer = layer;
+            
+//            [layer retain];
         
             // Initialize Animation object
             CAKeyframeAnimation *animation = [self initializeAnimationWithKey:key
@@ -83,22 +86,22 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
                                                                 endValueFloat:endOpacity];
         
             // Prevent flickering by setting final value on layer
-            [layer setOpacity:endOpacity];
+            [weakLayer setOpacity:endOpacity];
         
             [CATransaction setCompletionBlock:^()
              {
                  [animation release];
              
                  if (applyChanges) {
-                     [layer setOpacity:endOpacity];
+                     [weakLayer setOpacity:endOpacity];
                  } else {
-                     [layer setOpacity:startOpacity];
+                     [weakLayer setOpacity:startOpacity];
                  }
              }];
         
-            [layer addAnimation:animation forKey:key];
+            [weakLayer addAnimation:animation forKey:key];
         
-            [layer release];
+//            [layer release];
             [CATransaction commit];
         }
     //});
@@ -144,7 +147,7 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
             NSString *key = KLB_CA_OPACITY_STRING;
         
             // Setup the Tint Layer
-            CALayer *tintLayer = [[CALayer alloc] init];
+            __unsafe_unretained CALayer *tintLayer = [[CALayer alloc] init];
             CGColorRef cgFlashColor = [flashColor CGColor];
             [tintLayer setBackgroundColor:cgFlashColor];
             [tintLayer setOpacity:startOpacity];
@@ -245,10 +248,12 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
                                                                         duration:fadeOutDuration
                                                                  startValueFloat:fadeOutStartOpacity
                                                                    endValueFloat:fadeOutEndOpacity];
-        [layer retain];
+        __unsafe_unretained CALayer *weakLayer = layer;
+        
+//        [layer retain];
         
         // prevent flickering
-        [layer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
+        [weakLayer setOpacity:KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END];
     
         [CATransaction setCompletionBlock:^()
          {
@@ -256,21 +261,21 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
              [fadeOutAnimation release];
          
              if (applyChangesFadeIn) {
-                 [layer setOpacity:fadeInEndOpacity];
+                 [weakLayer setOpacity:fadeInEndOpacity];
              } else {
-                 [layer setOpacity:fadeInStartOpacity];
+                 [weakLayer setOpacity:fadeInStartOpacity];
              }
              if (applyChangesFadeOut) {
-                 [layer setOpacity:fadeOutEndOpacity];
+                 [weakLayer setOpacity:fadeOutEndOpacity];
              } else {
-                 [layer setOpacity:fadeOutStartOpacity];
+                 [weakLayer setOpacity:fadeOutStartOpacity];
              }
          }];
     
-        [layer addAnimation:fadeInAnimation forKey:key];
-        [layer addAnimation:fadeOutAnimation forKey:key];
+        [weakLayer addAnimation:fadeInAnimation forKey:key];
+        [weakLayer addAnimation:fadeOutAnimation forKey:key];
         
-        [layer release];
+//        [layer release];
     
         [CATransaction commit];
     }

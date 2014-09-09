@@ -204,8 +204,9 @@ NSInteger const KLB_ZERO = 0;
 }
 
 - (void)instantiateEnemyController {
-    self.enemyController = [[KLBEnemyController alloc] init];
-    [self.enemyController release];
+    KLBEnemyController *enemyController = [[KLBEnemyController alloc] init];
+    self.enemyController = enemyController;
+    [enemyController release];
 }
 
 #pragma mark - Update Labels Upon Notice
@@ -364,7 +365,7 @@ NSInteger const KLB_ZERO = 0;
     shieldButton.delegate = self;
     [shieldButton setAlpha:KLB_FADE_IN_OPACITY_START];
     [shieldButton convertToShield];
-    [self addSubview:[shieldButton retain]];
+    [self addSubview:shieldButton];
     [KLBAnimator fadeInCALayer:shieldButton.layer duration:KLB_BUTTON_SPAWN_FADE_IN_DURATION applyChanges:YES];
     
     [shieldButton allowMovement];

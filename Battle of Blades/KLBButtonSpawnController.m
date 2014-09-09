@@ -98,8 +98,8 @@ const NSInteger KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL = 7;
 
 - (void)instantiateButton {
     UIButton *button = [[[_buttonClass class] alloc] initWithFrame:self.frame];
-    _button = [button retain];
-    [button release];
+    _button = button;
+    
     if ([_button isKindOfClass:[KLBAttackButton class]]) {
         KLBAttackButton *attackButton = (KLBAttackButton *)_button;
         attackButton.delegateButtonSpawnController = self;
@@ -109,6 +109,7 @@ const NSInteger KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL = 7;
         }
     }
     [[self superview] addSubview:_button];
+    [button release];
 }
 
 #pragma mark - Button Spawn Delegate

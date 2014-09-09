@@ -55,18 +55,11 @@ NSString *const KLB_ENEMY_STORE_SINGLETON_EXCEPTION = @"Singleton";
 }
 
 - (void)addEnemy:(KLBEnemy *)enemy forKey:(NSString *)key {
-    [self.enemyDictionary setObject:enemy forKey:key];
+    [self.enemyDictionary setObject:[enemy retain] forKey:key];
 }
 
 - (KLBEnemy *)enemyForKey:(NSString *)key {
     return [self.enemyDictionary objectForKey:key];
-}
-
-- (void)setAllItems:(NSMutableDictionary *)dictionary {
-    if (self.enemyDictionary.count != 0) {
-        [self.enemyDictionary removeAllObjects];
-    }
-    self.enemyDictionary = [dictionary copy];
 }
 
 @end

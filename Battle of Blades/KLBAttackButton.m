@@ -85,9 +85,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
 #pragma mark - Other Initialization Methods
 - (void)initializeValues {
     if (!self.attack) {
-        KLBAttack *attackInitialized = [[KLBAttack alloc] init];
-        self.attack = attackInitialized;
-        [attackInitialized release];
+        self.attack = [[KLBAttack alloc] init];
     } else {
         [self.attack resetValues];
     }
@@ -107,7 +105,6 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     
     UIImage *shieldImage = [[KLBImageStore sharedStore] imageForFilename:KLB_SHIELD_BUTTON_IMAGE_FILENAME];
     [self.attackButton setImage:shieldImage forState:UIControlStateNormal];
-    [shieldImage release];
     
     self.layer.zPosition = KLB_SHIELD_BUTTON_LAYER_Z_POSITION;
     CGSize buttonSize = self.containerView.frame.size;
@@ -142,7 +139,6 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     NSArray *nibViews = [nib instantiateWithOwner:self options:nil];
     KLBAttackButton *actualView = [nibViews objectAtIndex:0];
     [self addSubview:actualView];
-    [actualView release];
 }
 
 - (void)registerForNotifications {
@@ -181,6 +177,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
 - (void)handleBattleEnd {
     // This method should only be run once in the lifetime of this object.
     dispatch_once(&_onceHandleEndToken, ^{
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
         if ([self.delegateButtonSpawnController respondsToSelector:@selector(buttonWillEnd)]) {
             [self.delegateButtonSpawnController buttonWillEnd];
         }
@@ -189,9 +186,14 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
         [self.moveTimer invalidate];
         if (self.waitTimer)
             [self.waitTimer invalidate];
+        [_attack release];
+
+        [_attackButton setImage:nil forState:UIControlStateNormal];
+        
         [self removeFromSuperview];
         _delegate = nil;
         _delegateButtonSpawnController = nil;
+        _containerView = nil;
     });
 }
 
@@ -316,18 +318,21 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
 - (void) randomMove {
     if (self.isEnabled) {
         if (CGPointEqualToPoint(self.moveDestination, self.frame.origin)) {
-            // wait for waitSeconds time
-            if (!self.isWaiting) {
-                if (!self.waitTimer) {
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                // wait for waitSeconds time
+                if (!self.isWaiting) {
+                    if ([self.waitTimer isValid]) {
+                        [self.waitTimer invalidate];
+                    }
                     self.waitTimer = [NSTimer scheduledTimerWithTimeInterval:KLB_ATTACK_BUTTON_WAIT_INTERVAL
                                                                       target:self
                                                                     selector:@selector(doneWaiting)
                                                                     userInfo:nil
                                                                      repeats:NO];
+                    self.isWaiting = YES;
                 }
-                self.isWaiting = YES;
-            }
-            // then generate random coordinates (in the doneWaiting method)
+                // then generate random coordinates (in the doneWaiting method)
+            });
         }
         else {
             // we add together all of the needed movement adjustments to a single

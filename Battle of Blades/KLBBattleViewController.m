@@ -268,6 +268,7 @@ NSInteger const KLB_ZERO = 0;
 - (void)startBattle:(NSNotification *)notification {
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self.battleIsActive) {
+            self.battleIsActive = YES;
             [self initializeVariables];
             [self setupButtonSpawnControllers];
     
@@ -315,20 +316,30 @@ NSInteger const KLB_ZERO = 0;
                                                               selector:@selector(timePassed)
                                                               userInfo:nil
                                                                repeats:YES];
-            self.battleIsActive = YES;
         }
     });
 }
 
 - (void)setupButtonSpawnControllers {
-    // For each Button Spawn Controller in our IBOutletCollection, set their button Class and Frame
-    for (KLBButtonSpawnController *buttonSpawnController in self.buttonSpawnControllers) {
-        buttonSpawnController.alpha = KLB_BUTTON_SPAWN_CONTROLLER_ALPHA;
-        CGRect spawnFrame = [self generateAttackButtonFrameForSpawnerFrame:buttonSpawnController.frame];
-        [buttonSpawnController initializeSpawnerWithButtonClass:[KLBAttackButton class]
-                                                          frame:spawnFrame
-                                                       mainView:self];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self.buttonSpawnControllersSetupCompleted) {
+            // For each Button Spawn Controller in our IBOutletCollection, set their button Class and Frame
+            for (KLBButtonSpawnController *buttonSpawnController in self.buttonSpawnControllers) {
+                buttonSpawnController.alpha = KLB_BUTTON_SPAWN_CONTROLLER_ALPHA;
+                CGRect spawnFrame = [self generateAttackButtonFrameForSpawnerFrame:buttonSpawnController.frame];
+                [buttonSpawnController initializeSpawnerWithButtonClass:[KLBAttackButton class]
+                                                                  frame:spawnFrame
+                                                               mainView:self];
+            }
+            self.buttonSpawnControllersSetupCompleted = YES;
+        }
+        else {
+            // Just reinitialize them if they've already been set up
+            for (KLBButtonSpawnController *buttonSpawnController in self.buttonSpawnControllers) {
+                [buttonSpawnController battleStartSetup];
+            }
+        }
+    });
 }
 
 - (void)timePassed {

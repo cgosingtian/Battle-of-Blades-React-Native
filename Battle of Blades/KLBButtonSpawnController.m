@@ -15,7 +15,7 @@
 #import "KLBAttackButton.h"
 #import "KLBAttackDelegate.h"
 
-NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL = 7;
+const NSInteger KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL = 7;
 
 @implementation KLBButtonSpawnController
 
@@ -46,28 +46,51 @@ NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL = 7;
                                              selector:@selector(handleTime)
                                                  name:KLB_NOTIFICATION_BUTTON_SPAWN_START
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleBattleEnd)
+                                                 name:KLB_NOTIFICATION_BATTLE_END
+                                               object:nil];
 }
 - (void)initializeRandomWaitTime {
-    self.waitTimeOnceSeconds = arc4random_uniform(KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL);
+    _waitTimeOnceSeconds = arc4random_uniform(KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL);
 }
 
 #pragma mark - Button Spawning Methods
 - (void)setupSpawnButtonClass:(Class)type frame:(CGRect)frame {
     self.buttonClass = type;
     self.buttonFrame = frame;
+    [self battleStartSetup];
 }
 - (void)handleTime {
     [self spawnButtonAttempt];
 }
+- (void)handleBattleEnd {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.battleIsActive) {
+            self.battleIsActive = NO;
+        }
+    });
+}
+- (void)battleStartSetup {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self.battleIsActive) {
+            [self initializeRandomWaitTime];
+            self.battleIsActive = YES;
+        }
+    });
+}
 
 - (void)spawnButtonAttempt {
-    if (_buttonClass) {
-        if (self.canLoadButton) {
-            if (self.waitTimeOnceSeconds > 0) {
-                self.waitTimeOnceSeconds--;
-            } else {
-                self.canLoadButton = NO;
-                [self instantiateButton];
+    if (self.battleIsActive) {
+        if (_buttonClass) {
+            if (self.canLoadButton) {
+                if (_waitTimeOnceSeconds > 0) {
+                    _waitTimeOnceSeconds--;
+                } else {
+                    self.canLoadButton = NO;
+                    [self instantiateButton];
+                    [self initializeRandomWaitTime];
+                }
             }
         }
     }
@@ -88,6 +111,7 @@ NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL = 7;
 
 #pragma mark - Button Spawn Delegate
 - (void)buttonWillEnd {
+    self.mainView = nil;
     self.canLoadButton = YES;
     [self initializeRandomWaitTime];
 }

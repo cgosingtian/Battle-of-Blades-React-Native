@@ -94,11 +94,7 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
                  } else {
                      [layer setOpacity:startOpacity];
                  }
-                 
-                 [layer removeAnimationForKey:key];
              }];
-        
-            [layer addAnimation:animation forKey:key];
         
             [layer release];
             [CATransaction commit];
@@ -177,9 +173,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
                  [animation release];
                  if (!applyChanges) {
                      [tintLayer removeFromSuperlayer];
-                     [tintLayer release];
                  }
-                 [layer removeAnimationForKey:key];
+                 [tintLayer release];
              }];
         
             [tintLayer addAnimation:animation forKey:key];
@@ -268,9 +263,6 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
              } else {
                  [layer setOpacity:fadeOutStartOpacity];
              }
-             
-             [layer removeAnimationForKey:key];
-             [layer removeAnimationForKey:key];
          }];
     
         [layer addAnimation:fadeInAnimation forKey:key];

@@ -45,7 +45,6 @@ BattleDifficulty const KLB_DEFAULT_DIFFICULTY = Easy;
         self.selectedDifficulty = selectedDifficulty;
         [self applyDifficultyModifiersToEnemyStats];
         [self registerForNotifications];
-        [key release];
     }
     return self;
 }

@@ -69,7 +69,7 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
        startOpacity:(CGFloat)startOpacity
          endOpacity:(CGFloat)endOpacity
        applyChanges:(BOOL)applyChanges {
-    dispatch_async(dispatch_get_main_queue(), ^(){
+    //dispatch_async(dispatch_get_main_queue(), ^(){
         if (!layer.isHidden) {
             NSString *key = KLB_CA_OPACITY_STRING;
             [CATransaction flush];
@@ -94,6 +94,8 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
                  } else {
                      [layer setOpacity:startOpacity];
                  }
+                 
+                 [layer removeAnimationForKey:key];
              }];
         
             [layer addAnimation:animation forKey:key];
@@ -101,7 +103,7 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
             [layer release];
             [CATransaction commit];
         }
-    });
+    //});
 }
 
 + (void)fadeOutCALayer:(CALayer *)layer
@@ -141,7 +143,7 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
               flashColor:(UIColor *)flashColor {
     dispatch_async(dispatch_get_main_queue(), ^(){
         if (!layer.isHidden) {
-            NSString *keyPath = KLB_CA_OPACITY_STRING;
+            NSString *key = KLB_CA_OPACITY_STRING;
         
             // Setup the Tint Layer
             CALayer *tintLayer = [[CALayer alloc] init];
@@ -161,7 +163,7 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
             [CATransaction begin];
         
             // Initialize the Animation
-            CAKeyframeAnimation *animation = [self initializeAnimationWithKey:keyPath
+            CAKeyframeAnimation *animation = [self initializeAnimationWithKey:key
                                                                      duration:duration
                                                               startValueFloat:startOpacity
                                                                 endValueFloat:endOpacity];
@@ -175,11 +177,12 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
                  [animation release];
                  if (!applyChanges) {
                      [tintLayer removeFromSuperlayer];
+                     [tintLayer release];
                  }
-                 [tintLayer release];
+                 [layer removeAnimationForKey:key];
              }];
         
-            [tintLayer addAnimation:animation forKey:keyPath];
+            [tintLayer addAnimation:animation forKey:key];
         
             [CATransaction commit];
         }
@@ -265,6 +268,9 @@ CGFloat const KLB_FLASH_ALPHA_FADE_OUT_OPACITY_END = 0.0;
              } else {
                  [layer setOpacity:fadeOutStartOpacity];
              }
+             
+             [layer removeAnimationForKey:key];
+             [layer removeAnimationForKey:key];
          }];
     
         [layer addAnimation:fadeInAnimation forKey:key];

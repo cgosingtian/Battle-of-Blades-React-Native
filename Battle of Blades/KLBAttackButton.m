@@ -127,7 +127,8 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     [self.containerView setNeedsLayout];
     
     [self.countdownLabel.layer setHidden:YES];
-
+    [self.countdownLabel removeFromSuperview];
+    self.countdownLabel = nil;
 }
 
 - (void)allowMovement {
@@ -139,7 +140,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([self class])
                                 bundle:nil];
     NSArray *nibViews = [nib instantiateWithOwner:self options:nil];
-    KLBAttackButton *actualView = [[nibViews objectAtIndex:0] retain];
+    KLBAttackButton *actualView = [nibViews objectAtIndex:0];
     [self addSubview:actualView];
     [actualView release];
 }
@@ -184,11 +185,13 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
             [self.delegateButtonSpawnController buttonWillEnd];
         }
         [self.layer removeAllAnimations];
-        self.attackButton.enabled = NO;
+        self.enabled = NO;
         [self.moveTimer invalidate];
         if (self.waitTimer)
             [self.waitTimer invalidate];
         [self removeFromSuperview];
+        _delegate = nil;
+        _delegateButtonSpawnController = nil;
     });
 }
 
@@ -231,8 +234,8 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
 // When the time of the attack expires, we tell the delegate that the attack failed.
 // Then we end the button's existence.
 - (void)timeUp {
-    self.enabled = NO;
-    if (!self.isShield) {
+    if (!self.isShield && self.enabled) {
+        self.enabled = NO;
         if ([self.delegate respondsToSelector:@selector(attackWillFail:)]) {
             [self.delegate attackWillFail:self];
         }

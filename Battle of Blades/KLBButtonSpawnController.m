@@ -61,12 +61,14 @@ NSUInteger const KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL = 7;
 }
 
 - (void)spawnButtonAttempt {
-    if (self.waitTimeOnceSeconds > 0) {
-        self.waitTimeOnceSeconds--;
-    } else if (_buttonClass) {
+    if (_buttonClass) {
         if (self.canLoadButton) {
-            self.canLoadButton = NO;
-            [self instantiateButton];
+            if (self.waitTimeOnceSeconds > 0) {
+                self.waitTimeOnceSeconds--;
+            } else {
+                self.canLoadButton = NO;
+                [self instantiateButton];
+            }
         }
     }
 }

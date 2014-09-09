@@ -383,118 +383,154 @@ NSInteger const KLB_ZERO = 0;
 }
 
 - (void)battleWin {
-    // win due to enemy losing health before time runs out
-    NSNumber *difficultyValue = [NSNumber numberWithInteger:self.selectedDifficulty];
-    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
-                                                        object:nil
-                                                      userInfo:@{KLB_JSON_ENEMY_KEY:self.enemyController.enemyKey,
-                                                                 KLB_JSON_DIFFICULTY:difficultyValue}];
-    [self battleCleanUp:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.battleIsActive) {
+            // win due to enemy losing health before time runs out
+            NSNumber *difficultyValue = [NSNumber numberWithInteger:self.selectedDifficulty];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
+                                                                object:nil
+                                                              userInfo:@{KLB_JSON_ENEMY_KEY:self.enemyController.enemyKey,
+                                                                         KLB_JSON_DIFFICULTY:difficultyValue}];
+            [self battleCleanUp:YES];
+        }
+    });
 }
 - (void)battleTimeOver {
     // lose due to time running out
-    [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
-                                                        object:nil
-                                                      userInfo:nil];
-    [self battleCleanUp:NO];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.battleIsActive) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BATTLE_END
+                                                                object:nil
+                                                              userInfo:nil];
+            [self battleCleanUp:NO];
+        }
+    });
 }
 
 - (void)battleCleanUp:(BOOL)didWin {
-    [self.battleTimer invalidate];
-    [KLBAnimator fadeInCALayer:self.coverView.layer applyChanges:YES];
-    if (didWin) {
-        // load the proper gradient for the gradient image view, then apply the flash effect on it
-        UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_VICTORY_GRADIENT_FILENAME];
-        self.battleGradientBackground.image = gradientImage;
-        [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer
-                        fadeInDuration:KLB_VICTORY_FADE_IN_DURATION
-                       fadeOutDuration:KLB_VICTORY_FADE_OUT_DURATION
-                    applyChangesFadeIn:NO
-                   applyChangesFadeOut:YES];
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        if (self.battleIsActive) {
+            [self.battleTimer invalidate];
+            [KLBAnimator fadeInCALayer:self.coverView.layer applyChanges:YES];
+            if (didWin) {
+                // load the proper gradient for the gradient image view, then apply the flash effect on it
+                UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_VICTORY_GRADIENT_FILENAME];
+                self.battleGradientBackground.image = gradientImage;
+                [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer
+                                fadeInDuration:KLB_VICTORY_FADE_IN_DURATION
+                               fadeOutDuration:KLB_VICTORY_FADE_OUT_DURATION
+                            applyChangesFadeIn:NO
+                           applyChangesFadeOut:YES];
         
-        // Experience calculation from Player Controller
-        NSUInteger totalExperience = self.enemyController.enemy.level + (self.enemyController.enemy.level * self.selectedDifficulty);
+                // Experience calculation from Player Controller
+                NSUInteger totalExperience = self.enemyController.enemy.level + (self.enemyController.enemy.level * self.selectedDifficulty);
         
-        // set and fade in the victory image and experience text
-        self.experienceLabel.text = [NSString stringWithFormat:@"%@%lu",
-                                     KLB_LABEL_EXPERIENCE_TEXT_FORMAT,
-                                     (unsigned long)totalExperience];
-        [self.experienceLabel.layer setHidden:NO];
-        [KLBAnimator fadeInCALayer:self.experienceLabel.layer
-                      applyChanges:YES];
-        [self.victoryImage.layer setHidden:NO];
-        [KLBAnimator fadeInCALayer:self.victoryImage.layer
-                          duration:KLB_VICTORY_FADE_IN_DURATION
-                      applyChanges:YES];
-    } else {
-        // load the proper gradient for the gradient image view, then apply the flash effect on it
-        UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_DEFEAT_GRADIENT_FILENAME];
-        self.battleGradientBackground.image = gradientImage;
-        [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer
-                        fadeInDuration:KLB_DEFEAT_FADE_IN_DURATION
-                       fadeOutDuration:KLB_DEFEAT_FADE_OUT_DURATION
-                    applyChangesFadeIn:NO
-                   applyChangesFadeOut:YES];
+                // set and fade in the victory image and experience text
+                self.experienceLabel.text = [NSString stringWithFormat:@"%@%lu",
+                                             KLB_LABEL_EXPERIENCE_TEXT_FORMAT,
+                                             (unsigned long)totalExperience];
+                [self.experienceLabel.layer setHidden:NO];
+                [KLBAnimator fadeInCALayer:self.experienceLabel.layer
+                              applyChanges:YES];
+                [self.victoryImage.layer setHidden:NO];
+                [KLBAnimator fadeInCALayer:self.victoryImage.layer
+                                  duration:KLB_VICTORY_FADE_IN_DURATION
+                              applyChanges:YES];
+            } else {
+                // load the proper gradient for the gradient image view, then apply the flash effect on it
+                UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_DEFEAT_GRADIENT_FILENAME];
+                self.battleGradientBackground.image = gradientImage;
+                [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer
+                                fadeInDuration:KLB_DEFEAT_FADE_IN_DURATION
+                               fadeOutDuration:KLB_DEFEAT_FADE_OUT_DURATION
+                            applyChangesFadeIn:NO
+                           applyChangesFadeOut:YES];
         
-        // show the defeat label
-        [self.defeatLabel.layer setHidden:NO];
-        [KLBAnimator fadeInCALayer:self.defeatLabel.layer
-                      applyChanges:YES];
+                // show the defeat label
+                [self.defeatLabel.layer setHidden:NO];
+                [KLBAnimator fadeInCALayer:self.defeatLabel.layer
+                              applyChanges:YES];
         
-        // 50% chance for either hint to appear
-        arc4random_uniform(KLB_HINT_CHANCE) == 0 ?
-        (self.defeatHintLabel.text = KLB_DEFEAT_HINT_1) :
-        (self.defeatHintLabel.text = KLB_DEFEAT_HINT_2);
+                // 50% chance for either hint to appear
+                arc4random_uniform(KLB_HINT_CHANCE) == 0 ?
+                (self.defeatHintLabel.text = KLB_DEFEAT_HINT_1) :
+                (self.defeatHintLabel.text = KLB_DEFEAT_HINT_2);
         
-        // show the hint via fade in
-        [self.defeatHintLabel.layer setHidden:NO];
-        [KLBAnimator fadeInCALayer:self.defeatHintLabel.layer
-                      applyChanges:YES];
-    }
-    self.battleIsActive = NO;
+                // show the hint via fade in
+                [self.defeatHintLabel.layer setHidden:NO];
+                [KLBAnimator fadeInCALayer:self.defeatHintLabel.layer
+                              applyChanges:YES];
+            }
+            self.battleIsActive = NO;
+        }
+    });
 }
 
 - (void)clearShields {
-    // The buttons will handle destroying themselves; here we just show an effect
-    [KLBAnimator flashWhiteCALayer:self.enemyImage.layer duration:0.1 startOpacity:0.0 endOpacity:1.0 applyChanges:NO];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.battleIsActive) {
+            // The buttons will handle destroying themselves; here we just show an effect
+            [KLBAnimator flashWhiteCALayer:self.enemyImage.layer
+                                  duration:0.1
+                              startOpacity:0.0
+                                endOpacity:1.0
+                              applyChanges:NO];
+        }
+    });
 }
 
 #pragma mark - AttackDelegate Protocol
 - (void)attackWillSucceed:(id)sender { //optional
-    KLBAttackButton *button = (KLBAttackButton *)sender;
-    if (button.isShield) { // shield button
-        [KLBAnimator flashWhiteCALayer:self.enemyImage.layer applyChanges:NO];
-        UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_BATTLE_GRADIENT_BLUE_FILENAME];
-        self.battleGradientBackground.image = gradientImage;
-        [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer applyChanges:YES];
-    } else { // attack button
-        [KLBAnimator flashWhiteCALayer:self.enemyImage.layer applyChanges:NO];
-        UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_BATTLE_GRADIENT_RED_FILENAME];
-        self.battleGradientBackground.image = gradientImage;
-        [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer applyChanges:YES];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.battleIsActive) {
+            KLBAttackButton *button = (KLBAttackButton *)sender;
+            if (button.isShield) { // shield button
+                [KLBAnimator flashWhiteCALayer:self.enemyImage.layer applyChanges:NO];
+                UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename: KLB_BATTLE_GRADIENT_BLUE_FILENAME];
+                self.battleGradientBackground.image = gradientImage;
+                [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer applyChanges:YES];
+            } else { // attack button
+                [KLBAnimator flashWhiteCALayer:self.enemyImage.layer applyChanges:NO];
+                UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename: KLB_BATTLE_GRADIENT_RED_FILENAME];
+                self.battleGradientBackground.image = gradientImage;
+                [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer applyChanges:YES];
+            }
+        }
+    });
 }
 - (void)attackDidSucceed:(id)sender { //required
-    KLBAttackButton *button = (KLBAttackButton *)sender;
-    if (button.isShield) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BLOCK_SUCCESS
-                                                            object:nil
-                                                          userInfo:nil];
-    } else {
-        NSNumber *buttonTime = [NSNumber numberWithInteger:button.attack.timeRemainingSeconds];
-        NSDictionary *buttonData = @{KLB_JSON_ENEMY_TIME_LIMIT:buttonTime};
-        [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ATTACK_SUCCESS
-                                                            object:nil
-                                                          userInfo:buttonData];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.battleIsActive) {
+            KLBAttackButton *button = (KLBAttackButton *)sender;
+            if (button.isShield) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_BLOCK_SUCCESS
+                                                                    object:nil
+                                                                  userInfo:nil];
+            } else {
+                NSNumber *buttonTime = [NSNumber numberWithInteger:button.attack.timeRemainingSeconds];
+                NSDictionary *buttonData = @{KLB_JSON_ENEMY_TIME_LIMIT:buttonTime};
+                [[NSNotificationCenter defaultCenter] postNotificationName:KLB_NOTIFICATION_ATTACK_SUCCESS
+                                                                    object:nil
+                                                                  userInfo:buttonData];
+            }
+        }
+    });
 }
 - (void)attackWillFail:(id)sender { //optional
-    UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_BATTLE_GRADIENT_GREEN_FILENAME];
-    self.battleGradientBackground.image = gradientImage;
-    [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer applyChanges:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.battleIsActive) {
+            UIImage *gradientImage = [[KLBImageStore sharedStore] imageForFilename:KLB_BATTLE_GRADIENT_GREEN_FILENAME];
+            self.battleGradientBackground.image = gradientImage;
+            [KLBAnimator flashAlphaCALayer:self.battleGradientBackground.layer applyChanges:YES];
+        }
+    });
 }
 - (void)attackDidFail:(id)sender { //optional
-    // Enemy regains HP for each failed attack
-    [self.enemyController attackFail];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.battleIsActive) {
+            // Enemy regains HP for each failed attack
+            [self.enemyController attackFail];
+        }
+    });
 }
 @end

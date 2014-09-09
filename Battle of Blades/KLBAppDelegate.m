@@ -7,6 +7,8 @@
 //
 
 #import "KLBAppDelegate.h"
+#import "KLBHomeViewController.h"
+#import "KLBPlayerController.h"
 
 @implementation KLBAppDelegate
 
@@ -14,6 +16,11 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    
+    KLBHomeViewController *homeViewController = [[KLBHomeViewController alloc] init];
+    [self.window setRootViewController:homeViewController];
+    [homeViewController release];
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

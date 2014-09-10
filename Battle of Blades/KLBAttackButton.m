@@ -174,7 +174,8 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
         [self prepareForRemoval];
     }
 }
-// This method deactivates the button for later reuse
+// This method deactivates the button for later reuse - the instruction to reactivate
+// must come from another object (send the initializeValues message)
 - (void)handleBattleEnd {
     self.enabled = NO;
     self.alpha = KLB_ZERO_F;

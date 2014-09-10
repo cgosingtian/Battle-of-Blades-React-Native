@@ -171,10 +171,23 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
 #pragma mark - Battle Methods
 - (void)handleClearShields {
     if (self.isShield) {
-        [self handleBattleEnd];
+        [self prepareForRemoval];
     }
 }
+// This method deactivates the button for later reuse - the instruction to reactivate
+// must come from another object (send the initializeValues message)
 - (void)handleBattleEnd {
+    self.enabled = NO;
+    self.alpha = KLB_ZERO_F;
+    // Inform its spawn controller that it's "done"
+    if ([self.delegateButtonSpawnController respondsToSelector:@selector(buttonWillEnd)]) {
+        [self.delegateButtonSpawnController buttonWillEnd];
+    }
+    // If we're a shield, we remove ourselves
+    [self handleClearShields];
+}
+// This method deactivates the button for the intention of destroying it
+- (void)prepareForRemoval {
     // This method should only be run once in the lifetime of this object.
     dispatch_once(&_onceHandleEndToken, ^{
         [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -187,7 +200,7 @@ CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER = 1.5;
         if (self.waitTimer)
             [self.waitTimer invalidate];
         [_attack release];
-
+        
         [_attackButton setImage:nil forState:UIControlStateNormal];
         
         [self removeFromSuperview];

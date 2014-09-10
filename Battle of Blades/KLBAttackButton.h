@@ -55,5 +55,6 @@ extern CGFloat const KLB_ATTACK_BUTTON_SHIELD_SIZE_MULTIPLIER;
 - (IBAction)buttonTapped:(id)sender;
 - (void)convertToShield;
 - (void)allowMovement;
+- (void)initializeValues;
 
 @end

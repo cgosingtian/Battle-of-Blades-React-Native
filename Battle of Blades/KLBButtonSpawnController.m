@@ -97,19 +97,30 @@ const NSInteger KLB_BUTTON_SPAWN_MAXIMUM_WAIT_TIME_INITIAL = 7;
 }
 
 - (void)instantiateButton {
-    UIButton *button = [[[_buttonClass class] alloc] initWithFrame:self.frame];
-    _button = button;
+    // If we don't have a button for this controller, create one
+    if (!_button) {
+        UIButton *button = [[[_buttonClass class] alloc] initWithFrame:self.frame];
+        _button = button;
     
-    if ([_button isKindOfClass:[KLBAttackButton class]]) {
-        KLBAttackButton *attackButton = (KLBAttackButton *)_button;
-        attackButton.delegateButtonSpawnController = self;
+        if ([_button isKindOfClass:[KLBAttackButton class]]) {
+            KLBAttackButton *attackButton = (KLBAttackButton *)_button;
+            attackButton.delegateButtonSpawnController = self;
         
-        if ([[self.mainView class] conformsToProtocol:@protocol(KLBAttackDelegate)]) {
-            attackButton.delegate = (id<KLBAttackDelegate>)self.mainView;
+            if ([[self.mainView class] conformsToProtocol:@protocol(KLBAttackDelegate)]) {
+                attackButton.delegate = (id<KLBAttackDelegate>)self.mainView;
+            }
+        }
+        [[self superview] addSubview:_button];
+        [button release];
+    } else {
+        // Otherwise, reactivate it
+        if ([_button isKindOfClass:[KLBAttackButton class]]) {
+            KLBAttackButton *attackButton = (KLBAttackButton *)_button;
+            attackButton.delegateButtonSpawnController = self;
+            
+            [attackButton initializeValues];
         }
     }
-    [[self superview] addSubview:_button];
-    [button release];
 }
 
 #pragma mark - Button Spawn Delegate

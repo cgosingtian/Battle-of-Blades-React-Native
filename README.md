@@ -4,7 +4,9 @@ Battle-of-Blades
 Battle of Blades Project: Battle enemies within a time limit by tapping randomly appearing buttons.
 
 There are two types of buttons that appear:
+
 1. ATTACK button - these yellow buttons appear at specific places but have random respawn times. The number that appears on them is the damage that they deal when they are tapped. This number counts down, however, and when it reaches 0, it heals the enemy by 1 health.
+
 2. ENEMY SHIELD button - these buttons appear like evil ghost faces and move around randomly. They also randomly appear in various locations. Tapping them causes you to lose 5 seconds from the time limit.
 
 Game Design:

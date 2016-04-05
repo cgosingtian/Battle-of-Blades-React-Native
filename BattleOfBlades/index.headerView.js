@@ -10,6 +10,7 @@ import React, {
 
 var leftBackgroundImageSource = require('./Resources/headerbgleft.png');
 var middleBackgroundImageSource = require('./Resources/playerbutton.png');
+var rightBackgroundImageSource = require('./Resources/headerbgright.png');
 
 class HeaderView extends Component {
 	constructor(props) {
@@ -19,6 +20,8 @@ class HeaderView extends Component {
 			height: props.height,
 			level: 0,
 			xpNeeded: 100,
+			energy: 10,
+			maxEnergy: 10,
 			playerName: 'Chase',
 		}
 	}
@@ -43,9 +46,11 @@ class HeaderView extends Component {
 							<Text style={styles.middleNameText}>{this.state.playerName}</Text>
 						</View>
 				</Image>
-				<View style={styles.right}>
-					<Text>Right</Text>
-				</View>
+				<Image 
+					source={rightBackgroundImageSource} 
+					style={styles.right}>
+					<Text style={styles.rightEnergyText}>Energy: {this.state.energy}/{this.state.maxEnergy}</Text>
+				</Image>
 			</View>
 		);
 	}
@@ -91,7 +96,13 @@ const styles = StyleSheet.create({
 	// ----- RIGHT HEADER
 	right: {
 		flex: 0.3,
-		backgroundColor: 'green',
+		backgroundColor: 'transparent',
+	},
+	rightEnergyText: {
+		color: 'white',
+		fontWeight: 'bold',
+		fontSize: 15,
+		textAlign: 'right',
 	},
 });
 

@@ -21,7 +21,15 @@ class HeaderView extends Component {
 			<View 
 				style={styles.container}
 				width={this.state.width}>
-				<Text>HeaderView</Text>
+				<View style={styles.left}>
+					<Text>Left</Text>
+				</View>
+				<View style={styles.middle}>
+					<Text>Middle</Text>
+				</View>
+				<View style={styles.right}>
+					<Text>Right</Text>
+				</View>
 			</View>
 		);
 	}
@@ -29,8 +37,21 @@ class HeaderView extends Component {
 
 const styles = StyleSheet.create({
 	container: {
+		flexDirection: 'row',
 		height: 30,
 		backgroundColor: 'blue',
+	},
+	left: {
+		flex: 0.3,
+		backgroundColor: 'purple',
+	},
+	middle: {
+		flex: 0.3,
+		backgroundColor: 'white',
+	},
+	right: {
+		flex: 0.3,
+		backgroundColor: 'green',
 	},
 });
 

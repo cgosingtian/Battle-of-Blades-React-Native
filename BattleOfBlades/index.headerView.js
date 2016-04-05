@@ -24,8 +24,11 @@ class HeaderView extends Component {
 		return(
 			<View 
 				style={styles.container}
-				width={this.state.width}>
-				<Image source={leftBackgroundImageSource} style={styles.left}>
+				width={this.state.width}
+				height={this.state.height}>
+				<Image 
+					source={leftBackgroundImageSource} 
+					style={styles.left}>
 					<Text style={styles.leftLevelText}>Level: {this.state.level}</Text>
 					<Text style={styles.leftXPText}>XP Needed: {this.state.xpNeeded}</Text>
 				</Image>

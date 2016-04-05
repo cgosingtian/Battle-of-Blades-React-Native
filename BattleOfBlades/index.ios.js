@@ -22,6 +22,14 @@ var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 
 class BattleOfBlades extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      startGame: false,
+      difficulty: -1,
+    };
+  }
+
   render() {
     return (
       <View style={styles.container}>

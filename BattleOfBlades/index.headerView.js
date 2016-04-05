@@ -43,14 +43,30 @@ const styles = StyleSheet.create({
 		height: 30,
 		backgroundColor: 'blue',
 	},
+
+	// ----- LEFT HEADER
 	left: {
 		flex: 0.3,
-		backgroundColor: 'purple',
+		// The backgroundColor setting of the parent affects the views on top of it
+		backgroundColor: 'transparent',
 	},
+	leftLevelText: {
+		color: 'white',
+		fontWeight: 'bold',
+		fontSize: 15,
+	},
+	leftXPText: {
+		color: 'white',
+		fontSize: 10,
+	},
+
+	// ----- MIDDLE HEADER
 	middle: {
 		flex: 0.3,
 		backgroundColor: 'white',
 	},
+
+	// ----- RIGHT HEADER
 	right: {
 		flex: 0.3,
 		backgroundColor: 'green',

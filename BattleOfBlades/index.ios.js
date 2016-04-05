@@ -25,7 +25,7 @@ class BattleOfBlades extends Component {
     return (
       <View style={styles.container}>
         <HeaderView width={screenWidth} height={30} />
-        <MainView width={screenWidth} />
+        <MainView width={screenWidth} height={400} />
         <FooterView width={screenWidth} />
       </View>
     );

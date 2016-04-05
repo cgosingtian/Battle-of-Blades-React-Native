@@ -8,11 +8,14 @@ import React, {
 	StyleSheet,
 } from 'react-native';
 
+var mainCover = require('./Resources/maincover.png');
+
 class MainView extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			width: props.width,
+			height: props.height,
 		}
 	}
 
@@ -20,8 +23,14 @@ class MainView extends Component {
 		return(
 			<View 
 				style={styles.container}
-				width={this.state.width}>
-				<Text>MainView</Text>
+				width={this.state.width}
+				height={this.state.height}>
+				<Image
+					width={this.state.width}
+					height={this.state.height}
+					resizeMode={'stretch'}
+					source={mainCover}>
+				</Image>
 			</View>
 		);
 	}

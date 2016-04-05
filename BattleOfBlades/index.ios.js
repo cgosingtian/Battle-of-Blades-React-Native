@@ -12,6 +12,14 @@ import React, {
   View
 } from 'react-native';
 
+var HeaderView = require('./index.headerView');
+var MainView = require('./index.mainView');
+var FooterView = require('./index.footerView');
+var Dimensions = require('Dimensions');
+
+var screenWidth = Dimensions.get('window').width;
+var screenHeight = Dimensions.get('window').height;
+
 class BattleOfBlades extends Component {
   render() {
     return (

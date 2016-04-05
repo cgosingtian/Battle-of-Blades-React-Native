@@ -9,14 +9,17 @@ import React, {
 } from 'react-native';
 
 var leftBackgroundImageSource = require('./Resources/headerbgleft.png');
+var middleBackgroundImageSource = require('./Resources/playerbutton.png');
 
 class HeaderView extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			width: props.width,
+			height: props.height,
 			level: 0,
 			xpNeeded: 100,
+			playerName: 'Chase',
 		}
 	}
 

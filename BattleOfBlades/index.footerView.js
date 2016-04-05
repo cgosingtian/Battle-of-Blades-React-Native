@@ -9,9 +9,18 @@ import React, {
 } from 'react-native';
 
 class FooterView extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			width: props.width,
+		}
+	}
+
 	render() {
 		return(
-			<View style={styles.container}>
+			<View 
+				style={styles.container}
+				width={this.state.width}>
 				<Text>FooterView</Text>
 			</View>
 		);

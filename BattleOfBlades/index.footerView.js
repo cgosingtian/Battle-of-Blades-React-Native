@@ -13,6 +13,7 @@ class FooterView extends Component {
 		super(props);
 		this.state = {
 			width: props.width,
+			height: props.height,
 		}
 	}
 

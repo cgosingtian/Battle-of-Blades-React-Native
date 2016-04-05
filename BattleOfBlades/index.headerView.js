@@ -35,9 +35,14 @@ class HeaderView extends Component {
 					<Text style={styles.leftLevelText}>Level: {this.state.level}</Text>
 					<Text style={styles.leftXPText}>XP Needed: {this.state.xpNeeded}</Text>
 				</Image>
-				<View style={styles.middle}>
-					<Text>Middle</Text>
-				</View>
+				<Image 
+					height={this.state.height}
+					source={middleBackgroundImageSource} 
+					style={styles.middle}>
+						<View style={styles.middleNameTextBG}>
+							<Text style={styles.middleNameText}>{this.state.playerName}</Text>
+						</View>
+				</Image>
 				<View style={styles.right}>
 					<Text>Right</Text>
 				</View>
@@ -50,7 +55,7 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		height: 30,
-		backgroundColor: 'blue',
+		backgroundColor: 'transparent',
 	},
 
 	// ----- LEFT HEADER
@@ -72,7 +77,15 @@ const styles = StyleSheet.create({
 	// ----- MIDDLE HEADER
 	middle: {
 		flex: 0.3,
-		backgroundColor: 'white',
+		justifyContent:'flex-end',
+	},
+	middleNameTextBG: {
+		backgroundColor: 'rgba(0,0,0,0.5)',
+	},
+	middleNameText: {
+		color: 'white',
+		fontWeight: 'bold',
+		fontSize: 15,
 	},
 
 	// ----- RIGHT HEADER

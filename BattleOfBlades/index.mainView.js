@@ -38,8 +38,7 @@ class MainView extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		height: 400,
-		backgroundColor: 'red',
+		backgroundColor: 'transparent',
 	},
 });
 

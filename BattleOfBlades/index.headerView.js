@@ -8,6 +8,8 @@ import React, {
 	StyleSheet,
 } from 'react-native';
 
+var leftBackgroundImageSource = require('./Resources/headerbgleft.png');
+
 class HeaderView extends Component {
 	constructor(props) {
 		super(props);

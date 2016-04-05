@@ -9,7 +9,8 @@ import React, {
   Component,
   StyleSheet,
   Text,
-  View
+  View,
+  Alert,
 } from 'react-native';
 
 var HeaderView = require('./index.headerView');

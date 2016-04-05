@@ -30,6 +30,44 @@ class BattleOfBlades extends Component {
       </View>
     );
   }
+
+  confirmStart(difficulty) {
+    var title = 'Start Game?';
+    var message = 'Easy Battle';
+
+    switch(difficulty) {
+      case 0: {
+        message = 'Easy Battle';
+      } break;
+      case 1: {
+        message = 'Average Battle';
+      } break;
+      case 2: {
+        message = 'Hard Battle';
+      } break;
+      default: {
+        // Assume Easy difficulty
+        difficulty = 0;
+        console.log('*** ERROR: startGame(difficulty) with invalid difficulty, defaulting to Easy');
+      }
+    }
+
+    Alert.alert(
+      title,
+      message,
+        [
+          {text: 'Cancel', onPress: () => console.log('Cancel')},
+          {text: 'Proceed', onPress: () => this._startGame(difficulty)},
+        ]
+      )
+  }
+
+  _startGame(difficulty) {
+    this.setState({
+      startGame: true,
+      difficulty: difficulty,
+    });
+  }
 }
 
 const styles = StyleSheet.create({

@@ -1,6 +1,7 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * React Native Study: Conversion from Objective-C
+ * Objective-C version: https://github.com/cgosingtian/Battle-of-Blades
+ * https://github.com/cgosingtian/Battle-of-Blades-React-Native
  */
 
 import React, {
@@ -32,20 +33,11 @@ class BattleOfBlades extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    top: 20,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+    backgroundColor: 'black',
   },
 });
 

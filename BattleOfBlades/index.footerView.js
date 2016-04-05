@@ -8,6 +8,7 @@ import React, {
 	StyleSheet,
 } from 'react-native';
 
+var backgroundImage = require('./Resources/screenfooterbg.png');
 class FooterView extends Component {
 	constructor(props) {
 		super(props);
@@ -19,11 +20,11 @@ class FooterView extends Component {
 
 	render() {
 		return(
-			<View 
+			<Image 
+				width={this.state.width}
 				style={styles.container}
-				width={this.state.width}>
-				<Text>FooterView</Text>
-			</View>
+				source={backgroundImage}>
+			</Image>
 		);
 	}
 }
@@ -31,7 +32,9 @@ class FooterView extends Component {
 const styles = StyleSheet.create({
 	container: {
 		height: 30,
-		backgroundColor: 'green',
+		backgroundColor: 'black',
+		flexDirection: 'row',
+		alignItems: 'center',
 	},
 });
 

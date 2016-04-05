@@ -15,6 +15,7 @@ import React, {
 
 var HeaderView = require('./index.headerView');
 var MainView = require('./index.mainView');
+var BattleView = require('./index.battleView');
 var FooterView = require('./index.footerView');
 var Dimensions = require('Dimensions');
 
@@ -31,10 +32,14 @@ class BattleOfBlades extends Component {
   }
 
   render() {
+    var mainView = (this.state.startGame && this.state.difficulty !== undefined) ? 
+      <BattleView width={screenWidth} height={400} difficulty={this.state.difficulty} /> : 
+      <MainView width={screenWidth} height={400} />;
+
     return (
       <View style={styles.container}>
         <HeaderView width={screenWidth} height={30} />
-        <MainView width={screenWidth} height={400} />
+        {mainView}
         <FooterView 
           width={screenWidth} 
           height={30} 

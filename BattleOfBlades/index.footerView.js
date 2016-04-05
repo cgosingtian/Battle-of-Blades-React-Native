@@ -6,6 +6,7 @@ import React, {
 	Image,
 	Text,
 	StyleSheet,
+	TouchableHighlight,
 } from 'react-native';
 
 var backgroundImage = require('./Resources/screenfooterbg.png');
@@ -19,6 +20,7 @@ class FooterView extends Component {
 		this.state = {
 			width: props.width,
 			height: props.height,
+			buttonFunction: props.buttonFunction,
 		}
 	}
 
@@ -31,24 +33,33 @@ class FooterView extends Component {
 				width={this.state.width}
 				style={styles.container}
 				source={backgroundImage}>
-				<Image
-					width={buttonWidth}
-					height={buttonHeight}
-					source={easyButtonImage}
-					style={styles.left}>
-				</Image>
-				<Image
-					width={buttonWidth}
-					height={buttonHeight}
-					source={averageButtonImage}
-					style={styles.middle}>
-				</Image>
-				<Image
-					width={buttonWidth}
-					height={buttonHeight}
-					source={hardButtonImage}
-					style={styles.right}>
-				</Image>
+				<TouchableHighlight
+					onPress={() => this.state.buttonFunction(0)}>
+					<Image
+						width={buttonWidth}
+						height={buttonHeight}
+						source={easyButtonImage}
+						style={styles.left}>
+					</Image>
+				</TouchableHighlight>
+				<TouchableHighlight
+					onPress={() => this.state.buttonFunction(1)}>
+					<Image
+						width={buttonWidth}
+						height={buttonHeight}
+						source={averageButtonImage}
+						style={styles.middle}>
+					</Image>
+				</TouchableHighlight>
+				<TouchableHighlight
+					onPress={() => this.state.buttonFunction(2)}>
+					<Image
+						width={buttonWidth}
+						height={buttonHeight}
+						source={hardButtonImage}
+						style={styles.right}>
+					</Image>
+				</TouchableHighlight>
 			</Image>
 		);
 	}

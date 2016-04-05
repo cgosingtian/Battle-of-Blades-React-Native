@@ -15,6 +15,8 @@ class HeaderView extends Component {
 		super(props);
 		this.state = {
 			width: props.width,
+			level: 0,
+			xpNeeded: 100,
 		}
 	}
 
@@ -23,9 +25,10 @@ class HeaderView extends Component {
 			<View 
 				style={styles.container}
 				width={this.state.width}>
-				<View style={styles.left}>
-					<Text>Left</Text>
-				</View>
+				<Image source={leftBackgroundImageSource} style={styles.left}>
+					<Text style={styles.leftLevelText}>Level: {this.state.level}</Text>
+					<Text style={styles.leftXPText}>XP Needed: {this.state.xpNeeded}</Text>
+				</Image>
 				<View style={styles.middle}>
 					<Text>Middle</Text>
 				</View>

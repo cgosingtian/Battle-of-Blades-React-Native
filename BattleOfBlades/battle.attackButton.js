@@ -20,6 +20,20 @@ class AttackButton extends Component {
 		};
 	}
 
+	componentDidMount() {
+		this.timer = setInterval(() => {
+			this.state.life--;
+			if (this.state.life <= 0) {
+				this.state.life = 0;
+			}
+			this.setState({});
+		}, 1000);
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.timer);
+	}
+
 	render() {
 		if (this.state.life > 0) {
 			return this.renderAttackButton();

@@ -35,12 +35,36 @@ class AttackButton extends Component {
 		}
 
 		this.timer = setInterval(() => {
-			this.state.life--;
-			if (this.state.life <= 0) {
-				this.state.life = 0;
+			var isCooldown = this._lifeReduce();
+			if (isCooldown === true) {
+				this._cooldownReduce();
 			}
 			this.setState({});
 		}, 1000);
+	}
+
+	_lifeReduce() {
+		if (this.state.life <= 0) {
+			this.state.life = 0;
+			return true;
+		}
+		
+		this.state.life--;
+		
+		return false;
+	}
+
+	_cooldownReduce() {
+		if (this.state.cooldown == undefined) {
+			this._cooldownRegenerate();
+		}
+
+		if (this.state.cooldown <= 0) {
+			this._lifeRegenerate();
+			this._cooldownRegenerate();
+		}
+
+		this.state.cooldown--;
 	}
 
 	_lifeRegenerate() {

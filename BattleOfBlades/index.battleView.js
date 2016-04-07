@@ -24,7 +24,7 @@ class BattleView extends Component {
 			difficulty: props.difficulty,
 			enemyName: props.enemyName,
 			enemyLevel: props.enemyLevel,
-			playerHealth: props.playerHealth,
+			enemyHealth: props.enemyHealth,
 			timeLeft: props.timeLeft,
 		}
 	}
@@ -63,7 +63,7 @@ class BattleView extends Component {
 						width={this.state.width}
 						style={styles.battleInfo}
 						source={infoBG}>
-						<Text style={styles.playerHealth}>Health: {this.state.playerHealth}</Text>
+						<Text style={styles.enemyHealth}>Health: {this.state.enemyHealth}</Text>
 						<Text style={styles.timeLeft}>Time Left: {this.state.timeLeft}</Text>
 					</Image>
 					<AttackRow width={this.state.width*0.9} />
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
 		color: 'white',
 		right: 5,
 	},
-	playerHealth: {
+	enemyHealth: {
 		textAlign: 'left',
 		fontSize: 15,
 		fontWeight: 'bold',

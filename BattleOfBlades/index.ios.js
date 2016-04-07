@@ -38,8 +38,8 @@ class BattleOfBlades extends Component {
     var enemyLevel = 2;
     //end enemy generator code
     //game stats generator here
-    var playerHealth = 100;
     var timeLeft = 60;
+    var enemyHealth = 100;
     //end game stats generator code
 
     var mainView = (this.state.startGame && this.state.difficulty !== undefined) ? 
@@ -49,7 +49,7 @@ class BattleOfBlades extends Component {
         difficulty={this.state.difficulty}
         enemyName={enemyName}
         enemyLevel={enemyLevel}
-        playerHealth={playerHealth}
+        enemyHealth={enemyHealth}
         timeLeft={timeLeft} /> : 
       <MainView width={screenWidth} height={400} />;
 

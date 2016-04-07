@@ -17,6 +17,7 @@ var HeaderView = require('./index.headerView');
 var MainView = require('./index.mainView');
 var BattleView = require('./index.battleView');
 var FooterView = require('./index.footerView');
+
 var Dimensions = require('Dimensions');
 
 var screenWidth = Dimensions.get('window').width;
@@ -41,9 +42,12 @@ class BattleOfBlades extends Component {
         <HeaderView width={screenWidth} height={30} />
         {mainView}
         <FooterView 
+          ref='footerView'
           width={screenWidth} 
           height={30} 
-          buttonFunction={this.confirmStart.bind(this)} />
+          buttonFunction={this.confirmStart.bind(this)}
+          startGame={this.state.startGame}
+          difficulty={this.state.difficulty} />
       </View>
     );
   }
@@ -80,10 +84,15 @@ class BattleOfBlades extends Component {
   }
 
   _startGame(difficulty) {
-    this.setState({
-      startGame: true,
-      difficulty: difficulty,
-    });
+    function startGame(difficulty) {
+        this.setState({
+          startGame: true,
+          difficulty: difficulty,
+        });
+    };
+
+    startGame.call(this, difficulty);
+    startGame.call(this.refs.footerView, difficulty);
   }
 }
 

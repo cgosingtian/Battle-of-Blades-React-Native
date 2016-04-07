@@ -99,7 +99,7 @@ class AttackButton extends Component {
 				height={this.state.height}
 				style={styles.touchable}
 				underlayColor={'transparent'}
-				onPress={this.attackButtonTapped}>
+				onPress={() => this.setState({life:0})}>
 				<Image 
 					width={this.state.width}
 					height={this.state.height}
@@ -109,10 +109,6 @@ class AttackButton extends Component {
 				</Image>
 			</TouchableHighlight>
 		);
-	}
-
-	attackButtonTapped() {
-		console.log('TAPPED');
 	}
 }
 

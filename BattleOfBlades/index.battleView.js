@@ -29,6 +29,25 @@ class BattleView extends Component {
 		}
 	}
 
+	componentDidMount() {
+		this.timer = setInterval(() => {
+			this.state.timeLeft--;
+			if (this.state.timeLeft <= 0) {
+				this._endGame();
+			}
+			this.setState({});
+		}, 1000);
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.timer);
+	}
+
+	_endGame() {
+		clearTimeout(this.timer);
+		console.log('GAME OVER');
+	}
+
 	render() {
 		var backgroundSource;
 		switch(this.state.difficulty) {

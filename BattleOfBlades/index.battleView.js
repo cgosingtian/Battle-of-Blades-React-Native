@@ -11,6 +11,7 @@ import React, {
 var easyBG = require('./Resources/enemyeasy.png');
 var averageBG = require('./Resources/enemyaverage.png');
 var hardBG = require('./Resources/enemyhard.png');
+var AttackRow = require('./battle.attackRow');
 
 class BattleView extends Component {
 	constructor(props) {
@@ -50,7 +51,12 @@ class BattleView extends Component {
 					width={this.state.width}
 					height={this.state.height}
 					resizeMode={'stretch'}
+					style={styles.battle}
 					source={backgroundSource}>
+					<AttackRow width={this.state.width*0.9} />
+					<AttackRow width={this.state.width*0.9} />
+					<AttackRow width={this.state.width*0.9} />
+					<AttackRow width={this.state.width*0.9} />
 				</Image>
 			</View>
 		);
@@ -60,6 +66,10 @@ class BattleView extends Component {
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: 'transparent',
+	},
+	battle: {
+		justifyContent: 'space-between',
+		alignItems: 'center',
 	},
 });
 

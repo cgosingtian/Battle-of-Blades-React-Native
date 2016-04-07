@@ -29,6 +29,11 @@ class AttackButton extends Component {
 	}
 
 	componentDidMount() {
+		if (this.state.life == undefined) {
+			this.state.life = 0;
+			this._cooldownRegenerate();
+		}
+
 		this.timer = setInterval(() => {
 			this.state.life--;
 			if (this.state.life <= 0) {
@@ -36,6 +41,14 @@ class AttackButton extends Component {
 			}
 			this.setState({});
 		}, 1000);
+	}
+
+	_lifeRegenerate() {
+		this.setState({life:LIFE_DEFAULT});
+	}
+
+	_cooldownRegenerate() {
+		this.state.cooldown = getRandomIntFromRange(0, COOLDOWN_MAX);
 	}
 
 	componentWillUnmount() {

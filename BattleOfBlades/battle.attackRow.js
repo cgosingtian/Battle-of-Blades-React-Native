@@ -22,10 +22,10 @@ class AttackRow extends Component {
 				width={this.state.width} 
 				height={this.state.height}
 				style={styles.container}>
-				<AttackButton ref='attackButton1' life={1} />
-				<AttackButton ref='attackButton2' life={3} />
-				<AttackButton ref='attackButton3' life={5} />
-				<AttackButton ref='attackButton4' life={99} />
+				<AttackButton ref='attackButton1' />
+				<AttackButton ref='attackButton2' />
+				<AttackButton ref='attackButton3' />
+				<AttackButton ref='attackButton4' />
 			</View>
 		);
 	}

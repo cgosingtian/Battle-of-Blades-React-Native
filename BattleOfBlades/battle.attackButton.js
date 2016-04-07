@@ -100,7 +100,9 @@ class AttackButton extends Component {
 				height={this.state.height}
 				style={styles.touchable}
 				underlayColor={'transparent'}
-				onPress={() => this.setState({life:0})}>
+				onPress={() => {
+					this._buttonAction.bind(this)()
+				}}>
 				<Image 
 					width={this.state.width}
 					height={this.state.height}
@@ -110,6 +112,11 @@ class AttackButton extends Component {
 				</Image>
 			</TouchableHighlight>
 		);
+	}
+
+	_buttonAction() {
+		this.state.buttonFunction(this.state.life);
+		this.setState({life:0});
 	}
 }
 

@@ -33,8 +33,24 @@ class BattleOfBlades extends Component {
   }
 
   render() {
+    //enemy generator here
+    var enemyName = 'Flame Knight';
+    var enemyLevel = 2;
+    //end enemy generator code
+    //game stats generator here
+    var playerHealth = 100;
+    var timeLeft = 60;
+    //end game stats generator code
+
     var mainView = (this.state.startGame && this.state.difficulty !== undefined) ? 
-      <BattleView width={screenWidth} height={400} difficulty={this.state.difficulty} /> : 
+      <BattleView 
+        width={screenWidth} 
+        height={400} 
+        difficulty={this.state.difficulty}
+        enemyName={enemyName}
+        enemyLevel={enemyLevel}
+        playerHealth={playerHealth}
+        timeLeft={timeLeft} /> : 
       <MainView width={screenWidth} height={400} />;
 
     return (

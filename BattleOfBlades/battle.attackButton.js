@@ -5,6 +5,7 @@ import React, {
 	StyleSheet,
 	Image,
 	Text,
+	TouchableHighlight,
 } from 'react-native';
 
 var AttackButtonBGImage = require('./Resources/attackbutton2.png');
@@ -20,15 +21,39 @@ class AttackButton extends Component {
 	}
 
 	render() {
+		if (this.state.life > 0) {
+			return this.renderAttackButton();
+		} else {
+			return(
+				<Image 
+					width={this.state.width}
+					height={this.state.height}
+					style={styles.container} />
+			);
+		}
+	}
+
+	renderAttackButton() {
 		return(
-			<Image 
+			<TouchableHighlight
 				width={this.state.width}
 				height={this.state.height}
-				style={styles.container}
-				source={AttackButtonBGImage}>
-				<Text style={styles.lifeText}>{this.state.life}</Text>
-			</Image>
+				style={styles.touchable}
+				underlayColor={'transparent'}
+				onPress={this.attackButtonTapped}>
+				<Image 
+					width={this.state.width}
+					height={this.state.height}
+					style={styles.container}
+					source={AttackButtonBGImage}>
+					<Text style={styles.lifeText}>{this.state.life}</Text>
+				</Image>
+			</TouchableHighlight>
 		);
+	}
+
+	attackButtonTapped() {
+		console.log('TAPPED');
 	}
 }
 
@@ -45,6 +70,10 @@ var styles = StyleSheet.create({
 		fontSize: 30,
 		textShadowColor: 'white',
 		textShadowOffset: {width: 1, height: 1},
+	},
+	touchable: {
+		flex: 1,
+		justifyContent:'center',
 	},
 });
 

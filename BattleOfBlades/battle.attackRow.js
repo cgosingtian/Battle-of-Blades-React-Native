@@ -17,18 +17,23 @@ class AttackRow extends Component {
 			attackFunction: props.attackFunction,
 		};
 	}
+
 	render() {
 		return(
 			<View 
 				width={this.state.width} 
 				height={this.state.height}
 				style={styles.container}>
-				<AttackButton ref='attackButton1' />
-				<AttackButton ref='attackButton2' />
-				<AttackButton ref='attackButton3' />
-				<AttackButton ref='attackButton4' />
+				<AttackButton ref='attackButton1' buttonFunction={this.handleAttack.bind(this)} />
+				<AttackButton ref='attackButton2' buttonFunction={this.handleAttack.bind(this)} />
+				<AttackButton ref='attackButton3' buttonFunction={this.handleAttack.bind(this)} />
+				<AttackButton ref='attackButton4' buttonFunction={this.handleAttack.bind(this)} />
 			</View>
 		);
+	}
+
+	_handleAttack(attackAmount) {
+		this.state.attackFunction(attackAmount);
 	}
 }
 

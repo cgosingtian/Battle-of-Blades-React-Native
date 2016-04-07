@@ -25,6 +25,7 @@ class AttackButton extends Component {
 			height: 60,
 			life: props.life,
 			cooldown: props.cooldown,
+			buttonFunction: props.buttonFunction,
 		};
 	}
 

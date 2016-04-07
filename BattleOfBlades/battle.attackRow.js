@@ -14,6 +14,7 @@ class AttackRow extends Component {
 		this.state = {
 			width: props.width,
 			height: props.height,
+			attackFunction: props.attackFunction,
 		};
 	}
 	render() {

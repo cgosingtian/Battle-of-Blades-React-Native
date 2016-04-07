@@ -11,6 +11,8 @@ import React, {
 var easyBG = require('./Resources/enemyeasy.png');
 var averageBG = require('./Resources/enemyaverage.png');
 var hardBG = require('./Resources/enemyhard.png');
+var infoBG = require('./Resources/battleinfobg.png');
+
 var AttackRow = require('./battle.attackRow');
 
 class BattleView extends Component {
@@ -20,6 +22,8 @@ class BattleView extends Component {
 			width: props.width,
 			height: props.height,
 			difficulty: props.difficulty,
+			playerHealth: props.playerHealth,
+			timeLeft: props.timeLeft,
 		}
 	}
 
@@ -53,6 +57,13 @@ class BattleView extends Component {
 					resizeMode={'stretch'}
 					style={styles.battle}
 					source={backgroundSource}>
+					<Image
+						width={this.state.width}
+						style={styles.battleInfo}
+						source={infoBG}>
+						<Text style={styles.playerHealth}>Health: {this.state.playerHealth}</Text>
+						<Text style={styles.timeLeft}>Time Left: {this.state.timeLeft}</Text>
+					</Image>
 					<AttackRow width={this.state.width*0.9} />
 					<AttackRow width={this.state.width*0.9} />
 					<AttackRow width={this.state.width*0.9} />
@@ -70,6 +81,24 @@ const styles = StyleSheet.create({
 	battle: {
 		justifyContent: 'space-between',
 		alignItems: 'center',
+	},
+	battleInfo: {
+		height: 40,
+		justifyContent: 'center',
+	},
+	playerHealth: {
+		textAlign: 'left',
+		fontSize: 15,
+		fontWeight: 'bold',
+		color: 'white',
+		left: 5,
+	},
+	timeLeft: {
+		textAlign: 'left',
+		fontSize: 15,
+		fontWeight: 'bold',
+		color: 'white',
+		left: 5,
 	},
 });
 

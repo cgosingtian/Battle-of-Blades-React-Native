@@ -22,6 +22,8 @@ class BattleView extends Component {
 			width: props.width,
 			height: props.height,
 			difficulty: props.difficulty,
+			enemyName: props.enemyName,
+			enemyLevel: props.enemyLevel,
 			playerHealth: props.playerHealth,
 			timeLeft: props.timeLeft,
 		}
@@ -68,6 +70,12 @@ class BattleView extends Component {
 					<AttackRow width={this.state.width*0.9} />
 					<AttackRow width={this.state.width*0.9} />
 					<AttackRow width={this.state.width*0.9} />
+					<View 
+						width={this.state.width*0.75}
+						style={styles.enemyInfo}>
+						<Text style={styles.enemyName}>{this.state.enemyName}</Text>
+						<Text style={styles.enemyLevel}>Level {this.state.enemyLevel}</Text>
+					</View>
 				</Image>
 			</View>
 		);
@@ -85,6 +93,26 @@ const styles = StyleSheet.create({
 	battleInfo: {
 		height: 40,
 		justifyContent: 'center',
+	},
+	enemyInfo: {
+		alignSelf: 'flex-start',
+		height: 50,
+		backgroundColor: 'rgba(0,0,0,0.5)',
+		bottom: 10,
+	},
+	enemyName: {
+		textAlign: 'right',
+		fontSize: 24,
+		fontWeight: 'bold',
+		color: 'white',
+		right: 5,
+	},
+	enemyLevel: {
+		textAlign: 'right',
+		fontSize: 17,
+		fontWeight: 'bold',
+		color: 'white',
+		right: 5,
 	},
 	playerHealth: {
 		textAlign: 'left',

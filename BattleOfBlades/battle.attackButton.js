@@ -10,6 +10,13 @@ import React, {
 
 var AttackButtonBGImage = require('./Resources/attackbutton2.png');
 
+var LIFE_DEFAULT = 9;
+var COOLDOWN_MAX = 7;
+
+function getRandomIntFromRange(minimum, maximum) {
+	return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+}
+
 class AttackButton extends Component {
 	constructor(props) {
 		super(props);
@@ -17,6 +24,7 @@ class AttackButton extends Component {
 			width: 60,
 			height: 60,
 			life: props.life,
+			cooldown: props.cooldown,
 		};
 	}
 

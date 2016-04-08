@@ -105,10 +105,14 @@ class BattleView extends Component {
 
 	_damageEnemy(amount) {
 		var resultingHealth = this.state.enemyHealth - amount;
-		if (resultingHealth < 0) {
+		if (resultingHealth <= 0) {
 			resultingHealth = 0;
-		}
+		} 
 		this.setState({enemyHealth:resultingHealth});
+
+		if (this.state.enemyHealth <= 0) {
+			this._endGameWithResult(true);
+		}
 	}
 }
 

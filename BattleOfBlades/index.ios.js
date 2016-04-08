@@ -42,7 +42,14 @@ class BattleOfBlades extends Component {
     var enemyHealth = 100;
     //end game stats generator code
 
-    var mainView = (this.state.startGame && this.state.difficulty !== undefined) ? 
+   
+
+    var mainView = 
+      <MainView 
+        ref='mainView'
+        width={screenWidth} 
+        height={400} />;
+    var battleView = 
       <BattleView 
         width={screenWidth} 
         height={400} 
@@ -50,13 +57,15 @@ class BattleOfBlades extends Component {
         enemyName={enemyName}
         enemyLevel={enemyLevel}
         enemyHealth={enemyHealth}
-        timeLeft={timeLeft} /> : 
-      <MainView width={screenWidth} height={400} />;
+        timeLeft={timeLeft}
+        endGameFunction={this._endGame.bind(this)} />;
+
+    var shownView = (this.state.startGame && this.state.difficulty !== undefined) ? battleView : mainView;
 
     return (
       <View style={styles.container}>
         <HeaderView width={screenWidth} height={30} />
-        {mainView}
+        {shownView}
         <FooterView 
           ref='footerView'
           width={screenWidth} 

@@ -26,6 +26,7 @@ class BattleView extends Component {
 			enemyLevel: props.enemyLevel,
 			enemyHealth: props.enemyHealth,
 			timeLeft: props.timeLeft,
+			endGameFunction: props.endGameFunction,
 		}
 	}
 
@@ -33,9 +34,10 @@ class BattleView extends Component {
 		this.timer = setInterval(() => {
 			this.state.timeLeft--;
 			if (this.state.timeLeft <= 0) {
-				this._endGame();
+				this._endGameWithResult(false);
+			} else {
+				this.setState({});
 			}
-			this.setState({});
 		}, 1000);
 	}
 
@@ -43,9 +45,10 @@ class BattleView extends Component {
 		clearTimeout(this.timer);
 	}
 
-	_endGame() {
+	_endGameWithResult(didWin) {
 		clearTimeout(this.timer);
 		console.log('GAME OVER');
+		this.state.endGameFunction(didWin);
 	}
 
 	render() {

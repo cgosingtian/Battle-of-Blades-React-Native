@@ -119,6 +119,25 @@ class BattleOfBlades extends Component {
     startGame.call(this, difficulty);
     startGame.call(this.refs.footerView, difficulty);
   }
+
+  _endGame(gameWon) {
+    function endGame() {
+        this.setState({
+          startGame: false,
+          gameWon: true,
+        });
+    };
+
+    endGame.call(this);
+    endGame.call(this.refs.mainView);
+    endGame.call(this.refs.footerView);
+
+    (() => {
+      this.setState({
+        endGameMessage: 'Experience +1',
+      })
+    }).call(this.refs.mainView);
+  }
 }
 
 const styles = StyleSheet.create({

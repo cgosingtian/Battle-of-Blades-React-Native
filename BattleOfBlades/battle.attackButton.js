@@ -68,7 +68,7 @@ class AttackButton extends Component {
 	}
 
 	_lifeRegenerate() {
-		this.setState({life:LIFE_DEFAULT});
+		this.state.life = LIFE_DEFAULT;
 	}
 
 	_cooldownRegenerate() {
@@ -114,8 +114,9 @@ class AttackButton extends Component {
 	}
 
 	_buttonAction() {
-		this.state.buttonFunction(this.state.life);
+		var damage = this.state.life;
 		this.setState({life:0});
+		this.state.buttonFunction(damage);
 	}
 }
 

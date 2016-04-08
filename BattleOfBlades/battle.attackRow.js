@@ -24,10 +24,10 @@ class AttackRow extends Component {
 				width={this.state.width} 
 				height={this.state.height}
 				style={styles.container}>
-				<AttackButton ref='attackButton1' buttonFunction={this.handleAttack.bind(this)} />
-				<AttackButton ref='attackButton2' buttonFunction={this.handleAttack.bind(this)} />
-				<AttackButton ref='attackButton3' buttonFunction={this.handleAttack.bind(this)} />
-				<AttackButton ref='attackButton4' buttonFunction={this.handleAttack.bind(this)} />
+				<AttackButton ref='attackButton1' buttonFunction={this._handleAttack.bind(this)} />
+				<AttackButton ref='attackButton2' buttonFunction={this._handleAttack.bind(this)} />
+				<AttackButton ref='attackButton3' buttonFunction={this._handleAttack.bind(this)} />
+				<AttackButton ref='attackButton4' buttonFunction={this._handleAttack.bind(this)} />
 			</View>
 		);
 	}

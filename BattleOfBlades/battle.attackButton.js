@@ -40,7 +40,7 @@ class AttackButton extends Component {
 			if (isCooldown === true) {
 				this._cooldownReduce();
 			}
-			this.setState({});
+			
 		}, 1000);
 	}
 
@@ -48,11 +48,10 @@ class AttackButton extends Component {
 		if (this.state.life <= 0) {
 			this.state.life = 0;
 			return true;
+		} else {
+			this.state.life--;
+			return false;
 		}
-		
-		this.state.life--;
-		
-		return false;
 	}
 
 	_cooldownReduce() {
@@ -63,9 +62,9 @@ class AttackButton extends Component {
 		if (this.state.cooldown <= 0) {
 			this._lifeRegenerate();
 			this._cooldownRegenerate();
+		} else {
+			this.state.cooldown--;
 		}
-
-		this.state.cooldown--;
 	}
 
 	_lifeRegenerate() {

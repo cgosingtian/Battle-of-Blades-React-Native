@@ -9,13 +9,10 @@ import React, {
 } from 'react-native';
 
 var AttackButtonBGImage = require('./Resources/attackbutton2.png');
+var Utilities = require('./utilities');
 
 var LIFE_DEFAULT = 9;
 var COOLDOWN_MAX = 7;
-
-function getRandomIntFromRange(minimum, maximum) {
-	return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-}
 
 class AttackButton extends Component {
 	constructor(props) {
@@ -72,7 +69,7 @@ class AttackButton extends Component {
 	}
 
 	_cooldownRegenerate() {
-		this.state.cooldown = getRandomIntFromRange(0, COOLDOWN_MAX);
+		this.state.cooldown = Utilities.getRandomIntFromRange(0, COOLDOWN_MAX);
 	}
 
 	componentWillUnmount() {

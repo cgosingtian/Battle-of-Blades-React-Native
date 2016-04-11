@@ -21,7 +21,7 @@ class BattleView extends Component {
 		this.state = {
 			width: props.width,
 			height: props.height,
-			difficulty: props.difficulty,
+			difficulty: -1,
 			enemyName: props.enemyName,
 			enemyLevel: props.enemyLevel,
 			enemyHealth: props.enemyHealth,

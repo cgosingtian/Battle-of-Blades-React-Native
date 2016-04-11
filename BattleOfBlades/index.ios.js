@@ -23,6 +23,8 @@ var Dimensions = require('Dimensions');
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 
+import * as EnemyCreator from './util.enemyCreator';
+
 class BattleOfBlades extends Component {
   constructor(props) {
     super(props);
@@ -33,14 +35,6 @@ class BattleOfBlades extends Component {
   }
 
   render() {
-    //enemy generator here
-    var enemyName = 'Flame Knight';
-    var enemyLevel = 2;
-    //end enemy generator code
-    //game stats generator here
-    var timeLeft = 60;
-    var enemyHealth = 100;
-    //end game stats generator code
 
    
 
@@ -118,6 +112,18 @@ class BattleOfBlades extends Component {
 
     startGame.call(this, difficulty);
     startGame.call(this.refs.footerView, difficulty);
+
+    var enemy = new EnemyCreator.enemyWithDifficulty(this.state.difficulty);
+    function setEnemy() {
+      this.setState({
+        difficulty: difficulty,
+        enemyName: enemy.name,
+        enemyLevel: enemy.level,
+        enemyHealth: enemy.health,
+        timeLeft: enemy.timeLeft,
+      });
+    }
+    setEnemy.call(this.refs.battleView);
   }
 
   _endGame(gameWon) {

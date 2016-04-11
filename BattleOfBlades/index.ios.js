@@ -35,25 +35,15 @@ class BattleOfBlades extends Component {
   }
 
   render() {
-
-   
-
-    var mainView = 
-      <MainView 
+    var battleView = <BattleView 
+        ref='battleView'
+        width={screenWidth} 
+        height={400} 
+        endGameFunction={this._endGame.bind(this)} />;
+    var mainView = <MainView 
         ref='mainView'
         width={screenWidth} 
         height={400} />;
-    var battleView = 
-      <BattleView 
-        width={screenWidth} 
-        height={400} 
-        difficulty={this.state.difficulty}
-        enemyName={enemyName}
-        enemyLevel={enemyLevel}
-        enemyHealth={enemyHealth}
-        timeLeft={timeLeft}
-        endGameFunction={this._endGame.bind(this)} />;
-
     var shownView = (this.state.startGame && this.state.difficulty !== undefined) ? battleView : mainView;
 
     return (

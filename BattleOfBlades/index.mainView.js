@@ -19,7 +19,7 @@ class MainView extends Component {
 			height: props.height,
 			startGame: false,
           	gameWon: undefined,
-          	endGameMessage: props.endGameMessage,
+          	endGameMessage: '',
 		}
 	}
 
@@ -37,15 +37,33 @@ class MainView extends Component {
           			source={victoryImage} 
           			position={'absolute'} />
         		<View backgroundColor={'rgba(0,0,0,0.5)'} height={50} justifyContent={'center'}>
-        	<Text style={styles.experience}>{this.state.endGameMessage}</Text>
-        </View></View>);
+		        	<Text
+		        		allowFontScaling={true} 
+		        		style={styles.experience}>{this.state.endGameMessage}</Text>
+        		</View>
+    		</View>);
+	}
+
+	_renderDefeat() {
+		return (
+			<View>
+				<Text
+					width={this.state.width} 
+					style={styles.defeat}>DEFEAT</Text>
+					<View
+						backgroundColor={'rgba(0,0,0,0.5)'}
+						top={80}>
+					<Text
+        				position={'absolute'}
+        				allowFontScaling={true} 
+        				numberOfLines={5}
+        				style={styles.defeatMessage}>{this.state.endGameMessage}</Text>
+        			</View>
+	        </View>);
 	}
 
 	render() {
-		var gameResult = this.state.gameWon ? 
-        this._renderVictory() : 
-        <Text 
-          	style={styles.defeat}>DEFEAT</Text>
+		var gameResult = this.state.gameWon ? this._renderVictory() : this._renderDefeat();
 
     	var endGame = (this.state.gameWon !== undefined) ? gameResult : <View />;
 
@@ -89,6 +107,11 @@ const styles = StyleSheet.create({
 	    fontWeight: 'bold',
 	    color: 'red',
 	    top: 60,
+	},
+	defeatMessage: {
+	    textAlign: 'center',
+	    fontSize: 17,
+	    color: 'white',
 	},
 });
 

@@ -6,11 +6,16 @@ import React, {
 	Image,
 	Text,
 	StyleSheet,
+	Alert,
 } from 'react-native';
 
 var leftBackgroundImageSource = require('./Resources/headerbgleft.png');
 var middleBackgroundImageSource = require('./Resources/playerbutton.png');
 var rightBackgroundImageSource = require('./Resources/headerbgright.png');
+
+var ENERGY_RECHARGE_TIME_MS = 30000; // X energy = 30 seconds
+var ENERGY_GAIN_PER_CHARGE = 1; // 1 energy every X seconds
+var ENERGY_RECHARGE_TIME_INTERVAL = 1000; // 1000 for 1 second
 
 class HeaderView extends Component {
 	constructor(props) {
@@ -18,11 +23,84 @@ class HeaderView extends Component {
 		this.state = {
 			width: props.width,
 			height: props.height,
-			level: 0,
-			xpNeeded: 100,
+			level: 1,
+			xpNeeded: 10,
 			energy: 10,
 			maxEnergy: 10,
 			playerName: 'Chase',
+			energyRechargeTime: 0,
+			energyRechargeTimeElapsed: 0,
+		}
+	}
+
+	_verifyEnergyWithCost(energyCost) {
+		var energySpend = this.state.energy - energyCost;
+
+		return (energySpend >= 0);
+	}
+
+	spendEnergyWithCost(energyCost) {
+		if (this._verifyEnergyWithCost(energyCost)) {
+			var energySpent = this.state.energy - energyCost;
+			var energyRechargeTime = ENERGY_RECHARGE_TIME_MS * energyCost;
+			var energyRechargeTotal = this.state.energyRechargeTime + energyRechargeTime;
+			this.setState({
+				energy: energySpent,
+				energyRechargeTime: energyRechargeTotal,
+			});
+			return true;
+		} else {
+			Alert.alert(
+      			'Error',
+	      		'Not enough energy. Please wait for it to recharge.',
+		        [
+		          {text: 'OK'},
+		        ]
+	      	)
+
+	      	return false;
+		}
+	}
+
+	componentDidMount() {
+		this.timer = setInterval(() => {
+			if (this.state.energyRechargeTime > 0) {
+				var newEnergyRechargeValue = this.state.energyRechargeTime - ENERGY_RECHARGE_TIME_INTERVAL;
+				if (newEnergyRechargeValue <= 0) {
+					newEnergyRechargeValue = 0;
+				}
+
+				var newEnergy = this.state.energy;
+				var newEnergyRechargeTimeElapsed = this.state.energyRechargeTimeElapsed + ENERGY_RECHARGE_TIME_INTERVAL;
+				if (newEnergyRechargeTimeElapsed >= ENERGY_RECHARGE_TIME_MS) {
+					newEnergyRechargeTimeElapsed = 0;
+					newEnergy += ENERGY_GAIN_PER_CHARGE;
+				}
+
+				this.setState({
+					energyRechargeTime: newEnergyRechargeValue,
+					energy: newEnergy,
+					energyRechargeTimeElapsed: newEnergyRechargeTimeElapsed,
+				});
+			}
+		}, 1000);
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.timer);
+	}
+
+	_renderEnergyRechargeTime() {
+		if (this.state.energyRechargeTime > 0) {
+			var totalSeconds = this.state.energyRechargeTime / 1000;
+			var minutes = Math.floor(totalSeconds / 60);
+			var seconds = Math.floor(totalSeconds % 60);
+			if (seconds < 10) {
+				seconds = '0'+seconds;
+			}
+			return(
+				<Text style={styles.rightRechargeText}>Recharge: {minutes}:{seconds}[{this.state.energyRechargeTimeElapsed/1000}]</Text>
+			);
 		}
 	}
 
@@ -50,6 +128,7 @@ class HeaderView extends Component {
 					source={rightBackgroundImageSource} 
 					style={styles.right}>
 					<Text style={styles.rightEnergyText}>Energy: {this.state.energy}/{this.state.maxEnergy}</Text>
+					{this._renderEnergyRechargeTime()}
 				</Image>
 			</View>
 		);
@@ -102,6 +181,11 @@ const styles = StyleSheet.create({
 		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 15,
+		textAlign: 'right',
+	},
+	rightRechargeText: {
+		color: 'white',
+		fontSize: 10,
 		textAlign: 'right',
 	},
 });

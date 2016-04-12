@@ -16,6 +16,11 @@ var ENERGY_RECHARGE_TIME_MS = 30000; // X energy = 30 seconds
 var ENERGY_GAIN_PER_CHARGE = 1; // 1 energy every X seconds
 var ENERGY_RECHARGE_TIME_INTERVAL = 1000; // 1000 for 1 second
 
+var EXPERIENCE_PER_LEVEL = 10; // 10 experience = 1 level
+var LEVEL_UP_SCALING_FACTOR = 2; // For each level > 1, experience to level is multiplied by this
+var ENERGY_GAIN_PER_LEVEL = 1; // Energy and Max Energy gain per level
+var TIME_BONUS_PER_LEVEL = 2; // Time Increase per battle
+
 class HeaderView extends Component {
 	constructor(props) {
 		super(props);
@@ -23,13 +28,67 @@ class HeaderView extends Component {
 			width: props.width,
 			height: props.height,
 			level: 1,
-			xpNeeded: 10,
+			experience: 0,
+			xpNeeded: EXPERIENCE_PER_LEVEL,
+			timeBonus: 0,
 			energy: 10,
 			maxEnergy: 10,
 			playerName: 'Chase',
 			energyRechargeTime: 0,
 			energyRechargeTimeElapsed: 0,
 		}
+	}
+
+	levelUpIfPossibleWithExperienceGained(experienceGained) {
+		var experience = this.state.experience + experienceGained;
+		var levelScaling = (this.state.level - 1) * LEVEL_UP_SCALING_FACTOR;
+		if (levelScaling <= 0) {
+			levelScaling = 1;
+		}
+		var experienceToLevel = EXPERIENCE_PER_LEVEL * levelScaling;
+		var levelGained = experience / experienceToLevel;
+		
+		var xpNeeded = experienceToLevel - experience;
+
+		this.setState({
+			experience: experience,
+			xpNeeded: xpNeeded,
+		});
+
+		if (levelGained >= 1) {
+			this._levelUp();
+			this.levelUpIfPossibleWithExperienceGained(0);
+		}
+	}
+
+	_levelUp() {
+		var level = this.state.level;
+		var timeBonus = this.state.timeBonus;
+		var energy = this.state.energy;
+		var maxEnergy = this.state.maxEnergy;
+		var energyRechargeTime = this.state.energyRechargeTime;
+		var energyRechargeTimeElapsed = this.state.energyRechargeTimeElapsed;
+
+
+		level++;
+		timeBonus+=TIME_BONUS_PER_LEVEL;
+		energy+=ENERGY_GAIN_PER_LEVEL;
+		maxEnergy+=ENERGY_GAIN_PER_LEVEL;
+
+		if (energy >= maxEnergy) {
+			energyRechargeTime = 0;
+			energyRechargeTimeElapsed = 0;
+		}
+
+		this.setState({
+			experience: 0,
+			level:level,
+			timeBonus:timeBonus,
+			energy:energy,
+			maxEnergy:maxEnergy,
+			energyRechargeTime: energyRechargeTime,
+			energyRechargeTimeElapsed: energyRechargeTimeElapsed,
+		});
 	}
 
 	_verifyEnergyWithCost(energyCost) {

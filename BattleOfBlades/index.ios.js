@@ -33,6 +33,7 @@ class BattleOfBlades extends Component {
     this.state = {
       startGame: false,
       difficulty: -1,
+      activeEnemyLevel: 0,
     };
   }
 
@@ -129,7 +130,12 @@ class BattleOfBlades extends Component {
         timeLeft: enemy.timeLeft,
       });
     }
+
     setEnemy.call(this.refs.battleView);
+
+    this.setState({
+      activeEnemyLevel: enemy.level,
+    });
   }
 
   _endGame(gameWon, message) {
@@ -144,12 +150,22 @@ class BattleOfBlades extends Component {
     endGame.call(this.refs.mainView);
     endGame.call(this.refs.footerView);
 
+
+    if (gameWon) {
+      this.refs.headerView.levelUpIfPossibleWithExperienceGained(this.state.activeEnemyLevel);
+      message = message + this.state.activeEnemyLevel;
+    }
+
     function updateEndMessage() {
       this.setState({
         endGameMessage: message,
       })
     }
     updateEndMessage.call(this.refs.mainView);
+
+    this.setState({
+        activeEnemyLevel: 0,
+    });
   }
 }
 

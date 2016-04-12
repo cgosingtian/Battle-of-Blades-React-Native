@@ -116,11 +116,11 @@ class BattleOfBlades extends Component {
     setEnemy.call(this.refs.battleView);
   }
 
-  _endGame(gameWon) {
+  _endGame(gameWon, message) {
     function endGame() {
         this.setState({
           startGame: false,
-          gameWon: true,
+          gameWon: gameWon,
         });
     };
 

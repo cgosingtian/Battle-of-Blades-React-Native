@@ -23,7 +23,7 @@ var Dimensions = require('Dimensions');
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 
-import * as EnemyCreator from './util.enemyCreator';
+var EnemyCreator = require('./util.enemyCreator');
 
 class BattleOfBlades extends Component {
   constructor(props) {

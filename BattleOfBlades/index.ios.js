@@ -128,11 +128,12 @@ class BattleOfBlades extends Component {
     endGame.call(this.refs.mainView);
     endGame.call(this.refs.footerView);
 
-    (() => {
+    function updateEndMessage() {
       this.setState({
-        endGameMessage: 'Experience +1',
+        endGameMessage: message,
       })
-    }).call(this.refs.mainView);
+    }
+    updateEndMessage.call(this.refs.mainView);
   }
 }
 

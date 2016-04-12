@@ -6,7 +6,6 @@ import React, {
 	Image,
 	Text,
 	StyleSheet,
-	Alert,
 } from 'react-native';
 
 var leftBackgroundImageSource = require('./Resources/headerbgleft.png');
@@ -50,14 +49,6 @@ class HeaderView extends Component {
 			});
 			return true;
 		} else {
-			Alert.alert(
-      			'Error',
-	      		'Not enough energy. Please wait for it to recharge.',
-		        [
-		          {text: 'OK'},
-		        ]
-	      	)
-
 	      	return false;
 		}
 	}

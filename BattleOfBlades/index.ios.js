@@ -25,6 +25,8 @@ var screenHeight = Dimensions.get('window').height;
 
 var EnemyCreator = require('./util.enemyCreator');
 
+var ENERGY_PER_BATTLE = 1;
+
 class BattleOfBlades extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +50,10 @@ class BattleOfBlades extends Component {
 
     return (
       <View style={styles.container}>
-        <HeaderView width={screenWidth} height={30} />
+        <HeaderView 
+          ref='headerView'
+          width={screenWidth}
+          height={30} />
         {shownView}
         <FooterView 
           ref='footerView'
@@ -93,6 +98,17 @@ class BattleOfBlades extends Component {
   }
 
   _startGame(difficulty) {
+    if (!this.refs.headerView.spendEnergyWithCost(ENERGY_PER_BATTLE)) {
+      Alert.alert(
+        'Error',
+        'Not enough energy. Please wait for it to recharge.',
+        [
+          {text: 'OK'},
+        ]
+      )
+      return;
+    }
+
     function startGame(difficulty) {
         this.setState({
           startGame: true,

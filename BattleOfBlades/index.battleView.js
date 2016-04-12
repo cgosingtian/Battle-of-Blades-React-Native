@@ -52,7 +52,7 @@ class BattleView extends Component {
 		if (didWin == false) {
 			message = EndMessageCreator.generateDefeatMessage();
 		} else {
-			message = 'Experience +1'; //Victory message placeholder
+			message = 'Experience +';
 			this.state.endGameFunction(didWin, message);
 		}
 	}

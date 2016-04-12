@@ -14,6 +14,7 @@ var hardBG = require('./Resources/enemyhard.png');
 var infoBG = require('./Resources/battleinfobg.png');
 
 var AttackRow = require('./battle.attackRow');
+var EndMessageCreator = require('./util.endMessageCreator.js');
 
 class BattleView extends Component {
 	constructor(props) {
@@ -47,8 +48,13 @@ class BattleView extends Component {
 
 	_endGameWithResult(didWin) {
 		clearTimeout(this.timer);
-		console.log('GAME OVER');
-		this.state.endGameFunction(didWin);
+		var message = '';
+		if (didWin == false) {
+			message = EndMessageCreator.generateDefeatMessage();
+		} else {
+
+		}
+		this.state.endGameFunction(didWin, message);
 	}
 
 	render() {

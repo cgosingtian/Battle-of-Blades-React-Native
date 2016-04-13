@@ -55,12 +55,13 @@ class BattleView extends Component {
 			message = EndMessageCreator.generateDefeatMessage();
 		} else {
 			message = 'Experience +';
-			this.state.endGameFunction(didWin, message);
 		}
+		this.state.endGameFunction(didWin, message);
 	}
 
 	// This function is applied to all this.state.gradientColorQueue elements.
 	// Allows queueing of animations. See map() function on JavaScript arrays.
+	// TODO: Code duplication; refactor this out somehow
 	_renderGradient(gradientColor, key) {		
 		if (gradientColor !== undefined) {
 			return (

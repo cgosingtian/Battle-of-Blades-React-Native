@@ -19,6 +19,7 @@ class GradientEffects extends Component {
 			height: props.height,
 			fadeAnimation: new Animated.Value(0),
 			gradientColor: props.gradientColor,
+			onFinish: props.onFinish,
 		}
 	}
 
@@ -39,8 +40,9 @@ class GradientEffects extends Component {
    	}
 
    	componentWillUnmount() {
-   		console.log('GRADIENT UNMOUNTED');
-   		this.state.onFinish();
+   		if (this.state.onFinish) {
+   			this.state.onFinish();
+   		}
    	}
 
    	_returnGradientImageSource() {

@@ -86,9 +86,10 @@ class MainView extends Component {
 
     	var endGame = (this.state.gameWon !== undefined) ? gameResult : <View />;
 
-
-    	if (this.state.gameWon) {
+    	if (this.state.gameWon === true) {
     		this.state.gradientColorQueue.push('blue');
+    	} else if (this.state.gameWon === false) {
+    		this.state.gradientColorQueue.push('red');
     	}
     	var gradients = this.state.gradientColorQueue.map(this._renderGradient.bind(this));
 

@@ -15,6 +15,7 @@ var infoBG = require('./Resources/battleinfobg.png');
 
 var AttackRow = require('./battle.attackRow');
 var EndMessageCreator = require('./util.endMessageCreator.js');
+var GradientEffects = require('./util.gradientEffects');
 
 class BattleView extends Component {
 	constructor(props) {
@@ -28,6 +29,7 @@ class BattleView extends Component {
 			enemyHealth: props.enemyHealth,
 			timeLeft: props.timeLeft,
 			endGameFunction: props.endGameFunction,
+			gradientColorQueue: new Array,
 		}
 	}
 
@@ -57,6 +59,21 @@ class BattleView extends Component {
 		}
 	}
 
+	// This function is applied to all this.state.gradientColorQueue elements.
+	// Allows queueing of animations. See map() function on JavaScript arrays.
+	_renderGradient(gradientColor, key) {		
+		if (gradientColor !== undefined) {
+			return (
+				<GradientEffects 
+					key={key}
+	          		gradientColor={gradientColor}
+	          		width={this.state.width}
+	          		height={this.state.height} />);
+		} else {
+			return (<View />);
+		}
+	}
+
 	render() {
 		var backgroundSource;
 		switch(this.state.difficulty) {
@@ -75,6 +92,8 @@ class BattleView extends Component {
         		console.log('*** ERROR: BattleView difficulty property set with invalid difficulty, defaulting to Easy');
 			}
 		}
+
+		var gradients = this.state.gradientColorQueue.map(this._renderGradient.bind(this));
 
 		return(
 			<View 
@@ -105,6 +124,7 @@ class BattleView extends Component {
 						<Text style={styles.enemyLevel}>Level {this.state.enemyLevel}</Text>
 					</View>
 				</Image>
+				{gradients}
 			</View>
 		);
 	}
@@ -114,7 +134,13 @@ class BattleView extends Component {
 		if (resultingHealth <= 0) {
 			resultingHealth = 0;
 		} 
-		this.setState({enemyHealth:resultingHealth});
+
+		// Queue red gradient animation
+		this.state.gradientColorQueue.push('red');
+		
+		this.setState({
+			enemyHealth:resultingHealth,
+		});
 
 		if (this.state.enemyHealth <= 0) {
 			this._endGameWithResult(true);

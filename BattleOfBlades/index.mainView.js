@@ -11,6 +11,8 @@ import React, {
 var mainCover = require('./Resources/maincover.png');
 var victoryImage = require('./Resources/victory.png');
 
+var GradientEffects = require('./util.gradientEffects');
+
 class MainView extends Component {
 	constructor(props) {
 		super(props);
@@ -20,6 +22,23 @@ class MainView extends Component {
 			startGame: false,
           	gameWon: undefined,
           	endGameMessage: '',
+          	gradientColorQueue: [],
+		}
+	}
+
+	// This function is applied to all this.state.gradientColorQueue elements.
+	// Allows queueing of animations. See map() function on JavaScript arrays.
+	// TODO: Code duplication; refactor this out somehow
+	_renderGradient(gradientColor, key) {		
+		if (gradientColor !== undefined) {
+			return (
+				<GradientEffects 
+					key={key}
+	          		gradientColor={gradientColor}
+	          		width={this.state.width}
+	          		height={this.state.height} />);
+		} else {
+			return (<View />);
 		}
 	}
 
@@ -67,6 +86,12 @@ class MainView extends Component {
 
     	var endGame = (this.state.gameWon !== undefined) ? gameResult : <View />;
 
+
+    	if (this.state.gameWon) {
+    		this.state.gradientColorQueue.push('blue');
+    	}
+    	var gradients = this.state.gradientColorQueue.map(this._renderGradient.bind(this));
+
 		return(
 			<View 
 				style={styles.container}
@@ -80,6 +105,7 @@ class MainView extends Component {
 					source={mainCover}>
 				</Image>
 				{endGame}
+				{gradients}
 			</View>
 		);
 	}

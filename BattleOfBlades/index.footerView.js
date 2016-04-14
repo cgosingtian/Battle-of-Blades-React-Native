@@ -95,8 +95,9 @@ class FooterView extends Component {
 
 		return(
 			<Image 
+				width={this.state.width}
+				height={this.state.height}
 				style={styles.container}
-				width={this.props.width}
 				source={hintImageSource}>
 			</Image>
 		);

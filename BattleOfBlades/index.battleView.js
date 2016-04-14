@@ -98,13 +98,12 @@ class BattleView extends Component {
 
 		return(
 			<View 
-				style={styles.container}
 				width={this.state.width}
-				height={this.state.height}>
+				height={this.state.height}
+				style={styles.container}>
 				<Image
 					width={this.state.width}
 					height={this.state.height}
-					resizeMode={'stretch'}
 					style={styles.battle}
 					source={backgroundSource}>
 					<Image
@@ -156,9 +155,12 @@ const styles = StyleSheet.create({
 	battle: {
 		justifyContent: 'space-between',
 		alignItems: 'center',
+		width: 320,
+		height: 400,
 	},
 	battleInfo: {
 		height: 40,
+		width: 320,
 		justifyContent: 'center',
 	},
 	enemyInfo: {
@@ -168,6 +170,7 @@ const styles = StyleSheet.create({
 		bottom: 10,
 	},
 	enemyName: {
+		flex: 0.5,
 		textAlign: 'right',
 		fontSize: 24,
 		fontWeight: 'bold',
@@ -175,6 +178,7 @@ const styles = StyleSheet.create({
 		right: 5,
 	},
 	enemyLevel: {
+		flex: 0.5,
 		textAlign: 'right',
 		fontSize: 17,
 		fontWeight: 'bold',

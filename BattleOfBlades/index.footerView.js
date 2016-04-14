@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'black',
 		flexDirection: 'row',
 		alignItems: 'center',
+		justifyContent: 'center',
 	},
 	left: {
 		flex: 0.33,

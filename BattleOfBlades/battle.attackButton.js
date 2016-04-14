@@ -128,6 +128,7 @@ var styles = StyleSheet.create({
 		textAlign: 'center',
 		fontWeight: 'bold',
 		fontSize: 30,
+		color:'black',
 		textShadowColor: 'white',
 		textShadowOffset: {width: 1, height: 1},
 	},

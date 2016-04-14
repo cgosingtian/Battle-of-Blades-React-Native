@@ -5,6 +5,7 @@ import React, {
 	StyleSheet,
 	Image,
 	Animated,
+  View,
 } from 'react-native';
 
 var blueGradient = require('./Resources/bluegradientbg.png');
@@ -59,9 +60,18 @@ class GradientEffects extends Component {
 		var gradientSource = this._returnGradientImageSource();
 		
    		return(
+        <View 
+          pointerEvents={'none'} 
+          style={{
+              top: 0,
+              backgroundColor:'rgba(0,0,0,0)',
+              width:this.state.width,
+              height:this.state.height,
+              position:'absolute',
+            }}>
    			<Animated.Image
         		source={gradientSource}
-        		pointerEvents={'none'}
+            renderToHardwareTextureAndroid={true} // android
         		style={{
         			top: 0,
         			backgroundColor:'rgba(0,0,0,0)',
@@ -72,6 +82,7 @@ class GradientEffects extends Component {
         		}}>
         		{this.props.children}
        		</Animated.Image>
+          </View>
    		);
    	};
 }

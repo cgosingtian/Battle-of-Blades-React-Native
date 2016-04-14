@@ -17,6 +17,9 @@ var AttackRow = require('./battle.attackRow');
 var EndMessageCreator = require('./util.endMessageCreator.js');
 var GradientEffects = require('./util.gradientEffects');
 
+var Common = require('./common');
+var screenWidth = Common.screenWidth;
+var screenHeight = Common.screenHeight;
 class BattleView extends Component {
 	constructor(props) {
 		super(props);
@@ -155,12 +158,12 @@ const styles = StyleSheet.create({
 	battle: {
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		width: 320,
+		width: screenWidth,
 		height: 400,
 	},
 	battleInfo: {
 		height: 40,
-		width: 320,
+		width: screenWidth,
 		justifyContent: 'center',
 	},
 	enemyInfo: {

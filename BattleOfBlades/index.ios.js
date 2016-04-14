@@ -18,10 +18,9 @@ var MainView = require('./index.mainView');
 var BattleView = require('./index.battleView');
 var FooterView = require('./index.footerView');
 
-var Dimensions = require('Dimensions');
-
-var screenWidth = Dimensions.get('window').width;
-var screenHeight = Dimensions.get('window').height;
+var Common = require('./common');
+var screenWidth = Common.screenWidth;
+var screenHeight = Common.screenHeight;
 
 var EnemyCreator = require('./util.enemyCreator');
 

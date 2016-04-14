@@ -6,6 +6,7 @@ import React, {
 	Image,
 	Animated,
   View,
+  InteractionManager,
 } from 'react-native';
 
 var blueGradient = require('./Resources/bluegradientbg.png');
@@ -25,19 +26,21 @@ class GradientEffects extends Component {
 	}
 
 	componentDidMount() {
-    	Animated.sequence([
-    		Animated.timing(this.state.fadeAnimation,
-       		{
-       			toValue: 1,
-       			duration: 50,
-       		}),
-       		Animated.timing(this.state.fadeAnimation,
-       		{
-       			toValue: 0,
-       			duration: 200,
-       		})]
-		)
-    	.start(this.state.onFinish);
+    InteractionManager.runAfterInteractions(() => {
+      	Animated.sequence([
+      		Animated.timing(this.state.fadeAnimation,
+         		{
+         			toValue: 1,
+         			duration: 50,
+         		}),
+         		Animated.timing(this.state.fadeAnimation,
+         		{
+         			toValue: 0,
+         			duration: 200,
+         		})]
+  		  )
+      	.start(this.state.onFinish);
+        });
    	}
 
    	componentWillUnmount() {

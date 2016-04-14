@@ -41,9 +41,7 @@ class GradientEffects extends Component {
    	}
 
    	componentWillUnmount() {
-   		if (this.state.onFinish) {
-   			this.state.onFinish();
-   		}
+      console.log('GRADIENT UNMOUNTED');
    	}
 
    	_returnGradientImageSource() {

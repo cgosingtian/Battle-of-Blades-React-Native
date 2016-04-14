@@ -13,6 +13,8 @@ var victoryImage = require('./Resources/victory.png');
 
 var GradientEffects = require('./util.gradientEffects');
 
+var willUnmount = false;
+
 class MainView extends Component {
 	constructor(props) {
 		super(props);
@@ -35,10 +37,20 @@ class MainView extends Component {
 				<GradientEffects 
 					key={key}
 	          		gradientColor={gradientColor}
+	          		onFinish={this._finishGradientRendering.bind(this)}
 	          		width={this.state.width}
 	          		height={this.state.height} />);
 		} else {
 			return (<View />);
+		}
+	}
+
+	_finishGradientRendering() {
+		if (!this.willUnmount) {
+			console.log('_finishGradientRendering main');
+			var gradientColorQueue = this.state.gradientColorQueue;
+			gradientColorQueue.shift();
+			this.setState({gradientColorQueue:gradientColorQueue});
 		}
 	}
 
@@ -86,11 +98,6 @@ class MainView extends Component {
 
     	var endGame = (this.state.gameWon !== undefined) ? gameResult : <View />;
 
-    	if (this.state.gameWon === true) {
-    		this.state.gradientColorQueue.push('blue');
-    	} else if (this.state.gameWon === false) {
-    		this.state.gradientColorQueue.push('red');
-    	}
     	var gradients = this.state.gradientColorQueue.map(this._renderGradient.bind(this));
 
 		return(

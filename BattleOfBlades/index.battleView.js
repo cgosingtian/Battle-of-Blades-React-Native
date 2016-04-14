@@ -20,6 +20,9 @@ var GradientEffects = require('./util.gradientEffects');
 var Common = require('./common');
 var screenWidth = Common.screenWidth;
 var screenHeight = Common.screenHeight;
+
+var willUnmount = false;
+
 class BattleView extends Component {
 	constructor(props) {
 		super(props);
@@ -48,6 +51,7 @@ class BattleView extends Component {
 	}
 
 	componentWillUnmount() {
+		this.willUnmount = true;
 		clearTimeout(this.timer);
 	}
 
@@ -80,7 +84,12 @@ class BattleView extends Component {
 	}
 
 	_finishGradientRendering() {
-		this.state.gradientColorQueue.shift();
+		if (!this.willUnmount) {
+			console.log('_finishGradientRendering');
+			var gradientColorQueue = this.state.gradientColorQueue;
+			gradientColorQueue.shift();
+			this.setState({gradientColorQueue:gradientColorQueue});
+		}
 	}
 
 	render() {
@@ -113,6 +122,7 @@ class BattleView extends Component {
 					width={this.state.width}
 					height={this.state.height}
 					style={styles.battle}
+					renderToHardwareTextureAndroid={true} // android
 					source={backgroundSource}>
 					<Image
 						width={this.state.width}

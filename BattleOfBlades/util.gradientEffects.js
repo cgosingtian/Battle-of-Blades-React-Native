@@ -36,7 +36,7 @@ class GradientEffects extends Component {
              		Animated.timing(this.state.fadeAnimation,
              		{
              			toValue: 0,
-             			duration: 200,
+             			duration: 100,
              		})
   		      ])
             .start(this.state.onFinish);

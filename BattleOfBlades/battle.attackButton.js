@@ -78,10 +78,18 @@ class AttackButton extends Component {
 	}
 
 	render() {
+		var attackButton = this.renderAttackButton();
+		var emptyButton = this.renderEmptyButton();
+
 		if (this.state.life > 0) {
-			return this.renderAttackButton();
+			return attackButton;
 		} else {
-			return(
+			return emptyButton;
+		}
+	}
+
+	renderEmptyButton() {
+		return(
 				<View
 					style={styles.container}>
 				<Image 
@@ -90,7 +98,6 @@ class AttackButton extends Component {
 					style={styles.container} />
 				</View>
 			);
-		}
 	}
 
 	renderAttackButton() {
@@ -107,6 +114,7 @@ class AttackButton extends Component {
 					width={this.state.width}
 					height={this.state.height}
 					style={styles.container}
+					renderToHardwareTextureAndroid={true} // android
 					source={AttackButtonBGImage}>
 					<Text style={styles.lifeText}>{this.state.life}</Text>
 				</Image>

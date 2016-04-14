@@ -174,7 +174,6 @@ class BattleOfBlades extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    //top: 20,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

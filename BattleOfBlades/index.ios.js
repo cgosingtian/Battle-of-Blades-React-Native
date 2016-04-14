@@ -167,11 +167,15 @@ class BattleOfBlades extends Component {
         activeEnemyLevel: 0,
     });
   }
+
+  _gainLevel() {
+    // TODO
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
-    top: 20,
+    //top: 20,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

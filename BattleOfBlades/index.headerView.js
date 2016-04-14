@@ -195,15 +195,18 @@ const styles = StyleSheet.create({
 	// ----- LEFT HEADER
 	left: {
 		flex: 0.3,
+		height: 30,
 		// The backgroundColor setting of the parent affects the views on top of it
 		backgroundColor: 'transparent',
 	},
 	leftLevelText: {
+		flex: 0.5,
 		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 15,
 	},
 	leftXPText: {
+		flex: 0.5,
 		color: 'white',
 		fontSize: 10,
 	},
@@ -211,6 +214,7 @@ const styles = StyleSheet.create({
 	// ----- MIDDLE HEADER
 	middle: {
 		flex: 0.3,
+		height: 30,
 		justifyContent:'flex-end',
 	},
 	middleNameTextBG: {
@@ -225,15 +229,18 @@ const styles = StyleSheet.create({
 	// ----- RIGHT HEADER
 	right: {
 		flex: 0.3,
+		height: 30,
 		backgroundColor: 'transparent',
 	},
 	rightEnergyText: {
+		flex: 0.5,
 		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 15,
 		textAlign: 'right',
 	},
 	rightRechargeText: {
+		flex: 0.5,
 		color: 'white',
 		fontSize: 10,
 		textAlign: 'right',

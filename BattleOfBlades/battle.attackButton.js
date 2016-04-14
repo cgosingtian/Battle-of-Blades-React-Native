@@ -5,6 +5,7 @@ import React, {
 	StyleSheet,
 	Image,
 	Text,
+	View,
 	TouchableHighlight,
 } from 'react-native';
 
@@ -81,10 +82,13 @@ class AttackButton extends Component {
 			return this.renderAttackButton();
 		} else {
 			return(
+				<View
+					style={styles.container}>
 				<Image 
 					width={this.state.width}
 					height={this.state.height}
 					style={styles.container} />
+				</View>
 			);
 		}
 	}
@@ -121,7 +125,8 @@ var styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent:'center',
-		resizeMode:'contain',
+		width: 60,
+		height: 60,
 	},
 	lifeText: {
 		top: 6.5,

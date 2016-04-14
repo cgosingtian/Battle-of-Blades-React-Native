@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
 		right: 5,
 	},
 	enemyHealth: {
+		flex: 0.5,
 		textAlign: 'left',
 		fontSize: 15,
 		fontWeight: 'bold',
@@ -193,6 +194,7 @@ const styles = StyleSheet.create({
 		left: 5,
 	},
 	timeLeft: {
+		flex: 0.5,
 		textAlign: 'left',
 		fontSize: 15,
 		fontWeight: 'bold',

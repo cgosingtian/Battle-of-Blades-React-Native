@@ -71,11 +71,16 @@ class BattleView extends Component {
 				<GradientEffects 
 					key={key}
 	          		gradientColor={gradientColor}
+	          		onFinish={this._finishGradientRendering.bind(this)}
 	          		width={this.state.width}
 	          		height={this.state.height} />);
 		} else {
 			return (<View />);
 		}
+	}
+
+	_finishGradientRendering() {
+		this.state.gradientColorQueue.shift();
 	}
 
 	render() {

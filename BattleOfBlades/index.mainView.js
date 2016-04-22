@@ -57,17 +57,24 @@ class MainView extends Component {
 	_renderVictory() {
 		return (
 			<View 
-				width={this.state.width} 
-				height={this.state.height} 
-				justifyContent={'center'}>
+				justifyContent={'center'}
+				style={{
+					width: this.state.width,
+					height: this.state.height,
+				}}>
 				<Image 
-      				width={this.state.width}
-      				height={400}
-      				top={-50}
-          			style={styles.victoryImage}
+          			style={[styles.victoryImage, 
+          				    {
+          				    	width: this.state.width,
+          				    	height: 400,
+          				    	top: -50,
+          				    }]}
           			source={victoryImage} 
           			position={'absolute'} />
-        		<View backgroundColor={'rgba(0,0,0,0.5)'} height={50} justifyContent={'center'}>
+        		<View 
+        			backgroundColor={'rgba(0,0,0,0.5)'} 
+        			justifyContent={'center'} 
+        			style={{height:50}}>
 		        	<Text
 		        		allowFontScaling={true} 
 		        		style={styles.experience}>{this.state.endGameMessage}</Text>
@@ -79,8 +86,10 @@ class MainView extends Component {
 		return (
 			<View>
 				<Text
-					width={this.state.width} 
-					style={styles.defeat}>DEFEAT</Text>
+					style={[styles.defeat, 
+						    {
+						    	width:this.state.width
+						    }]}>DEFEAT</Text>
 					<View
 						backgroundColor={'rgba(0,0,0,0.5)'}
 						top={80}>
@@ -102,14 +111,18 @@ class MainView extends Component {
 
 		return(
 			<View 
-				style={styles.container}
-				width={this.state.width}
-				height={this.state.height}>
+				style={[styles.container, 
+					    {
+					    	width:this.state.width, 
+					    	height: this.state.height,
+					    }]}>
 				<Image
-					width={this.state.width}
-					height={this.state.height}
 					resizeMode={'stretch'}
-					style={styles.background}
+					style={[styles.background,
+						    {
+						    	width: this.state.width,
+								height:this.state.height,
+						    }]}
 					source={mainCover}>
 				</Image>
 				{endGame}

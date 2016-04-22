@@ -9,6 +9,8 @@ import React, {
 	TouchableHighlight,
 } from 'react-native';
 
+var Common = require('./common');
+
 var backgroundImage = require('./Resources/screenfooterbg.png');
 var easyButtonImage = require('./Resources/battlebuttoneasy.png')
 var averageButtonImage = require('./Resources/battlebuttonaverage.png')
@@ -40,34 +42,42 @@ class FooterView extends Component {
 
 		return(
 			<Image 
-				width={this.state.width}
-				style={styles.container}
+				style={[styles.container, 
+					    {
+					    	width: this.state.width
+					    }]}
 				source={backgroundImage}>
 				<TouchableHighlight
 					onPress={() => this.state.buttonFunction(0)}>
 					<Image
-						width={buttonWidth}
-						height={buttonHeight}
 						source={easyButtonImage}
-						style={styles.left}>
+						style={[styles.left, 
+							    {
+							    	width:buttonWidth, 
+							    	height:buttonHeight
+							    }]}>
 					</Image>
 				</TouchableHighlight>
 				<TouchableHighlight
 					onPress={() => this.state.buttonFunction(1)}>
 					<Image
-						width={buttonWidth}
-						height={buttonHeight}
 						source={averageButtonImage}
-						style={styles.middle}>
+						style={[styles.middle, 
+							    {
+							    	width:buttonWidth, 
+							    	height:buttonHeight
+							    }]}>
 					</Image>
 				</TouchableHighlight>
 				<TouchableHighlight
 					onPress={() => this.state.buttonFunction(2)}>
 					<Image
-						width={buttonWidth}
-						height={buttonHeight}
 						source={hardButtonImage}
-						style={styles.right}>
+						style={[styles.right, 
+							    {
+							    	width:buttonWidth, 
+							    	height:buttonHeight
+							    }]}>
 					</Image>
 				</TouchableHighlight>
 			</Image>
@@ -95,9 +105,11 @@ class FooterView extends Component {
 
 		return(
 			<Image 
-				width={this.state.width}
-				height={this.state.height}
-				style={styles.container}
+				style={[styles.container, 
+					    {
+					   		width: this.state.width, 
+					   		height: this.state.height
+					    }]}
 				source={hintImageSource}>
 			</Image>
 		);
@@ -111,6 +123,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
+		width: Common.screenWidth,
 	},
 	left: {
 		flex: 0.33,

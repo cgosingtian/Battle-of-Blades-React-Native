@@ -115,18 +115,24 @@ class BattleView extends Component {
 
 		return(
 			<View 
-				width={this.state.width}
-				height={this.state.height}
-				style={styles.container}>
+				style={[styles.container, 
+					    {
+					    	width: this.state.width,
+							height: this.state.height,
+					    }]}>
 				<Image
-					width={this.state.width}
-					height={this.state.height}
-					style={styles.battle}
+					style={[styles.battle,
+						    {
+						    	width: this.state.width,
+								height: this.state.height,
+						    }]}
 					renderToHardwareTextureAndroid={true} // android
 					source={backgroundSource}>
 					<Image
-						width={this.state.width}
-						style={styles.battleInfo}
+						style={[styles.battleInfo,
+								{
+									width:this.state.width,
+								}]}
 						source={infoBG}>
 						<Text style={styles.enemyHealth}>Health: {this.state.enemyHealth}</Text>
 						<Text style={styles.timeLeft}>Time Left: {this.state.timeLeft}</Text>
@@ -136,8 +142,10 @@ class BattleView extends Component {
 					<AttackRow width={this.state.width*0.9} attackFunction={this._damageEnemy.bind(this)} />
 					<AttackRow width={this.state.width*0.9} attackFunction={this._damageEnemy.bind(this)} />
 					<View 
-						width={this.state.width*0.75}
-						style={styles.enemyInfo}>
+						style={[styles.enemyInfo,
+								{
+									width: this.state.width*0.75,
+								}]}>
 						<Text style={styles.enemyName}>{this.state.enemyName}</Text>
 						<Text style={styles.enemyLevel}>Level {this.state.enemyLevel}</Text>
 					</View>

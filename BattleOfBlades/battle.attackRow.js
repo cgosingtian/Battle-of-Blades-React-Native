@@ -21,9 +21,11 @@ class AttackRow extends Component {
 	render() {
 		return(
 			<View 
-				width={this.state.width} 
-				height={this.state.height}
-				style={styles.container}>
+				style={[styles.container, 
+					    {
+					    	width: this.state.width,
+							height: this.state.height,
+					    }]}>
 				<AttackButton ref='attackButton1' buttonFunction={this._handleAttack.bind(this)} />
 				<AttackButton ref='attackButton2' buttonFunction={this._handleAttack.bind(this)} />
 				<AttackButton ref='attackButton3' buttonFunction={this._handleAttack.bind(this)} />

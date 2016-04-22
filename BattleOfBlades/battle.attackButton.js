@@ -93,32 +93,31 @@ class AttackButton extends Component {
 				<View
 					style={styles.container}>
 				<Image 
-					width={this.state.width}
-					height={this.state.height}
-					style={styles.container} />
+					style={[styles.container, 
+						    {
+						    	width: this.state.width,
+								height: this.state.height,
+						    }]} />
 				</View>
 			);
 	}
 
 	renderAttackButton() {
 		return(
-			<TouchableHighlight
-				width={this.state.width}
-				height={this.state.height}
-				style={styles.touchable}
-				underlayColor={'transparent'}
-				onPress={() => {
-					this._buttonAction.bind(this)()
-				}}>
+			
 				<Image 
-					width={this.state.width}
-					height={this.state.height}
-					style={styles.container}
+					style={[styles.container, 
+						    {
+						    	width: this.state.width,
+								height: this.state.height,
+						    }]}
+					resizeMode={'contain'}
 					renderToHardwareTextureAndroid={true} // android
+					onStartShouldSetResponder={()=>this._buttonAction.bind(this)()}
 					source={AttackButtonBGImage}>
 					<Text style={styles.lifeText}>{this.state.life}</Text>
 				</Image>
-			</TouchableHighlight>
+			
 		);
 	}
 
@@ -133,8 +132,6 @@ var styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent:'center',
-		width: 60,
-		height: 60,
 	},
 	lifeText: {
 		top: 6.5,
